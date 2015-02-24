@@ -683,6 +683,7 @@ function init() {
 	//for the layer in the order they come from the table schema. This code below creates custom labels for each field and substitutes in the value using the notation ${[FIELD NAME]}. 
     function executeSiteIdentifyTask(evt) {
 
+    	//This step removes the graphics from the map
     	map.graphics.clear();
 
     	identifyParams.geometry = evt.mapPoint;
