@@ -1,0 +1,8 @@
+/*@preserve 
+    Copyright 2012 USGS WiM
+*/
+/*@preserve
+    Author: Nick Estes
+    Created: October 25, 2012
+*/
+dojo.provide("wim.LatLngScale"),dojo.require("dijit._Container"),dojo.require("dijit._TemplatedMixin"),dojo.require("dijit._WidgetBase"),dojo.require("esri.map"),dojo.declare("wim.LatLngScale",[dijit._WidgetBase,dijit._OnDijitClickMixin,dijit._Container,dijit._TemplatedMixin],{templatePath:dojo.moduleUrl("wim","templates/LatLngScale.html"),baseClass:"latLngScale",map:null,constructor:function(){},postCreate:function(){if(null!=this.map){var domNode=this,theMap=this.map,bodyWidth=dojo.getStyle(document.body,"width");dojo.connect(theMap,"onZoomEnd",function(){domNode._onScaleChange()});var center=dojo.style(theMap.container,"width")/2,llsWidth=dojo.style(this.id,"width")/2;dojo.style(this.id,"left",center-llsWidth+"px"),domNode.containerNode.innerHTML="Map Scale: 1:"+theMap.getScale().toFixed(0),dojo.connect(dojo.byId(theMap.container.id),"onmousemove",function(evt){if(null!=evt.mapPoint){var mp=esri.geometry.webMercatorToGeographic(evt.mapPoint);if(domNode.textNode.innerHTML="Lat: "+mp.y.toFixed(4)+", Lng: "+mp.x.toFixed(4),bodyWidth!=dojo.getStyle(document.body,"width")){var center=dojo.style(theMap.container,"width")/2,llsWidth=dojo.style(domNode.id,"width")/2;dojo.style(domNode.id,"left",center-llsWidth+"px"),bodyWidth=dojo.getStyle(document.body,"width")}}})}else console.log("map property is null")},_onScaleChange:function(){this.containerNode.innerHTML="Map Scale: 1:"+this.map.getScale().toFixed(0)}});
