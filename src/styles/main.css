@@ -35,6 +35,9 @@ html, body {
 }
 
 #header {
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	top: 0px;
 	left: 0px;
 	right: 0px;
@@ -44,8 +47,14 @@ html, body {
 	position: absolute;
 	z-index: 3;
 	display: inline;
+	vertical-align: center;
 	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 	font-size: 40px;
+}
+
+#headerLogo {
+	display: inline;
+	padding-top: 10px;
 }
 
 #usgsLogoDiv {
@@ -57,54 +66,46 @@ html, body {
 	padding-right: 5px;
 	padding-bottom: 5px;
 	text-align: center;
+	display: inline;
 }
 
 #usgsLogo {
-	
+	display: inline;
 }
 
 #title {
-	float: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	padding-right: 5px;
 	padding-left: 10px;
-	padding-top: 10px;
+	display: inline;
 	font-family: BryantBold,"Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 }
 
-#titleSeparator {
-	color: #F37A49;
-	float: left;
-	padding-right: 5px;
-	padding-top: 10px;
-	font-family: BryantBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
-}
-
-#subTitle {
-	padding-top: 10px;
-	padding-right: 10px;
-	float: left;
-}
-
 #titleImageDiv {
-	padding-left: 20px;
-	padding-top: 20px;
-	font-size: 16px;
+	
 }
 
 #titleImage {
+	/*padding-left: 20px;
+	padding-top: 20px;*/
 	height: 15px;
 	width: 15px;
 	cursor: pointer;
+	display: inline;
 }
 
 #betaTitle {
-	float: right;
-	padding: 20px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 	font-size: 16px;
 	color: #AAAAB5;
+	display: inline;
 }
 
-#printButton {
+#moreInfoButton {
 	font-weight: 500;
 	font-size: 16px;
 	color: White;
@@ -120,6 +121,30 @@ html, body {
 	padding: 6px;
 	z-index: 3;
 	cursor: pointer;
+	display: none;
+}
+
+#moreInfoText {
+	cursor: pointer;
+}
+
+#printButton {
+	font-weight: 500;
+	font-size: 16px;
+	color: White;
+	background-color: #f37a49;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	-moz-border-bottom-left-radius: 5px;
+	-moz-border-bottom-right-radius: 5px;
+	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+	position: absolute;
+	left: 245px;
+	top: 65px;
+	padding: 6px;
+	z-index: 3;
+	cursor: pointer;
+	display: none;
 }
 
 #printText {
@@ -242,6 +267,7 @@ button {
 #helpText {
 	font-family: BryantRegular;
 	font-size: 16px;
+	max-width: 1000px;
 	margin-top: 0px;
 	position: absolute;
 	padding-top: 10px;
@@ -260,6 +286,32 @@ button {
 #helpTextDiv {
 	border: 2px solid;
 	z-index: 9999;
+}
+
+#helpTextContent {
+	overflow-y: auto;
+}
+
+table.constTable {
+    border-collapse: collapse;
+}
+
+table.constTable th td  {
+	border: 1px solid black;
+}
+
+table.constTable td {
+    padding: 15px;
+}
+
+table.constTable th {
+    background-color: #f37a49;
+    color: white;
+    padding: 15px;
+}
+
+table.constTable tr:nth-child(even) {
+	background-color: #aaaaaa;
 }
 
 .esriPopup {
@@ -356,8 +408,16 @@ button {
 	overflow: auto;
 }
 
+#arrowSizeRelative {
+	font-size: 14px;
+	text-decoration: underline;
+	color: blue;
+	cursor: pointer;
+}
+
 #constitExp {
-	font-size: 12px;
+	font-size: 14px;
+	display: none;
 }
 
 #constDropdowns {
@@ -587,3 +647,15 @@ td div {
 .dijitArrowNode {
 	visibility: hidden;
 }
+
+.ui-resizable { position: relative;}
+.ui-resizable-handle { position: absolute;font-size: 0.1px; display: block; }
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}

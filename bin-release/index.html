@@ -57,7 +57,11 @@
       <div id="map" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'" style="padding:0;">
         <div id="refreshScreen" data-dojo-type="wim.RefreshScreen" data-dojo-props="attachedMapID: 'map'"></div>
           
-          <div id="printButton"> 
+          <div id="moreInfoButton" class="headerTab"> 
+             <label id="moreInfoText">More Info</label>
+          </div>
+
+          <div id="printButton" class="headerTab"> 
              <label id="printText">Print Map</label>
           </div>
 
@@ -75,16 +79,11 @@
             <div id="headerLogo">
               <div id="usgsLogoDiv">
               	<img id="usgsLogo" alt="USGS Logo" src="images/usgsLogo.png" title="USGS Links"/>
-            	</div>                
-              <div id="titles">
-              	<div id="betaTitle">BETA VERSION</div>
-                <div id="title">NAWQA Decadal Change in Groundwater Quality</div>
-                <!--<div id="titleSeparator">:</div>
-                <div id="subTitle">Groundwater</div>-->
-                <div id="titleImageDiv">
-                  <img id="titleImage" src="./images/wim_help_tip.png" title="Click the ? to see which constituents were chosen and why"/>
-                </div>
-              </div>
+            	</div> 
+              <div id="title">NAWQA Decadal Change in Groundwater Quality</div>               
+              <!--<div id="titleSeparator">:</div>
+              <div id="subTitle">Groundwater</div>-->
+              <div id="betaTitle">BETA VERSION</div>
             </div>
           </div>
           
@@ -116,16 +115,16 @@
                 </select>-->
                 <br/>
 
-                <input type="radio" name="constButtons" id="organicButton" value="organic" onchange="constTypeSelect(event)" checked>
-                <label for="organicButton">Organic</label>
-                <input type="radio" name="constButtons" id="inorganicButton" onchange="constTypeSelect(event)" value="inorganic">
+                <input type="radio" name="constButtons" id="inorganicButton" onchange="constTypeSelect(event)" value="inorganic" checked>
                 <label for="inorganicButton">Inorganic</label>
+                <input type="radio" name="constButtons" id="organicButton" value="organic" onchange="constTypeSelect(event)">
+                <label for="organicButton">Organic</label>
                 <br/>
                 <div id="inputs">
-                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="organicConstituentSelect" onchange="constituentUpdate(event)">
+                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="inorganicConstituentSelect" onchange="constituentUpdate(event)">
                   </select>
                   <br/>
-                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="inorganicConstituentSelect" onchange="constituentUpdate(event)">
+                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="organicConstituentSelect" onchange="constituentUpdate(event)">
                   </select>
                 </div>
                 <br/>
@@ -136,8 +135,8 @@
             <div id="explanation" data-dojo-type="wim.CollapsingContainer" data-dojo-props="title:'EXPLANATION',imageUrl:'images/basemap_new_small.png'">
            	<div id="legend" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Explanation',selected:true">
               <div id="legendDiv">
-              <label id="constitExp"></label>
               </div>
+              <label id="constitExp"></label>
             </div>
           </div>
            

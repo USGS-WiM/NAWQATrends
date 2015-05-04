@@ -55,6 +55,7 @@ var navToolbar;
 var locator;
 
 var renderer;
+var renderer2;
 var orangeBigSymbol;
 var greenBigSymbol;
 var orangeSmallSymbol;
@@ -62,15 +63,21 @@ var greenSmallSymbol;
 var blankSymbol;
 var noDataSymbol;
 
+var z = 0;
+
+var legend;
+
 var orgSel;
 var inorgSel;
+
+var constObj;
 
 var sucode4FeatureLinkZoom;
      
 function init() {
 	//sets up the onClick listeners for the USGS logo and help text
 	dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
-	dojo.connect(dojo.byId("titleImage"), "onclick", showHelpText);
+	dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
 
 	// Added for handling of ajaxTransport in IE
     if (!jQuery.support.cors && window.XDomainRequest) {
@@ -78,6 +85,11 @@ function init() {
     var getOrPostRegEx = /^get|post$/i;
     var sameSchemeRegEx = new RegExp('^'+location.protocol, 'i');
     var xmlRegEx = /\/xml/i;
+
+    esri.addProxyRule({
+    	urlPrefix: "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/Utilities/PrintingTools",
+    	proxyUrl: "http://107.20.96.245/SIGLProxies/proxy.ashx"
+    })
 
     // ajaxTransport exists in jQuery 1.5+
     jQuery.ajaxTransport('text html xml json', function(options, userOptions, jqXHR){
@@ -161,25 +173,26 @@ function init() {
         url: 'http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
+        	constObj = data; 
             $.each(data.features, function(key, value) {
             	if (value.attributes.Constituent != null) {
-            		if (value.attributes.ConstituentType == 'Inorganic') {
+            		if (value.attributes.ConstituentType == 'inorganic') {
 						$('#inorganicConstituentSelect')
 		         			.append($("<option></option>")
 		         			.attr(value.attributes)
 		         			.text(value.attributes.DisplayName));
 		         			//.attr({"value": value.attributes.Constituent, "description": value.attributes.Description})
 		         		//$('#constitExp').html("Inorganic text<br/>*For " + value.attributes.DisplayName + ", " + value.attributes.Description);
-            		} else if (value.attributes.ConstituentType == 'Organic') {
+		         		if (value.attributes.DisplayName == "Chloride") {
+		         			$('#constitExp').html(value.attributes.GenDescript + "<br/>*" + value.attributes.Description);
+		         		}
+            		} else if (value.attributes.ConstituentType == 'organic') {
             		  	$('#organicConstituentSelect')
 		         			.append($("<option></option>")
 		         			.attr(value.attributes)
 		         			.text(value.attributes.DisplayName));
 		         			//.attr({"value": value.attributes.Constituent, "description": value.attributes.Description})
-		         		if (value.attributes.DisplayName == "Chloroform") {
-		         			$('#constitExp').html(value.attributes.GenDescript + "<br/>*" + value.attributes.Description);
-		         		}
-            		}
+		         	}
 	            	/*$('#constituentSelect')
 	         			.append($("<option></option>")
 	         			.attr(value.attributes)
@@ -188,10 +201,11 @@ function init() {
 	         		$('#constitExp').html("*"+value.attributes.Description);*/
 	         	}
 			});
-			orgSel = $("#irganicConstituentSelect");
+			orgSel = $("#organicConstituentSelect");
 			inorgSel = $("#inorganicConstituentSelect");
-			inorgSel.hide();
-        },
+			orgSel.hide();
+
+		},
         error: function (error) {
             console.log("Error processing the JSON. The error is:" + error);
         }
@@ -236,6 +250,7 @@ function init() {
 		var basemapUpdate = dojo.connect(basemapGallery, "onSelectionChange", function() {
 			if (basemapGallery.getSelected().id == "basemap_3") {
 				$("#loadingScreen").hide();
+				$(".headerTab").show();
 				dojo.disconnect(basemapGallery, basemapUpdate);
 			}
 		});
@@ -274,6 +289,7 @@ function init() {
 	}
 
 	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P32106_Chloroform");
+	renderer2 = new esri.renderer.UniqueValueRenderer(defaultSymbol);
 
 	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/orange_large.png", 45, 45);
 	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/green_large.png", 45, 45);
@@ -325,9 +341,35 @@ function init() {
 	renderer.addValue({
 		value: "-999", 
 		symbol: noDataSymbol,
-		label: "Data not available"
+		label: "Trend data not available"
 	});
 	
+	renderer2.addValue({
+		value: "1", 
+		symbol: orangeSmallSymbol,
+		label: "Increase"
+	});
+    renderer2.addValue({
+		value: "0",
+		symbol: noChangeSymbolSmall,
+		label: "No significant change"
+	});
+    renderer2.addValue({
+		value: "-1", 
+		symbol: greenSmallSymbol,
+		label: "Decrease"
+	});
+	renderer2.addValue({
+		value: "null", 
+		symbol: blankSymbol,
+		label: " "
+	});
+	renderer2.addValue({
+		value: "-999", 
+		symbol: noDataSymbol,
+		label: "Trend data not available"
+	});
+
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Network Change" : {
@@ -403,9 +445,9 @@ function init() {
 	dojo.connect(map,'onLayersAddResult',function(results){
 		$("#legendDiv").hide();
 
-		var legend = new esri.dijit.Legend({
+		legend = new esri.dijit.Legend({
 			map:map,
-			autoUpdate: false,
+			autoUpdate: true,
 			layerInfos:legendLayers
 		},"legendDiv");
 		legend.startup();
@@ -607,7 +649,7 @@ function init() {
     identifyParams.tolerance = 10;
     identifyParams.returnGeometry = true;
     identifyParams.maxAllowableOffset = 1000;
-    identifyParams.layerIds = [0];
+    identifyParams.layerOption = "LAYER_OPTION_ALL";
     identifyParams.width  = map.width;
     identifyParams.height = map.height;
     //identifyTask = new esri.tasks.IdentifyTask("http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
@@ -633,8 +675,8 @@ function init() {
 		sucode4FeatureLinkZoom = attr["network_centroids.SUCode"];
 
     	var template = new esri.InfoTemplate("Trends Info: ${tbl_Networks.SUCode}",
-			"<b>Network type:</b> ${tbl_Networks.NetworkSubType}<br/>"+
-			"<p><b>Description:</b> ${tbl_Networks.NetDesc}</p>" +
+			"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
+			"<p><b>Description:</b> ${tbl_Networks.NetDescMedium}</p>" +
 			"<p><b>" + displayConst + "</b>: " + getValue(attr["network_centroids." + currentConst]) + "</p>" +
 			"<br/><p><a id='infoWindowLink' href='javascript:linkClick()'>Zoom to Network</a></p>");
 
@@ -651,7 +693,35 @@ function init() {
         setCursorByID("mainDiv", "default");
         map.setCursor("default");
 
+        function networkTypeFind(networkType) {
+        	var networkText;
+
+        	if (networkType == "URB") {
+        		networkText = "Urban land use network";
+        	} else if (networkType == "SUS") {
+        		networkText = "Subunit survey";
+        	} else if (networkType == "AG") {
+        		networkText = "Agricultural land use network";
+        	}
+
+        	return networkText;
+        }
+
 	});
+
+	function networkTypeFind(networkType) {
+    	var networkText;
+
+    	if (networkType == "URB") {
+    		networkText = "Urban land use network";
+    	} else if (networkType == "SUS") {
+    		networkText = "Subunit survey";
+    	} else if (networkType == "AG") {
+    		networkText = "Agricultural land use network";
+    	}
+
+    	return networkText;
+    }
 
 	function setCursorByID(id,cursorStyle) {
 	 	var elem;
@@ -744,8 +814,8 @@ function init() {
 	        		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
 
 		        	var template = new esri.InfoTemplate("Trends Info: " + attr["tbl_Networks.SUCode"],
-						"<b>Network type:</b> " + attr["tbl_Networks.NetworkSubType"] + "<br/>"+
-						"<p><b>Description:</b> " + attr["tbl_Networks.NetDesc"] + "</p>" +
+						"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
+						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "</p>" +
 						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
 						
 					//ties the above defined InfoTemplate to the feature result returned from a click event	
@@ -778,10 +848,66 @@ function init() {
 				});
 				//var feature = featureSet.features[0];
         	} else {
-				setCursorByID("mainDiv", "default");
-		        map.setCursor("default");
-		        console.log('no features');
+        		var identifyParams2 = new esri.tasks.IdentifyParameters();
+			    identifyParams2.tolerance = 0;
+			    identifyParams2.returnGeometry = false;
+			    identifyParams2.layerIds = [1];
+			    identifyParams2.width  = map.width;
+			    identifyParams2.height = map.height;
+			    
+			    var identifyTask2 = new esri.tasks.IdentifyTask("http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+
+			    if (map.getLayer("principalAquifers").visible) {
+			    	var deferredResult2 = identifyTask2.execute(identifyParams);
+
+	        		deferredResult2.addCallback(function(response) {     
+
+						if (response.length > 0) {
+							var feature = response[0].feature;
+			            	var attr = feature.attributes;
+			            	console.log(attr["AQ_NAME"]);
+			            	var features;
+
+			            	var popInfo = "";
+			            	var aqNameArray = [];
+
+			            	for (var i = 0; i < response.length; i++) {
+			            		//features.push(response[i].feature);
+			            		var feature = response[i].feature;
+				            	var attr = feature.attributes;
+				            	if (aqNameArray.indexOf(attr["AQ_NAME"]) == -1) {
+				            		aqNameArray.push(attr["AQ_NAME"]);
+				            		popInfo += "<b>Aquifer:</b> " + attr["AQ_NAME"] +"<br/>";
+				            	}	            	
+				            }
+
+							var template = new esri.InfoTemplate("Principal Aquifers",
+								popInfo);
+							
+							//ties the above defined InfoTemplate to the feature result returned from a click event	
+				            
+				            feature.setInfoTemplate(template);
+
+				            map.infoWindow.setFeatures([feature]);
+				            map.infoWindow.show(evt.mapPoint);
+
+				            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
+				            	map.graphics.clear();
+				            	dojo.disconnect(map.infoWindow, infoWindowClose);
+				            });
+
+				            setCursorByID("mainDiv", "default");
+				            map.setCursor("default");
+						}
+
+					});
+				} else {
+					setCursorByID("mainDiv", "default");
+				    map.setCursor("default");
+				}
+			    
 			}
+
 	    });
 
 		//sets the content that informs the info window to the previously established "deferredResult" variable.
@@ -871,6 +997,8 @@ function addAllLayers() {
 					} else {
 						addToObjects({layer: newLayer, type:"layer", title: layer, toggleType: "checkbox", group: ""}, allLayers[layer].wimOptions)
 					}
+				} else if (allLayers[layer].wimOptions.includeInLayerList == false) {
+					addToObjects({layer: newLayer, type:"layer", title: layer, toggleType: "checkbox", group: ""}, allLayers[layer].wimOptions)
 				}
 			} else {
 				addToObjects({layer: newLayer, title: layer}, allLayers[layer].wimOptions)
@@ -893,9 +1021,11 @@ function addAllLayers() {
 	map.addLayers(layerArray);
 	
 	function addToObjects(fullObject, wimOptions) {
-		layersObject.push(fullObject); 
+		if (wimOptions.includeInLayerList != false) {
+			layersObject.push(fullObject); 
+		}
 		if (wimOptions.includeLegend != false) {
-			legendLayers.push(fullObject); 
+			legendLayers.push(fullObject);
 		}
 	}
 	
@@ -943,10 +1073,12 @@ function showHelpText(evt) {
 		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 			'<div id="helpTextHeaderClose">close</div>' +
 		  	'<div id="helpTextHeader" class="usgsLinksHeader">More Info</div>' +
-          	'<p>Summary of statistical analysis of decadal changes in concentrations of key constituents between Cycle 1 and Cycle 2 of the NAWQA program.  Priority for analysis is based on: <br/>' + 
-	        '(1) exceedance of MCL or other human-health benchmark in national reports (see references 1,2,3);  <br/>' + 
-	        '(2) detection frequency in national reports (see references 4,5);  or <br/>' + 
-	        '(3) other  selected constituents.<p> ' + 
+		  	'<div id="helpTextContent">' +
+          	'<p>Summary of statistical analysis of decadal changes in concentrations of key constituents between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on: <br/>' + 
+	        '(1) exceedance of MCL or other human-health benchmark in national reports (1,2,3);  <br/>' + 
+	        '(2) detection frequency in national reports (4,5);  or <br/>' + 
+	        '(3) other selected constituents. <br/>' + 
+	        '<i>Details of statistical analysis and data management (6,7).</i><p> ' +
 
 	        '<p id="footnotes">1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular' + 
 	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular' + 
@@ -954,10 +1086,22 @@ function showHelpText(evt) {
 	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular.' + 
 	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular.' + 
 	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176' +
+	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.' +
+	        
+	        '</p><br/>Constituent table' +
 
-	        '</p></div>';
+	        '<p><table id="constTable" class="constTable">' +
+	        '<tr><th>Constituent Name</th>' +
+	        '<th>USGS Parameter Code</th>' +
+	        '<th>Benchmark</th>' +
+	        '<th>Units</th>' +
+	        '<th>Description</th>' +
+	        '<th>Why Study?</th></tr>' +
+	        '</table></p></div>' +
+	        '</div>';
 
-	    var percentOfScreenHeight = 0.8;
+		
+		var percentOfScreenHeight = 0.8;
 	    var percentOfScreenWidth = 0.5;
 
 	    var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
@@ -971,6 +1115,27 @@ function showHelpText(evt) {
 
 		//add the div to the document
 		dojo.byId('map').appendChild(helpTextDiv);
+
+		$("#constTable").append("<tr id='tableHeader'></tr>");
+		var fields = ["DisplayName","Constituent","Benchmark","Units","Description","WhyStudy"];
+
+		$.each(constObj.features, function(key, value) {
+	    	//alert("key: " + key + ", value: " + value);
+	    	var id="const" + key;
+	    	$("#constTable").append("<tr id='" + id + "'></tr>");
+	    	var feature = value;
+	    	$.each(fields, function(key, field) {
+	    		if (field == "Constituent") {
+	    			$("#"+id).append("<td>"+feature.attributes[field].split('_')[0]+"</td>");
+	    		} else {
+					$("#"+id).append("<td>"+feature.attributes[field]+"</td>");
+				}
+	    	});
+	    });
+
+		var ht = $("#helpText").height() - $("#helpTextHeader").height() - 20;
+	    $("#helpTextContent").height(ht + "px");
+
 		//on mouse leave, call the removeLinks function
 		dojo.connect(dojo.byId("helpTextHeaderClose"), "onclick", removeHelpText);
 	}
@@ -1005,15 +1170,19 @@ function constTypeSelect(event) {
 
 function constituentUpdate(event) {
 
+	z = z + 1;
+
 	dojo.setStyle(constStatus.id, "color", "yellow");
 	constStatus.innerHTML = "...Updating...";
 
 	var select = event.target;
 
+	var astText = (select[select.selectedIndex].attributes.GenDescript.textContent).toString() + "<br/>*" + (select[select.selectedIndex].attributes.description.textContent).toString();
+	
 	if (select.id == "organicConstituentSelect") {
-		$('#constitExp').html(select[select.selectedIndex].attributes.GenDescript.textContent + "<br/>*" + select[select.selectedIndex].attributes.description.textContent);
+		$('#constitExp').html(astText);
 	} else if (select.id == "inorganicConstituentSelect") {
-		$('#constitExp').html(select[select.selectedIndex].attributes.GenDescript.textContent + "<br/>*" + select[select.selectedIndex].attributes.description.textContent);
+		$('#constitExp').html(astText);
 	}
 	
 	var featureLayer = map.getLayer("networkLocations");
@@ -1027,9 +1196,16 @@ function constituentUpdate(event) {
 	var defaultSymbol = null;
 
 	renderer.attributeField = "network_centroids." + select[select.selectedIndex].attributes.constituent.textContent;
+	renderer2.attributeField = "network_centroids." + select[select.selectedIndex].attributes.constituent.textContent;
+	
+	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
+		featureLayer.setRenderer(renderer2);
+	} else {
+		featureLayer.setRenderer(renderer);
+	}
 
-	featureLayer.setRenderer(renderer);
-    featureLayer.refresh();
+	featureLayer.refresh();
+	legend.refresh();
 
 }
 
@@ -1052,7 +1228,7 @@ function printMap() {
 	template.exportOptions = {
 	  	width: 500,
 		height: 400,
-		dpi: 96
+		dpi: 300
 	};
 	template.format = "PDF";
 	template.layout = "Letter ANSI A Landscape";
