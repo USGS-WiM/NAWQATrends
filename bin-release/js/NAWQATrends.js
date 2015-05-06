@@ -36,12 +36,12 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.TitlePane");
 dojo.require("dijit.Tooltip");
 
-dojo.require("wim.CollapsingContainer");
-dojo.require("wim.Disclaimer");
-dojo.require("wim.ExtentNav");
-dojo.require("wim.LatLngScale");
-dojo.require("wim.LoadingScreen");
-dojo.require("wim.RefreshScreen");
+dojo.require("wim.CollapsingContainer-min");
+dojo.require("wim.Disclaimer-min");
+dojo.require("wim.ExtentNav-min");
+dojo.require("wim.LatLngScale-min");
+dojo.require("wim.LoadingScreen-min");
+dojo.require("wim.RefreshScreen-min");
 
 
 //various global variables are set here (Declare here, instantiate below)     
