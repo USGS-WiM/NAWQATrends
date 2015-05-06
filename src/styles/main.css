@@ -292,6 +292,10 @@ button {
 	overflow-y: auto;
 }
 
+.tableTitle {
+	font-weight: bold;
+}
+
 table.constTable {
     border-collapse: collapse;
 }
@@ -454,6 +458,30 @@ table.constTable tr:nth-child(even) {
 	width: 50px;
 	background-color: gray;
 	visibility: hidden;
+}
+
+.largeIncrease {
+	color: #f37a49;
+	font-weight: bold;
+}
+
+.smallIncrease {
+	color: #f37a49;
+	font-weight: bold;
+}
+
+.noChange {
+	color: black;
+}
+
+.smallDecrease {
+	color: green;
+	font-weight: bold;
+}
+
+.largeDecrease {
+	color: green;
+	font-weight: bold;
 }
 
 .zoomTo {

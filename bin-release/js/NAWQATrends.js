@@ -78,6 +78,7 @@ function init() {
 	//sets up the onClick listeners for the USGS logo and help text
 	dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
 	dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
+	dojo.connect(dojo.byId("arrowSizeRelative"), "onclick", showConstituentExp);
 
 	// Added for handling of ajaxTransport in IE
     if (!jQuery.support.cors && window.XDomainRequest) {
@@ -170,13 +171,13 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
             $.each(data.features, function(key, value) {
             	if (value.attributes.Constituent != null) {
-            		if (value.attributes.ConstituentType == 'inorganic') {
+            		if (value.attributes.ConstituentType == 'inorganic' && value.attributes.Tableorder == "Mappable") {
 						$('#inorganicConstituentSelect')
 		         			.append($("<option></option>")
 		         			.attr(value.attributes)
@@ -184,9 +185,13 @@ function init() {
 		         			//.attr({"value": value.attributes.Constituent, "description": value.attributes.Description})
 		         		//$('#constitExp').html("Inorganic text<br/>*For " + value.attributes.DisplayName + ", " + value.attributes.Description);
 		         		if (value.attributes.DisplayName == "Chloride") {
-		         			$('#constitExp').html(value.attributes.GenDescript + "<br/>*" + value.attributes.Description);
+		         			$('#constitExp').html("<p>" + value.attributes.GenDescSmallChg + "<br/>" + 
+								value.attributes.GenDescLargeChg + "</p>" +
+								"<p>For " + value.attributes.DisplayName + ", " +
+								value.attributes.Description_SmallChange + ", " + 
+								value.attributes.Description_LargeChange + "</p>");
 		         		}
-            		} else if (value.attributes.ConstituentType == 'organic') {
+            		} else if (value.attributes.ConstituentType == 'organic' && value.attributes.Tableorder == "Mappable") {
             		  	$('#organicConstituentSelect')
 		         			.append($("<option></option>")
 		         			.attr(value.attributes)
@@ -203,6 +208,7 @@ function init() {
 			});
 			orgSel = $("#organicConstituentSelect");
 			inorgSel = $("#inorganicConstituentSelect");
+			inorgSel.val("Chloride");
 			orgSel.hide();
 
 		},
@@ -249,9 +255,9 @@ function init() {
 		console.log('loaded basemapGallery')
 		var basemapUpdate = dojo.connect(basemapGallery, "onSelectionChange", function() {
 			if (basemapGallery.getSelected().id == "basemap_3") {
-				$("#loadingScreen").hide();
 				$(".headerTab").show();
 				dojo.disconnect(basemapGallery, basemapUpdate);
+				$("#loadingScreen").hide();
 			}
 		});
 		basemapGallery.select("basemap_3");
@@ -280,15 +286,7 @@ function init() {
 
 	var count = 2;
 
-	for (var i = 0; i <= 3; i++) {
-		if (!--count) {
-			console.log("count is " + count);
-		} else {
-			console.log("huh? " + count);
-		}
-	}
-
-	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P32106_Chloroform");
+	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P00940_Chloride");
 	renderer2 = new esri.renderer.UniqueValueRenderer(defaultSymbol);
 
 	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/orange_large.png", 45, 45);
@@ -676,8 +674,9 @@ function init() {
 
     	var template = new esri.InfoTemplate("Trends Info: ${tbl_Networks.SUCode}",
 			"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
-			"<p><b>Description:</b> ${tbl_Networks.NetDescMedium}</p>" +
-			"<p><b>" + displayConst + "</b>: " + getValue(attr["network_centroids." + currentConst]) + "</p>" +
+			"<p><b>Description:</b> ${tbl_Networks.NetDescMedium}<br/><br/>" +
+			"<b>Well type:</b></p>" +
+			"<p><b>" + displayConst + "</b>: <span class='" + camelize(getValue(attr["network_centroids." + currentConst])) + "'>" + getValue(attr["network_centroids." + currentConst]) + "</span></p>" +
 			"<br/><p><a id='infoWindowLink' href='javascript:linkClick()'>Zoom to Network</a></p>");
 
     	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
@@ -699,7 +698,7 @@ function init() {
         	if (networkType == "URB") {
         		networkText = "Urban land use network";
         	} else if (networkType == "SUS") {
-        		networkText = "Subunit survey";
+        		networkText = "Major Aquifer Study";
         	} else if (networkType == "AG") {
         		networkText = "Agricultural land use network";
         	}
@@ -759,6 +758,12 @@ function init() {
 		return textValue;
 	}
 
+	function camelize(str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+            return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+        }).replace(/\s+/g, '');
+    }
+
 	//OPTIONAL: the following function carries out an identify task query on a layer and returns attributes for the feature in an info window according to the 
 	//InfoTemplate defined below. It is also possible to set a default info window on the layer declaration which will automatically display all the attributes 
 	//for the layer in the order they come from the table schema. This code below creates custom labels for each field and substitutes in the value using the notation ${[FIELD NAME]}. 
@@ -815,7 +820,8 @@ function init() {
 
 		        	var template = new esri.InfoTemplate("Trends Info: " + attr["tbl_Networks.SUCode"],
 						"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
-						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "</p>" +
+						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "<br/><br/>" +
+						"<b>Well type:</b></p>" +
 						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
 						
 					//ties the above defined InfoTemplate to the feature result returned from a click event	
@@ -1069,16 +1075,45 @@ function showHelpText(evt) {
 		//create linksDiv 
 		var helpTextDiv = dojo.doc.createElement("div");
 		helpTextDiv.id = 'helpText';
+		$("#helpText").addClass("ui-widget-content");
 		//LINKS BOX HEADER TITLE HERE
 		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 			'<div id="helpTextHeaderClose">close</div>' +
-		  	'<div id="helpTextHeader" class="usgsLinksHeader">More Info</div>' +
+		  	'<div id="helpTextHeader" class="usgsLinksHeader">Summary of Statistical Analysis of Decadal Changes</div>' +
 		  	'<div id="helpTextContent">' +
-          	'<p>Summary of statistical analysis of decadal changes in concentrations of key constituents between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on: <br/>' + 
+		  	'<p>Summary of statistical analysis of decadal changes in concentrations of key constituents between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on: <br/>' + 
 	        '(1) exceedance of MCL or other human-health benchmark in national reports (1,2,3);  <br/>' + 
 	        '(2) detection frequency in national reports (4,5);  or <br/>' + 
 	        '(3) other selected constituents. <br/>' + 
-	        '<i>Details of statistical analysis and data management (6,7).</i><p> ' +
+	        '<i>Details of statistical analysis and data management (6,7).</i><p><br/>' +
+
+	        '<p><label class="tableTitle">Constituents meeting analysis criteria, results mapped</label>' +
+          	'<table id="constTable" class="constTable">' +
+	        '<tr><th>Constituent Name</th>' +
+	        '<th>Constituent Class</th>' +
+	        '<th>Benchmark</th>' +
+	        '<th>Units</th>' +
+	        '<th>Why Study?</th></tr>' +
+	        '</table></p><br/>' +
+
+	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: no decadal change</label>' +
+          	'<table id="constTableNoChange" class="constTable">' +
+	        '<tr><th>Constituent Name</th>' +
+	        '<th>Constituent Class</th>' +
+	        '<th>Benchmark</th>' +
+	        '<th>Units</th>' +
+	        '<th>Why Study?</th></tr>' +
+	        '</table></p><br/>' +
+
+	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: insufficient data</label>' +
+          	'<table id="constTableInsuffData" class="constTable">' +
+	        '<tr><th>Constituent Name</th>' +
+	        '<th>Constituent Class</th>' +
+	        '<th>Benchmark</th>' +
+	        '<th>Units</th>' +
+	        '<th>Why Study?</th></tr>' +
+	        '</table></p><br/>' +
+	        
 
 	        '<p id="footnotes">1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular' + 
 	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular' + 
@@ -1086,23 +1121,12 @@ function showHelpText(evt) {
 	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular.' + 
 	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular.' + 
 	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176' +
-	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.' +
-	        
-	        '</p><br/>Constituent table' +
-
-	        '<p><table id="constTable" class="constTable">' +
-	        '<tr><th>Constituent Name</th>' +
-	        '<th>USGS Parameter Code</th>' +
-	        '<th>Benchmark</th>' +
-	        '<th>Units</th>' +
-	        '<th>Description</th>' +
-	        '<th>Why Study?</th></tr>' +
-	        '</table></p></div>' +
+	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.</p></div>' +
 	        '</div>';
 
 		
 		var percentOfScreenHeight = 0.8;
-	    var percentOfScreenWidth = 0.5;
+	    var percentOfScreenWidth = 0.8;
 
 	    var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
 	    var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
@@ -1117,12 +1141,21 @@ function showHelpText(evt) {
 		dojo.byId('map').appendChild(helpTextDiv);
 
 		$("#constTable").append("<tr id='tableHeader'></tr>");
-		var fields = ["DisplayName","Constituent","Benchmark","Units","Description","WhyStudy"];
+		var fields = ["DisplayName","ConstituentType","Benchmark","Units","WhyStudy"];
 
 		$.each(constObj.features, function(key, value) {
 	    	//alert("key: " + key + ", value: " + value);
 	    	var id="const" + key;
-	    	$("#constTable").append("<tr id='" + id + "'></tr>");
+	    	var tableType = constObj.features[key].attributes["Tableorder"];
+	    	var table;
+	    	if (tableType == "Mappable") {
+	    		table = $("#constTable");
+	    	} else if (tableType == "Not mapped, no decadal change") {
+				table = $("#constTableNoChange");
+	    	} else if (tableType == "Not mapped, not enough data") {
+	    		table = $("#constTableInsuffData");
+	    	}
+	    	table.append("<tr id='" + id + "'></tr>");
 	    	var feature = value;
 	    	$.each(fields, function(key, field) {
 	    		if (field == "Constituent") {
@@ -1136,9 +1169,46 @@ function showHelpText(evt) {
 		var ht = $("#helpText").height() - $("#helpTextHeader").height() - 20;
 	    $("#helpTextContent").height(ht + "px");
 
-		//on mouse leave, call the removeLinks function
+	    //on mouse leave, call the removeLinks function
 		dojo.connect(dojo.byId("helpTextHeaderClose"), "onclick", removeHelpText);
+
+	    $('#helpText').draggable({
+		    start: function() {
+		        // if we're scrolling, don't start and cancel drag
+		        if ($(this).data("scrolled")) {
+		            $(this).data("scrolled", false).trigger("mouseup");
+		            return false;
+		        }
+		    }
+		}).find("*").andSelf().scroll(function() {               
+		    // bind to the scroll event on current elements, and all children.
+		    //  we have to bind to all of them, because scroll doesn't propagate.
+
+		    //set a scrolled data variable for any parents that are draggable, so they don't drag on scroll.
+		    $(this).parents(".ui-draggable").data("scrolled", true);
+
+		});
+	    $('#helpText').resizable({
+	    	resize: function(e, ui) {
+         		var ht = $("#helpText").height() - $("#helpTextHeader").height() - 20;
+	    		$("#helpTextContent").height(ht + "px");
+        	}
+	    });
+
+		
 	}
+}
+
+function showConstituentExp() {
+	if ($("#constitExp").is(':visible') || $("#constitExp").css('display') == 'inline') {
+		$("#constitExp").hide();
+	} else {
+		$("#constitExp").show();
+	}
+}
+
+function populateConstitExp() {
+
 }
 
 //remove (destroy) the usgs Links div (called on mouseleave event)
@@ -1177,7 +1247,16 @@ function constituentUpdate(event) {
 
 	var select = event.target;
 
-	var astText = (select[select.selectedIndex].attributes.GenDescript.textContent).toString() + "<br/>*" + (select[select.selectedIndex].attributes.description.textContent).toString();
+	var astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.textContent).toString() + "<br/>" + 
+				(select[select.selectedIndex].attributes.gendesclargechg.textContent).toString() + "</p>" +
+				"<p>For " + (select[select.selectedIndex].attributes.displayname.textContent).toString() + ", " +
+				(select[select.selectedIndex].attributes.description_smallchange.textContent).toString() + ", " + 
+				(select[select.selectedIndex].attributes.description_largechange.textContent).toString() + "</p>";
+
+	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
+		astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.textContent).toString() + "</p>";
+	}
+
 	
 	if (select.id == "organicConstituentSelect") {
 		$('#constitExp').html(astText);
