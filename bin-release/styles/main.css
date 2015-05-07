@@ -35,10 +35,7 @@ html, body {
 }
 
 #header {
-    text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	top: 0px;
+    top: 0px;
 	left: 0px;
 	right: 0px;
 	height: 65px;
@@ -47,14 +44,8 @@ html, body {
 	position: absolute;
 	z-index: 3;
 	display: inline;
-	vertical-align: center;
 	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 	font-size: 40px;
-}
-
-#headerLogo {
-	display: inline;
-	padding-top: 10px;
 }
 
 #usgsLogoDiv {
@@ -66,25 +57,41 @@ html, body {
 	padding-right: 5px;
 	padding-bottom: 5px;
 	text-align: center;
-	display: inline;
 }
 
 #usgsLogo {
-	display: inline;
+
 }
 
 #title {
+	float: left;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 	padding-right: 5px;
 	padding-left: 10px;
-	display: inline;
+	padding-top: 10px;
 	font-family: BryantBold,"Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 }
 
+#titleSeparator {
+ 	color: #F37A49;
+ 	float: left;
+ 	padding-right: 5px;
+ 	padding-top: 10px;
+ 	font-family: BryantBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+}
+
+#subTitle {
+ 	padding-top: 10px;
+ 	padding-right: 10px;
+ 	float: left;
+}
+
 #titleImageDiv {
-	
+	padding-left: 20px;
+	padding-top: 20px;
+	font-size: 16px;
 }
 
 #titleImage {
@@ -93,16 +100,13 @@ html, body {
 	height: 15px;
 	width: 15px;
 	cursor: pointer;
-	display: inline;
 }
 
 #betaTitle {
-	position: absolute;
-	top: 10px;
-	right: 10px;
+	float: right;
+	padding: 20px;	
 	font-size: 16px;
 	color: #AAAAB5;
-	display: inline;
 }
 
 #moreInfoButton {
@@ -491,6 +495,14 @@ table.constTable tr:nth-child(even) {
 td div {
 	vertical-align: middle;
 }
+
+/*.verticalCollapse {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}*/
 
 /*#map_zoom_slider {
  top: 135px;

@@ -43,7 +43,6 @@ dojo.require("wim.LatLngScale-min");
 dojo.require("wim.LoadingScreen-min");
 dojo.require("wim.RefreshScreen-min");
 
-
 //various global variables are set here (Declare here, instantiate below)     
 var map, legendLayers = [];
 var layersObject = [];
@@ -371,7 +370,7 @@ function init() {
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Network Change" : {
-				"url": "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer/0",
+				"url": "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
@@ -672,11 +671,19 @@ function init() {
 
 		sucode4FeatureLinkZoom = attr["network_centroids.SUCode"];
 
+		var attField;
+		var mapFields = map.getLayer("networkLocations").fields;
+		$.each(mapFields, function(index, value) {
+			if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
+				attField = mapFields[index].name;
+			}
+		});
+
     	var template = new esri.InfoTemplate("Trends Info: ${tbl_Networks.SUCode}",
 			"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
 			"<p><b>Description:</b> ${tbl_Networks.NetDescMedium}<br/><br/>" +
 			"<b>Well type:</b></p>" +
-			"<p><b>" + displayConst + "</b>: <span class='" + camelize(getValue(attr["network_centroids." + currentConst])) + "'>" + getValue(attr["network_centroids." + currentConst]) + "</span></p>" +
+			"<p><b>" + displayConst + "</b>: <span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></p>" +
 			"<br/><p><a id='infoWindowLink' href='javascript:linkClick()'>Zoom to Network</a></p>");
 
     	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
@@ -692,20 +699,6 @@ function init() {
         setCursorByID("mainDiv", "default");
         map.setCursor("default");
 
-        function networkTypeFind(networkType) {
-        	var networkText;
-
-        	if (networkType == "URB") {
-        		networkText = "Urban land use network";
-        	} else if (networkType == "SUS") {
-        		networkText = "Major Aquifer Study";
-        	} else if (networkType == "AG") {
-        		networkText = "Agricultural land use network";
-        	}
-
-        	return networkText;
-        }
-
 	});
 
 	function networkTypeFind(networkType) {
@@ -714,7 +707,7 @@ function init() {
     	if (networkType == "URB") {
     		networkText = "Urban land use network";
     	} else if (networkType == "SUS") {
-    		networkText = "Subunit survey";
+    		networkText = "Major aquifer study";
     	} else if (networkType == "AG") {
     		networkText = "Agricultural land use network";
     	}
@@ -1079,13 +1072,13 @@ function showHelpText(evt) {
 		//LINKS BOX HEADER TITLE HERE
 		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 			'<div id="helpTextHeaderClose">close</div>' +
-		  	'<div id="helpTextHeader" class="usgsLinksHeader">Summary of Statistical Analysis of Decadal Changes</div>' +
+		  	'<div id="helpTextHeader" class="usgsLinksHeader">Summary of Statistical Analysis of Decadal Change</div>' +
 		  	'<div id="helpTextContent">' +
-		  	'<p>Summary of statistical analysis of decadal changes in concentrations of key constituents between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on: <br/>' + 
-	        '(1) exceedance of MCL or other human-health benchmark in national reports (1,2,3);  <br/>' + 
-	        '(2) detection frequency in national reports (4,5);  or <br/>' + 
-	        '(3) other selected constituents. <br/>' + 
-	        '<i>Details of statistical analysis and data management (6,7).</i><p><br/>' +
+		  	'<p>Concentrations of key constituents analyzed between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
+	        '(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3)  <br/>' + 
+	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
+	        '(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' + 
+	        '(4) Constituents of special or regional interest. <br/>' +
 
 	        '<p><label class="tableTitle">Constituents meeting analysis criteria, results mapped</label>' +
           	'<table id="constTable" class="constTable">' +
@@ -1257,7 +1250,6 @@ function constituentUpdate(event) {
 		astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.textContent).toString() + "</p>";
 	}
 
-	
 	if (select.id == "organicConstituentSelect") {
 		$('#constitExp').html(astText);
 	} else if (select.id == "inorganicConstituentSelect") {
@@ -1274,8 +1266,16 @@ function constituentUpdate(event) {
 
 	var defaultSymbol = null;
 
-	renderer.attributeField = "network_centroids." + select[select.selectedIndex].attributes.constituent.textContent;
-	renderer2.attributeField = "network_centroids." + select[select.selectedIndex].attributes.constituent.textContent;
+	var attField ="";
+	var mapFields = map.getLayer("networkLocations").fields;
+	$.each(mapFields, function(index, value) {
+		if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
+			attField = mapFields[index].name;
+		}
+	});
+
+	renderer.attributeField = attField;
+	renderer2.attributeField = attField;
 	
 	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
 		featureLayer.setRenderer(renderer2);
