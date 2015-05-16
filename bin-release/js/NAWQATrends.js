@@ -43,6 +43,7 @@ dojo.require("wim.LatLngScale-min");
 dojo.require("wim.LoadingScreen-min");
 dojo.require("wim.RefreshScreen-min");
 
+
 //various global variables are set here (Declare here, instantiate below)     
 var map, legendLayers = [];
 var layersObject = [];
