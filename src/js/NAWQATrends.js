@@ -1073,7 +1073,7 @@ function showHelpText(evt) {
 		//LINKS BOX HEADER TITLE HERE
 		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 			'<div id="helpTextHeaderClose">close</div>' +
-		  	'<div id="helpTextHeader" class="usgsLinksHeader">Summary of Statistical Analysis of Decadal Change</div>' +
+		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
 		  	'<p>Concentrations of key constituents analyzed between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
 	        '(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3)  <br/>' + 
@@ -1090,7 +1090,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: no decadal change</label>' +
+	        '<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
           	'<table id="constTableNoChange" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1099,7 +1099,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: insufficient data</label>' +
+	        '<p><label class="tableTitle">Not mapped, insufficient data for statistical analysis</label>' +
           	'<table id="constTableInsuffData" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1154,7 +1154,9 @@ function showHelpText(evt) {
 	    	$.each(fields, function(key, field) {
 	    		if (field == "Constituent") {
 	    			$("#"+id).append("<td>"+feature.attributes[field].split('_')[0]+"</td>");
-	    		} else {
+	    		} else if (field == "Benchmark") {
+					$("#"+id).append("<td class='benchmarkTable'>"+feature.attributes[field]+"</td>");
+				} else {
 					$("#"+id).append("<td>"+feature.attributes[field]+"</td>");
 				}
 	    	});
