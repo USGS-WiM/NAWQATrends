@@ -88,7 +88,7 @@ function init() {
     var xmlRegEx = /\/xml/i;
 
     esri.addProxyRule({
-    	urlPrefix: "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/Utilities/PrintingTools",
+    	urlPrefix: "http://50.17.205.92/arcgis/rest/services/Utilities/PrintingTools",
     	proxyUrl: "http://107.20.96.245/SIGLProxies/proxy.ashx"
     })
 
@@ -171,7 +171,7 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'http://50.17.205.92/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
@@ -371,7 +371,7 @@ function init() {
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Network Change" : {
-				"url": "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
+				"url": "http://50.17.205.92/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
@@ -396,7 +396,7 @@ function init() {
 					"includeInLayerList": true
 				}
 			}, "Network Boundary" : {
-				"url": "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
+				"url": "http://50.17.205.92/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -409,7 +409,7 @@ function init() {
 					"includeLegend": false 
 				}
 			}, /*"Principal Aquifers" : {
-				"url": "http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
+				"url": "http://50.17.205.92/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
 				"visibleLayers": [1],
 				"arcOptions": {
 					"opacity": 0.7,
@@ -650,7 +650,7 @@ function init() {
     identifyParams.layerOption = "LAYER_OPTION_ALL";
     identifyParams.width  = map.width;
     identifyParams.height = map.height;
-    //identifyTask = new esri.tasks.IdentifyTask("http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+    //identifyTask = new esri.tasks.IdentifyTask("http://50.17.205.92/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
     identifyTask = new esri.tasks.IdentifyTask(map.getLayer("networks").url);
 
     dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
@@ -680,12 +680,30 @@ function init() {
 			}
 		});
 
-    	var template = new esri.InfoTemplate("Trends Info: ${tbl_Networks.SUCode}",
-			"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
-			"<p><b>Description:</b> ${tbl_Networks.NetDescMedium}<br/><br/>" +
-			"<b>Well type:</b></p>" +
-			"<p><b>" + displayConst + "</b>: <span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></p>" +
-			"<br/><p><a id='infoWindowLink' href='javascript:linkClick()'>Zoom to Network</a></p>");
+    	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
+			"<table class='infoTable'><tr><td><b>" + displayConst + "</b></td><td><span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></td></tr>" +
+			
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
+			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
+			"<tr><td><b>Range of well depths</b></td><td></td></tr>" +
+
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Principal aquifer</b></td><td>${tbl_Networks.PrincipleAquifer}</td></tr>" +
+			"<tr><td><b>Regional aquifer</b></td><td>${tbl_Networks.RegionalAquifer}</td></tr>" +
+			"<tr><td><b>Aquifer material</b></td><td>${tbl_Networks.AquiferMaterial}</td></tr>" +
+
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Additional information</b></td><td>${tbl_Networks.AdditionalInfo}</td></tr>" +
+			"<tr><td><b>NAWQA network code</b></td><td>${tbl_Networks.SUCode}</td></tr>" +
+			
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:linkClick()'>ZOOM TO NETWORK</a></b></td></tr>" + 
+			"<tr><td colspan='2' align='center'><a href='javascript:void'>For explanation of table entries click here</a></td></tr></table>");
 
     	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
 			
@@ -696,6 +714,7 @@ function init() {
         map.infoWindow.setFeatures([feature]);
 
         map.infoWindow.show(evt.mapPoint);
+        map.infoWindow.resize(400,400);
 
         setCursorByID("mainDiv", "default");
         map.setCursor("default");
@@ -823,6 +842,7 @@ function init() {
 		            feature.setInfoTemplate(template);
 
 		            map.infoWindow.setFeatures([feature]);
+		            map.infoWindow.resize(300,200);
 		            map.infoWindow.show(evt.mapPoint);
 
 		            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
@@ -855,7 +875,7 @@ function init() {
 			    identifyParams2.width  = map.width;
 			    identifyParams2.height = map.height;
 			    
-			    var identifyTask2 = new esri.tasks.IdentifyTask("http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+			    var identifyTask2 = new esri.tasks.IdentifyTask("http://50.17.205.92/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
 
 			    if (map.getLayer("principalAquifers").visible) {
 			    	var deferredResult2 = identifyTask2.execute(identifyParams);
@@ -1073,7 +1093,7 @@ function showHelpText(evt) {
 		//LINKS BOX HEADER TITLE HERE
 		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 			'<div id="helpTextHeaderClose">close</div>' +
-		  	'<div id="helpTextHeader" class="usgsLinksHeader">Summary of Statistical Analysis of Decadal Change</div>' +
+		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
 		  	'<p>Concentrations of key constituents analyzed between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
 	        '(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3)  <br/>' + 
@@ -1090,7 +1110,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: no decadal change</label>' +
+	        '<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
           	'<table id="constTableNoChange" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1099,7 +1119,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Constituents meeting analysis criteria, but not mapped: insufficient data</label>' +
+	        '<p><label class="tableTitle">Not mapped, insufficient data for statistical analysis</label>' +
           	'<table id="constTableInsuffData" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1154,7 +1174,9 @@ function showHelpText(evt) {
 	    	$.each(fields, function(key, field) {
 	    		if (field == "Constituent") {
 	    			$("#"+id).append("<td>"+feature.attributes[field].split('_')[0]+"</td>");
-	    		} else {
+	    		} else if (field == "Benchmark") {
+					$("#"+id).append("<td class='benchmarkTable'>"+feature.attributes[field]+"</td>");
+				} else {
 					$("#"+id).append("<td>"+feature.attributes[field]+"</td>");
 				}
 	    	});
@@ -1322,7 +1344,7 @@ function printMap() {
 	};
 	printParams.template = template;
 
-	var printMap = new esri.tasks.PrintTask("http://wimsharedlb-418672833.us-east-1.elb.amazonaws.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+	var printMap = new esri.tasks.PrintTask("http://50.17.205.92/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
 	printMap.execute(printParams, printDone, printError);
 
 	map.setCursor("wait");

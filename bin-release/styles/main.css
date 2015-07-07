@@ -223,6 +223,10 @@ button {
 	box-shadow: 0 0 .25em #000;
 }
 
+#galleryIcon {
+	float: left;
+}
+
 #submitButton {
     background: none repeat scroll 0 0 #59595C;
     border: 1px solid gray;
@@ -258,6 +262,7 @@ button {
 
 #helpTextHeader {
 	font-size: 20px;
+	font-weight: bold;
 }
 
 #helpTextHeaderClose {
@@ -300,6 +305,10 @@ button {
 	font-weight: bold;
 }
 
+table.infoTable {
+	font-size: 12px;
+}
+
 table.constTable {
     border-collapse: collapse;
 }
@@ -313,13 +322,58 @@ table.constTable td {
 }
 
 table.constTable th {
-    background-color: #f37a49;
-    color: white;
+    /*background-color: #f37a49;*/
+    background-color: black;
+    /*color: white;*/
+    color: #f37a49;
+    font-weight: bold;
     padding: 15px;
 }
 
 table.constTable tr:nth-child(even) {
 	background-color: #aaaaaa;
+}
+
+table.infoTable {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+table.infoTable th td  {
+	border: 1px solid black;
+	height: 15px;
+}
+
+table.infoTable td {
+    padding: 15px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+table.infoTable tr {
+    min-height: 15px;
+}
+
+table.infoTable th {
+    /*background-color: #f37a49;*/
+    background-color: black;
+    /*color: white;*/
+    color: #f37a49;
+    font-weight: bold;
+    padding: 15px;
+}
+
+table.infoTable tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
+.tableSpacer {
+	min-height: 15px;
+}
+
+.benchmarkTable {
+	text-align: right;
 }
 
 .esriPopup {
@@ -462,6 +516,10 @@ table.constTable tr:nth-child(even) {
 	width: 50px;
 	background-color: gray;
 	visibility: hidden;
+}
+
+.infoTitle {
+	color: #444444;
 }
 
 .largeIncrease {
