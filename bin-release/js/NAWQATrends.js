@@ -952,6 +952,38 @@ function mapReady(map){
 	//Sets the globe button on the extent nav tool to reset extent to the initial extent.
 	dijit.byId("extentSelector").set("initExtent", map.extent); 
 
+	//code for adding draggability to infoWindow. http://www.gavinr.com/2015/04/13/arcgis-javascript-draggable-infowindow/
+    require([
+	    'esri/arcgis/utils',
+	    'dojo/dnd/Moveable',
+	    'dojo/query',
+	    'dojo/on',
+	    'dojo/dom-class'
+	], function (
+	    arcgisUtils,
+	    
+	    Moveable,
+	    query,
+	    on,
+	    domClass
+	) {
+	    var handle = query(".title", map.infoWindow.domNode)[0];
+        var dnd = new Moveable(map.infoWindow.domNode, {
+            handle: handle
+        });
+        
+        // when the infoWindow is moved, hide the arrow:
+        on(dnd, 'FirstMove', function() {
+            // hide pointer and outerpointer (used depending on where the pointer is shown)
+            var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
+            domClass.add(arrowNode, "hidden");
+            
+            var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
+            domClass.add(arrowNode, "hidden");
+        }.bind(this));
+	});
+	//end code for adding draggability to infoWindow
+
 	/*if (dojo.byId('disclaimer').children[1] != null) {
 		dojo.byId('disclaimer').children[1].innerHTML = "<b>test</b>html";
 		//if (configOptions.showDisclaimer == true) {
