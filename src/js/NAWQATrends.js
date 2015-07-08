@@ -687,7 +687,7 @@ function init() {
 			
 			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
-			"<tr><td><b>Range of well depths</b></td><td></td></tr>" +
+			"<tr><td><b>Typical depth range</b></td><td></td></tr>" +
 
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 			
@@ -840,7 +840,7 @@ function init() {
 		        	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
 						"<table class='infoTable'><tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 						"<tr><td><b>Types of wells</b></td><td>" + attr["tbl_Networks.WellTypeDesc"] + "</td></tr>" +
-						"<tr><td><b>Range of well depths</b></td><td></td></tr>" +
+						"<tr><td><b>Typical depth range</b></td><td></td></tr>" +
 
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 						
@@ -1164,14 +1164,14 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
+	        /*'<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
           	'<table id="constTableNoChange" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
 	        '<th>Benchmark</th>' +
 	        '<th>Units</th>' +
 	        '<th>Why Study?</th></tr>' +
-	        '</table></p><br/>' +
+	        '</table></p><br/>' +*/
 
 	        '<p><label class="tableTitle">Not mapped, insufficient data for statistical analysis</label>' +
           	'<table id="constTableInsuffData" class="constTable">' +
