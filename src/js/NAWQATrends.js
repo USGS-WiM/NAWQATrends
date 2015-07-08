@@ -948,7 +948,7 @@ function init() {
 //end of init function	
 
 //mapReady function that fires when the first or base layer has been successfully added to the map. Very useful in many situations. called above by this line: dojo.connect(map, "onLoad", mapReady)
-function mapReady(map){ 
+function mapReady(map){
 	//Sets the globe button on the extent nav tool to reset extent to the initial extent.
 	dijit.byId("extentSelector").set("initExtent", map.extent); 
 
