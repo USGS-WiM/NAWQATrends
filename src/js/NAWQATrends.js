@@ -831,18 +831,40 @@ function init() {
 	        		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
 	        		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
 
-		        	var template = new esri.InfoTemplate("Trends Info: " + attr["tbl_Networks.SUCode"],
+		        	/*var template = new esri.InfoTemplate("Trends Info: " + attr["tbl_Networks.SUCode"],
 						"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
 						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "<br/><br/>" +
 						"<b>Well type:</b></p>" +
-						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
+						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");*/
+
+		        	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
+						"<table class='infoTable'><tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
+						"<tr><td><b>Types of wells</b></td><td>" + attr["tbl_Networks.WellTypeDesc"] + "</td></tr>" +
+						"<tr><td><b>Range of well depths</b></td><td></td></tr>" +
+
+						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+						
+						"<tr><td><b>Principal aquifer</b></td><td>" + attr["tbl_Networks.PrincipleAquifer"] + "</td></tr>" +
+						"<tr><td><b>Regional aquifer</b></td><td>" + attr["tbl_Networks.RegionalAquifer"] + "</td></tr>" +
+						"<tr><td><b>Aquifer material</b></td><td>" + attr["tbl_Networks.AquiferMaterial"] + "</td></tr>" +
+
+						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+						
+						"<tr><td><b>Additional information</b></td><td>" + attr["tbl_Networks.AdditionalInfo"] + "</td></tr>" +
+						"<tr><td><b>NAWQA network code</b></td><td>" + attr["tbl_Networks.SUCode"] + "</td></tr>" +
+						
+						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+						
+						"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:void(0)'>ZOOM TO NETWORK</a></b></td></tr>" + 
+						"<tr><td colspan='2' align='center'><a href='javascript:void(0)'>For explanation of table entries click here</a></td></tr></table>");
+
 						
 					//ties the above defined InfoTemplate to the feature result returned from a click event	
 		            
 		            feature.setInfoTemplate(template);
 
 		            map.infoWindow.setFeatures([feature]);
-		            map.infoWindow.resize(300,200);
+		            map.infoWindow.resize(400,400);
 		            map.infoWindow.show(evt.mapPoint);
 
 		            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
