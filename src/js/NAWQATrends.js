@@ -1159,7 +1159,7 @@ function showHelpText(evt) {
           	'<table id="constTable" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
-	        '<th>Benchmark</th>' +
+	        '<th>Benchmark</th>' + 
 	        '<th>Units</th>' +
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +
