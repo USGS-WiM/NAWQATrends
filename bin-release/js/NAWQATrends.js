@@ -687,7 +687,7 @@ function init() {
 			
 			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
-			"<tr><td><b>Typical depth range</b></td><td></td></tr>" +
+			"<tr><td><b>Typical depth range</b></td><td>${tbl_Networks.Depth25thpercentile} to ${tbl_Networks.Depth75thpercentile} feet</td></tr>" +
 
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 			
