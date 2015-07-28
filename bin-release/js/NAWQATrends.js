@@ -680,6 +680,9 @@ function init() {
 			}
 		});
 
+		var depth25 = attr["tbl_Networks.Depth25thpercentile"];
+		var depth75 = attr["tbl_Networks.Depth75thpercentile"];
+
     	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
 			"<table class='infoTable'><tr><td><b>" + displayConst + "</b></td><td><span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></td></tr>" +
 			
@@ -687,7 +690,7 @@ function init() {
 			
 			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
-			"<tr><td><b>Typical depth range</b></td><td>${tbl_Networks.Depth25thpercentile} to ${tbl_Networks.Depth75thpercentile} feet</td></tr>" +
+			"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
 
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 			
@@ -718,6 +721,20 @@ function init() {
 
         setCursorByID("mainDiv", "default");
         map.setCursor("default");
+
+        function checkSigFigs(value) {
+        	var outVal;
+
+        	var splitVal = value.toString().split('.');
+
+        	if ((splitVal[1] != null || splitVal[1] != undefined) && splitVal[1].length > 2) {
+        		outVal = value.toFixed(2);
+        	} else {
+        		outVal = value;
+        	}
+
+        	return outVal;
+        }
 
 	});
 
