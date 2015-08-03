@@ -88,7 +88,7 @@ function init() {
     var xmlRegEx = /\/xml/i;
 
     esri.addProxyRule({
-    	urlPrefix: "http://commons.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
+    	urlPrefix: "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
     	proxyUrl: "http://107.20.96.245/SIGLProxies/proxy.ashx"
     })
 
@@ -171,7 +171,7 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
@@ -371,7 +371,7 @@ function init() {
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Network Change" : {
-				"url": "http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
+				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
@@ -396,7 +396,7 @@ function init() {
 					"includeInLayerList": true
 				}
 			}, "Network Boundary" : {
-				"url": "http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
+				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -409,7 +409,7 @@ function init() {
 					"includeLegend": false 
 				}
 			}, /*"Principal Aquifers" : {
-				"url": "http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
+				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
 				"visibleLayers": [1],
 				"arcOptions": {
 					"opacity": 0.7,
@@ -650,7 +650,7 @@ function init() {
     identifyParams.layerOption = "LAYER_OPTION_ALL";
     identifyParams.width  = map.width;
     identifyParams.height = map.height;
-    //identifyTask = new esri.tasks.IdentifyTask("http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+    //identifyTask = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
     identifyTask = new esri.tasks.IdentifyTask(map.getLayer("networks").url);
 
     dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
@@ -914,7 +914,7 @@ function init() {
 			    identifyParams2.width  = map.width;
 			    identifyParams2.height = map.height;
 			    
-			    var identifyTask2 = new esri.tasks.IdentifyTask("http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+			    var identifyTask2 = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
 
 			    if (map.getLayer("principalAquifers").visible) {
 			    	var deferredResult2 = identifyTask2.execute(identifyParams);
@@ -1415,7 +1415,7 @@ function printMap() {
 	};
 	printParams.template = template;
 
-	var printMap = new esri.tasks.PrintTask("http://commons.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+	var printMap = new esri.tasks.PrintTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
 	printMap.execute(printParams, printDone, printError);
 
 	map.setCursor("wait");
