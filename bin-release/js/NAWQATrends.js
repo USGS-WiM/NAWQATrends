@@ -395,6 +395,19 @@ function init() {
 					"type": "heading",
 					"includeInLayerList": true
 				}
+			}, "NLCD 2011" : {
+				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_11/MapServer",
+				"visibleLayers": [0],
+				"arcOptions": {
+					"opacity": 0.75,
+					"visible": false,
+					"id": "nlcd"
+				},
+				"wimOptions": {
+					"type": "layer",
+					"includeInLayerList": true,
+					"includeLegend": true 
+				}
 			}, "Network Boundary" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
 				"visibleLayers": [0],
