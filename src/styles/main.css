@@ -368,6 +368,10 @@ table.infoTable tr:nth-child(even) {
 	background-color: #dddddd;
 }
 
+table.esriLegendLayer td:nth-child(even) {
+	/*text-align: left;*/
+}
+
 .tableSpacer {
 	min-height: 15px;
 }

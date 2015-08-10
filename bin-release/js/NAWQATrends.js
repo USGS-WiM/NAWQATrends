@@ -270,14 +270,14 @@ function init() {
 	dojo.connect(map, "onClick", executeSiteIdentifyTask);
 	//method to adjust symbol size for larger scales
 	dojo.connect(map, "onExtentChange", function() {
-		var symbolFactor = 1.5;
+		/*var symbolFactor = 1.5;
 		if (map.getLevel() > 8) {
 			renderer.infos[2].symbol.width = 45*symbolFactor;
 			renderer.infos[2].symbol.height = 25*symbolFactor;
 		} else {
 			renderer.infos[2].symbol.width = 45;
 			renderer.infos[2].symbol.height = 25;
-		}
+		}*/
 	});
 
 	dojo.connect(dojo.byId("printButton"), "onclick", printMap);
@@ -289,14 +289,14 @@ function init() {
 	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P00940_Chloride");
 	renderer2 = new esri.renderer.UniqueValueRenderer(defaultSymbol);
 
-	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/orange_large.png", 45, 45);
-	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/green_large.png", 45, 45);
-	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/no-change.png", 45, 25);
-	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/no-change.png", 75, 40);
-	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/orange_small.png", 45, 25);
-	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/green_small.png", 45, 25);
-	blankSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/blank.png", 45, 25);
-	noDataSymbol = new esri.symbol.PictureMarkerSymbol("http://wimcloud.usgs.gov/apps/NAWQATrends/src/images/no_data.png", 45, 25);
+	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("./images/orange_large.png", 45, 45);
+	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("./images/green_large.png", 45, 45);
+	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("./images/no_change.png", 45, 25);
+	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("./images/no_change.png", 75, 40);
+	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("./images/orange_small.png", 45, 25);
+	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("./images/green_small.png", 45, 25);
+	blankSymbol = new esri.symbol.PictureMarkerSymbol("./images/blank.png", 45, 25);
+	noDataSymbol = new esri.symbol.PictureMarkerSymbol("./images/no_data.png", 45, 25);
 
 	renderer.addValue({
 		value: "2", 
@@ -310,9 +310,9 @@ function init() {
 	});
     /*renderer.addValue({
     	value: "0", 
-    	symbol: new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_SQUARE, 4,
+    	symbol: new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, 9,
 							new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-							new dojo.Color([0,0,0]), 1),
+							new dojo.Color([155,155,155,0]), 0),
 							new dojo.Color([0,0,0,1])),
     	label: "No change"
     });*/
@@ -347,7 +347,15 @@ function init() {
 		symbol: orangeSmallSymbol,
 		label: "Increase"
 	});
-    renderer2.addValue({
+    /*renderer2.addValue({
+    	value: "0", 
+    	symbol: new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, 9,
+							new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+							new dojo.Color([0,0,0]), 1),
+							new dojo.Color([0,0,0,1])),
+    	label: "No change"
+    });*/
+	renderer2.addValue({
 		value: "0",
 		symbol: noChangeSymbolSmall,
 		label: "No significant change"
