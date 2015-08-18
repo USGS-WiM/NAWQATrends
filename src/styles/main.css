@@ -143,7 +143,7 @@ html, body {
 	-moz-border-bottom-right-radius: 5px;
 	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 	position: absolute;
-	left: 245px;
+	left: 420px;
 	top: 65px;
 	padding: 6px;
 	z-index: 3;
@@ -241,8 +241,27 @@ button {
 	font-family:BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 }
 
+.toggleDiv {
+	vertical-align: middle;
+}
+
+#availableLayers label {
+	font-size: 16px;
+	height: 25px;
+
+}
+
+#checkBoxnetworkLocations {
+	left: 20px;
+}
+
 #constituentUpdater {
-	padding-left: 20px;
+	padding-left: 50px;
+}
+
+#inputs {
+	padding: 0px 10px 0px 0px;
+	text-align: bottom;
 }
 
 .usgsLinksHeader {

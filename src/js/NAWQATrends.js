@@ -378,13 +378,13 @@ function init() {
 
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
-			"Network Change" : {
+			"Change in Network Concentrations" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
 					"outFields": "*",
-					"mode": esri.layers.FeatureLayer.MODE_SNAPSHOT,
+					"mode": esri.layers.FeatureLayer.MODE_ONDEMAND,
 					"id": "networkLocations"
 				},
 				"wimOptions": {
@@ -398,7 +398,7 @@ function init() {
 					"type": "heading",
 					"includeInLayerList": true
 				}
-			}, "____________________________": {
+			}, "____________________________________": {
 				"wimOptions": {
 					"type": "heading",
 					"includeInLayerList": true
@@ -555,7 +555,7 @@ function init() {
 					dojo.place(toggleDiv,dojo.byId("toggle"), "after" );
 					dojo.place(radioButton.domNode,toggleDiv,"first");
 					dojo.setAttr(toggleDiv, "class", radioButton.params.group);
-					dojo.setStyle(toggleDiv, "paddingLeft", "25px");
+					dojo.setStyle(toggleDiv, "paddingLeft", "15px");
 					dojo.setStyle(toggleDiv, "display", "none");
 					if (i == 0) {
 						dojo.setStyle(toggleDiv, "paddingBottom", "10px");
@@ -568,8 +568,10 @@ function init() {
 				} else {
 					
 					var checkBox = new dijit.form.CheckBox({
+						id:"checkBox" + layer.layer.id,
 						name:"checkBox" + layer.layer.id,
 						value:layer.layer.id,
+						text:layerName,
 						checked:layer.layer.visible,
 						onChange:function(evt){
 							var checkLayer = map.getLayer(this.value);
@@ -615,6 +617,8 @@ function init() {
 						dojo.place("<br/>",zoomImage,"after");
 					} else {
 						var toggleDiv = dojo.doc.createElement("div");
+						dojo.addClass(toggleDiv, "toggleDiv");
+						dojo.setStyle(toggleDiv, "verticalAlign", "middle");
 						dojo.place(toggleDiv,dojo.byId("toggle"),"after");
 						dojo.place(checkBox.domNode,toggleDiv,"first");
 						dojo.setStyle(toggleDiv, "paddingLeft", "15px");
@@ -623,7 +627,10 @@ function init() {
 						} else if (i == lastItem) {
 							dojo.setStyle(toggleDiv, "paddingTop", "10px");
 						}
-						var checkLabel = dojo.create('label',{'for':checkBox.name,innerHTML:layerName},checkBox.domNode,"after");
+						//var checkLabel = dojo.create('label',{'for':checkBox.name,innerHTML:layerName},checkBox.domNode,"after");
+						var checkLabel = $("<label>").text(layerName);
+						//toggleDiv.append(checkBox);
+						$(toggleDiv).append(checkLabel);
 						dojo.place("<br/>",checkLabel,"after");
 					}
 					
@@ -677,6 +684,91 @@ function init() {
     dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
     	
     	console.log('clicked a feature');	
+    	var feature = evt.graphic;
+		var attr = feature.attributes;
+
+		if (dojo.byId("organicButton").checked) {
+			select = dojo.byId("organicConstituentSelect");
+		} else if (dojo.byId("inorganicButton").checked) {
+			select = dojo.byId("inorganicConstituentSelect");
+		}
+		
+		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
+		var currentConst = select[select.selectedIndex].attributes.constituent.textContent
+		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
+		var displayConst = select[select.selectedIndex].attributes.displayname.textContent
+
+		sucode4FeatureLinkZoom = attr["network_centroids.SUCode"];
+
+		var attField;
+		var mapFields = map.getLayer("networkLocations").fields;
+		$.each(mapFields, function(index, value) {
+			if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
+				attField = mapFields[index].name;
+			}
+		});
+
+		var depth25 = attr["tbl_Networks.Depth25thpercentile"];
+		var depth75 = attr["tbl_Networks.Depth75thpercentile"];
+
+    	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
+			"<table class='infoTable'><tr><td><b>" + displayConst + "</b></td><td><span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></td></tr>" +
+			
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
+			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
+			"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
+
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Principal aquifer</b></td><td>${tbl_Networks.PrincipleAquifer}</td></tr>" +
+			"<tr><td><b>Regional aquifer</b></td><td>${tbl_Networks.RegionalAquifer}</td></tr>" +
+			"<tr><td><b>Aquifer material</b></td><td>${tbl_Networks.AquiferMaterial}</td></tr>" +
+
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td><b>Additional information</b></td><td>${tbl_Networks.AdditionalInfo}</td></tr>" +
+			"<tr><td><b>NAWQA network code</b></td><td>${tbl_Networks.SUCode}</td></tr>" +
+			
+			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
+			
+			"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:linkClick()'>ZOOM TO NETWORK</a></b></td></tr>" + 
+			"<tr><td colspan='2' align='center'><a href='javascript:void'>For explanation of table entries click here</a></td></tr></table>");
+
+    	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
+			
+		//ties the above defined InfoTemplate to the feature result returned from a click event	
+        
+        feature.setInfoTemplate(template);
+
+        map.infoWindow.setFeatures([feature]);
+
+        map.infoWindow.show(evt.mapPoint);
+        map.infoWindow.resize(400,400);
+
+        setCursorByID("mainDiv", "default");
+        map.setCursor("default");
+
+        function checkSigFigs(value) {
+        	var outVal;
+
+        	var splitVal = value.toString().split('.');
+
+        	if ((splitVal[1] != null || splitVal[1] != undefined) && splitVal[1].length > 2) {
+        		outVal = value.toFixed(2);
+        	} else {
+        		outVal = value;
+        	}
+
+        	return outVal;
+        }
+
+	});
+
+	dojo.connect(map.getLayer("networkLocations"), "onMouseOver", function(evt) {
+    	
+    	console.log('hovered over a feature');	
     	var feature = evt.graphic;
 		var attr = feature.attributes;
 
@@ -1187,11 +1279,11 @@ function showHelpText(evt) {
 			'<div id="helpTextHeaderClose">close</div>' +
 		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
-		  	'<p>Concentrations of key constituents analyzed between Cycle 1 (1988-2002) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
-	        '(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3)  <br/>' + 
-	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
+		  	'<p style="line-height: 22px">Concentrations of key constituents analyzed between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
+	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' + 
+	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
 	        '(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' + 
-	        '(4) Constituents of special or regional interest. <br/>' +
+	        '(4) Constituents of special or regional interest. <br/><br/>' +
 
 	        '<p><label class="tableTitle">Constituents meeting analysis criteria, results mapped</label>' +
           	'<table id="constTable" class="constTable">' +
@@ -1221,11 +1313,16 @@ function showHelpText(evt) {
 	        '</table></p><br/>' +
 	        
 
-	        '<p id="footnotes">1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular' + 
-	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular' + 
-	        '<br/>3.  Ayotte, J.D. Gronberg, J.M., and Apodaca, L.E., 2011, Trace Elements and Radon in Groundwater Across the United States: U.S. Geological Survey Scientific Investigations Report 2011-5059, 115 p.' + 
-	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular.' + 
-	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular.' + 
+	        '<p id="footnotes">1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular ' + 
+	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1332/">http://pubs.usgs.gov/circ/circ1332/</a>' + 
+	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular ' +
+	        '<a target="_blank" href="http://pubs.usgs.gov/circ/1346/">http://pubs.usgs.gov/circ/1346/</a>' + 
+	        '<br/>3.  Ayotte, J.D. Gronberg, J.M., and Apodaca, L.E., 2011, Trace Elements and Radon in Groundwater Across the United States: U.S. Geological Survey Scientific Investigations Report 2011-5059, 115 p. ' + 
+	        '<a target="_blank" href="http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/">http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/</a>' + 
+	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular. ' + 
+	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>' + 
+	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular. ' + 
+	        '<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>' + 
 	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176' +
 	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.</p></div>' +
 	        '</div>';
@@ -1431,7 +1528,7 @@ function printMap() {
 	legendLayer.layerId = "networkLocations";
 	//legendLayer.subLayerIds = [*];
 	template.layoutOptions = {
-		"titleText": "Decadal Change in " + currConst,
+		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2",
 		"legendlayers": [legendLayer]
 	};
 	printParams.template = template;
