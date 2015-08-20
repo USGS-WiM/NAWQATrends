@@ -403,8 +403,8 @@ function init() {
 					"type": "heading",
 					"includeInLayerList": true
 				}
-			}, "NLCD 2011" : {
-				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_11/MapServer",
+			}, "Land use 2001" : {
+				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_01/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -444,7 +444,7 @@ function init() {
 			}, */"Principal Aquifers" : {
 				"url": "http://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
-					"id": "principalAquifers", 
+					"id": "principalAquifers",
 					"visible": false,
 					"opacity": 0.5
 				},
@@ -1522,13 +1522,19 @@ function printMap() {
 		dpi: 300
 	};
 	template.format = "PDF";
-	template.layout = "Letter ANSI A Landscape";
+	template.layout = "Letter ANSI A Landscape 2";
 	template.preserveScale = false;
 	var legendLayer = new esri.tasks.LegendLayer();
 	legendLayer.layerId = "networkLocations";
 	//legendLayer.subLayerIds = [*];
+
+	var d = new Date();
+	var date = d.getDate();
+	var month = d.getMonth() + 1;
+	var year = d.getFullYear();
+
 	template.layoutOptions = {
-		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2",
+		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2 (printed on " + year.toString() + "." + month.toString() + "." + date.toString() + ")",
 		"legendlayers": [legendLayer]
 	};
 	printParams.template = template;
