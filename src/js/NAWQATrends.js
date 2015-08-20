@@ -1534,7 +1534,7 @@ function printMap() {
 	var year = d.getFullYear();
 
 	template.layoutOptions = {
-		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2 (printed on " + year.toString() + "." + month.toString() + "." + date.toString() + ")",
+		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2",
 		"legendlayers": [legendLayer]
 	};
 	printParams.template = template;
