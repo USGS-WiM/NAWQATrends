@@ -16,6 +16,8 @@ dojo.require("esri.arcgis.utils");
 dojo.require("esri.dijit.Popup");
 dojo.require("esri.dijit.Legend");
 dojo.require("esri.dijit.BasemapGallery");
+dojo.require("esri.dijit.InfoWindow");
+dojo.require("esri.geometry.ScreenPoint");
 dojo.require("esri.geometry.webMercatorUtils")
 dojo.require("esri.graphic");
 dojo.require("esri.map");
@@ -171,7 +173,7 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/3/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/4/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
@@ -278,6 +280,81 @@ function init() {
 			renderer.infos[2].symbol.width = 45;
 			renderer.infos[2].symbol.height = 25;
 		}*/
+		var sp = new esri.geometry.ScreenPoint(0,400);
+
+        //var sp = map.toScreen(evt.mapPoint);
+		
+		//sp.x = 0;
+        ///sp.y = 650;
+
+        //alert("x: " + sp.x + ", y: " + sp.y);
+
+        var mp = map.toMap(sp);
+        //var mp = evt.mapPoint;
+
+        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
+
+        map.infoWindow.show(sp, mp);
+        map.infoWindow.resize(400,400);
+
+        require([
+	    'esri/arcgis/utils',
+	    'dojo/dnd/Moveable',
+	    'dojo/query',
+	    'dojo/on',
+	    'dojo/dom-class'
+		], function (
+		    arcgisUtils,
+		    Moveable,
+		    query,
+		    on,
+		    domClass
+		) {
+		    var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+	            
+	        var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+		});
+	});
+
+	dojo.connect(map, "onPan", function() {
+		var sp = new esri.geometry.ScreenPoint(0,400);
+
+        //var sp = map.toScreen(evt.mapPoint);
+		
+		//sp.x = 0;
+        ///sp.y = 650;
+
+        //alert("x: " + sp.x + ", y: " + sp.y);
+
+        var mp = map.toMap(sp);
+        //var mp = evt.mapPoint;
+
+        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
+
+        map.infoWindow.show(sp, mp);
+        map.infoWindow.resize(400,400);
+
+        require([
+	    'esri/arcgis/utils',
+	    'dojo/dnd/Moveable',
+	    'dojo/query',
+	    'dojo/on',
+	    'dojo/dom-class'
+		], function (
+		    arcgisUtils,
+		    Moveable,
+		    query,
+		    on,
+		    domClass
+		) {
+		    var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+	            
+	        var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+		});
 	});
 
 	dojo.connect(dojo.byId("printButton"), "onclick", printMap);
@@ -378,7 +455,7 @@ function init() {
 
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
-			"Change in Network Concentrations" : {
+			" Change in Network Concentrations" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
@@ -403,7 +480,7 @@ function init() {
 					"type": "heading",
 					"includeInLayerList": true
 				}
-			}, "Land use 2001" : {
+			}, " Land use 2001" : {
 				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_01/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
@@ -416,7 +493,7 @@ function init() {
 					"includeInLayerList": true,
 					"includeLegend": true 
 				}
-			}, "Network Boundary" : {
+			}, " Network Boundary" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
@@ -441,7 +518,7 @@ function init() {
 					"includeInLayerList": true,
 					"esriLegendLabel": false
 				}
-			}, */"Principal Aquifers" : {
+			}, */" Principal Aquifers" : {
 				"url": "http://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
@@ -453,7 +530,21 @@ function init() {
 					"layerType": "webTiledLayer",
 					"includeInLayerList": true,
 					"includeLegend": false,
-					"renderer": renderer
+					"renderer": renderer,
+					"otherLayer": "glacialAquifer"
+				}
+			}, " Glacial Aquifer" : {
+				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
+				"visibleLayers": [2],
+				"arcOptions": {
+					"opacity": 0.4,
+					"visible": false,
+					"id": "glacialAquifer"
+				},
+				"wimOptions": {
+					"type": "layer",
+					"includeInLayerList": false,
+					"includeLegend": false 
 				}
 			}
 		};
@@ -577,6 +668,10 @@ function init() {
 							var checkLayer = map.getLayer(this.value);
 							checkLayer.setVisibility(!checkLayer.visible);
 							this.checked = checkLayer.visible;
+							if (allLayers[layerName].wimOptions.otherLayer) {
+								var otherLayer = map.getLayer(allLayers[layerName].wimOptions.otherLayer);
+								otherLayer.setVisibility(checkLayer.visible);
+							}
 							if (allLayers[layerName].wimOptions.includeLegend == true && allLayers[layerName].wimOptions.staticLegendOptions.hasStaticLegend == true) {
 								if (checkLayer.visible) {
 									$("#" + layer.layer.id + "Legend").show();
@@ -681,7 +776,7 @@ function init() {
     //identifyTask = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
     identifyTask = new esri.tasks.IdentifyTask(map.getLayer("networks").url);
 
-    dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
+    /*dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
     	
     	console.log('clicked a feature');	
     	var feature = evt.graphic;
@@ -764,13 +859,14 @@ function init() {
         	return outVal;
         }
 
-	});
+	});*/
 
 	dojo.connect(map.getLayer("networkLocations"), "onMouseOver", function(evt) {
     	
     	console.log('hovered over a feature');	
     	var feature = evt.graphic;
 		var attr = feature.attributes;
+		//alert('hovered');
 
 		if (dojo.byId("organicButton").checked) {
 			select = dojo.byId("organicConstituentSelect");
@@ -828,9 +924,43 @@ function init() {
         feature.setInfoTemplate(template);
 
         map.infoWindow.setFeatures([feature]);
+        
+        var sp = new esri.geometry.ScreenPoint(0,400);
 
-        map.infoWindow.show(evt.mapPoint);
+        //var sp = map.toScreen(evt.mapPoint);
+		
+		//sp.x = 0;
+        ///sp.y = 650;
+
+        //alert("x: " + sp.x + ", y: " + sp.y);
+
+        var mp = map.toMap(sp);
+        //var mp = evt.mapPoint;
+
+        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
+
+        map.infoWindow.show(sp, mp);
         map.infoWindow.resize(400,400);
+
+        require([
+	    'esri/arcgis/utils',
+	    'dojo/dnd/Moveable',
+	    'dojo/query',
+	    'dojo/on',
+	    'dojo/dom-class'
+		], function (
+		    arcgisUtils,
+		    Moveable,
+		    query,
+		    on,
+		    domClass
+		) {
+		    var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+	            
+	        var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
+	        domClass.add(arrowNode, "hidden");
+		});
 
         setCursorByID("mainDiv", "default");
         map.setCursor("default");
@@ -1020,63 +1150,78 @@ function init() {
 				});
 				//var feature = featureSet.features[0];
         	} else {
-        		var identifyParams2 = new esri.tasks.IdentifyParameters();
-			    identifyParams2.tolerance = 0;
-			    identifyParams2.returnGeometry = false;
-			    identifyParams2.layerIds = [1];
-			    identifyParams2.width  = map.width;
-			    identifyParams2.height = map.height;
-			    
-			    var identifyTask2 = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+        		
+        		var query = new esri.tasks.Query(); 
+				query.returnGeometry = false;
+				query.geometry = evt.mapPoint;
+				var queryTask = new esri.tasks.QueryTask(map.getLayer("glacialAquifer").url+"/2");
+				
+				queryTask.execute(query, function(results) {
 
-			    if (map.getLayer("principalAquifers").visible) {
-			    	var deferredResult2 = identifyTask2.execute(identifyParams);
+					var popInfo = "";
+				            	
+					if (results.features.length > 0) {
+						popInfo += "<b>Aquifer:</b> Glacial aquifer<br/>";
+					}
 
-	        		deferredResult2.addCallback(function(response) {     
+					var identifyParams2 = new esri.tasks.IdentifyParameters();
+				    identifyParams2.tolerance = 0;
+				    identifyParams2.returnGeometry = false;
+				    identifyParams2.layerIds = [1];
+				    identifyParams2.width  = map.width;
+				    identifyParams2.height = map.height;
+				    
+				    var identifyTask2 = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
 
-						if (response.length > 0) {
-							var feature = response[0].feature;
-			            	var attr = feature.attributes;
-			            	console.log(attr["AQ_NAME"]);
-			            	var features;
+				    if (map.getLayer("principalAquifers").visible) {
+				    	var deferredResult2 = identifyTask2.execute(identifyParams);
 
-			            	var popInfo = "";
-			            	var aqNameArray = [];
+		        		deferredResult2.addCallback(function(response) {     
 
-			            	for (var i = 0; i < response.length; i++) {
-			            		//features.push(response[i].feature);
-			            		var feature = response[i].feature;
+							if (response.length > 0) {
+								var feature = response[0].feature;
 				            	var attr = feature.attributes;
-				            	if (aqNameArray.indexOf(attr["AQ_NAME"]) == -1) {
-				            		aqNameArray.push(attr["AQ_NAME"]);
-				            		popInfo += "<b>Aquifer:</b> " + attr["AQ_NAME"] +"<br/>";
-				            	}	            	
-				            }
+				            	console.log(attr["AQ_NAME"]);
+				            	var features;
 
-							var template = new esri.InfoTemplate("Principal Aquifers",
-								popInfo);
-							
-							//ties the above defined InfoTemplate to the feature result returned from a click event	
-				            
-				            feature.setInfoTemplate(template);
+				            	var aqNameArray = [];
 
-				            map.infoWindow.setFeatures([feature]);
-				            map.infoWindow.show(evt.mapPoint);
+				            	for (var i = 0; i < response.length; i++) {
+				            		//features.push(response[i].feature);
+				            		var feature = response[i].feature;
+					            	var attr = feature.attributes;
+					            	if (aqNameArray.indexOf(attr["AQ_NAME"]) == -1) {
+					            		aqNameArray.push(attr["AQ_NAME"]);
+					            		popInfo += "<b>Aquifer:</b> " + attr["AQ_NAME"] +"<br/>";
+					            	}	            	
+					            }
 
-				            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
-				            	map.graphics.clear();
-				            	dojo.disconnect(map.infoWindow, infoWindowClose);
-				            });
+								var template = new esri.InfoTemplate("Principal Aquifers",
+									popInfo);
+								
+								//ties the above defined InfoTemplate to the feature result returned from a click event	
+					            
+					            feature.setInfoTemplate(template);
 
-				            setCursorByID("mainDiv", "default");
-				            map.setCursor("default");
-						}
+					            map.infoWindow.setFeatures([feature]);
+					            map.infoWindow.show(evt.mapPoint);
 
-					});
-				} else {
-					setCursorByID("mainDiv", "default");
-				    map.setCursor("default");
-				}
+					            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
+					            	map.graphics.clear();
+					            	dojo.disconnect(map.infoWindow, infoWindowClose);
+					            });
+
+					            setCursorByID("mainDiv", "default");
+					            map.setCursor("default");
+							}
+
+						});
+					} else {
+						setCursorByID("mainDiv", "default");
+					    map.setCursor("default");
+					}
+
+				});
 			    
 			}
 
@@ -1104,6 +1249,8 @@ function mapReady(map){
 	//Sets the globe button on the extent nav tool to reset extent to the initial extent.
 	dijit.byId("extentSelector").set("initExtent", map.extent); 
 
+	//map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
+
 	//code for adding draggability to infoWindow. http://www.gavinr.com/2015/04/13/arcgis-javascript-draggable-infowindow/
     require([
 	    'esri/arcgis/utils',
@@ -1113,7 +1260,6 @@ function mapReady(map){
 	    'dojo/dom-class'
 	], function (
 	    arcgisUtils,
-	    
 	    Moveable,
 	    query,
 	    on,
