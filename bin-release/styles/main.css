@@ -63,30 +63,40 @@ html, body {
 
 }
 
-#title {
+#titles {
 	float: left;
+}
+
+#title {
+	/*float: left;*/
+	font-size: 28px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 	padding-right: 5px;
 	padding-left: 10px;
-	padding-top: 10px;
+	padding-top: 5px;
 	font-family: BryantBold,"Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 }
 
-#titleSeparator {
- 	color: #F37A49;
- 	float: left;
- 	padding-right: 5px;
- 	padding-top: 10px;
- 	font-family: BryantBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+#subTitle {
+ 	font-size: 16px;
+ 	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding-left: 10px;
+ 	padding-top: 2px;
+ 	padding-right: 10px;
+ 	/*float: left;*/
 }
 
-#subTitle {
- 	padding-top: 10px;
- 	padding-right: 10px;
+/*#titleSeparator {
+ 	color: #F37A49;
  	float: left;
-}
+ 	font-size: 16px;
+ 	padding-left: 10px;
+ 	font-family: BryantBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+}*/
 
 #titleImageDiv {
 	padding-left: 20px;
@@ -157,7 +167,7 @@ html, body {
 
 #geocodeBar {
 	position: absolute;
-	right: 5px;
+	
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(126, 126, 132);
 	/* RGBa with 0.55 opacity */
@@ -168,12 +178,13 @@ html, body {
 	/*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7E7E8400, endColorstr=#7E7E8400)";*/
 	z-index: 1;
 	border: 1px solid #59595C;
-	border-radius: 5px;
+	border-radius: 0px 0px 5px 5px;
 	-moz-border-radius: 5px;
 	padding: 5px;
 	display: inline;
 	float: right;
-	top: 105px;
+	top: 65px;
+	right: 300px;
 }
 
 #geocodeBar #geocode {
@@ -245,10 +256,29 @@ button {
 	vertical-align: middle;
 }
 
+table.layerTable td {
+	vertical-align: middle;
+	/*height: 20px;
+	padding-left: 5px;*/
+}
+
+/*table.layerTable td:first-child {
+	vertical-align: middle;
+	padding-left: 0px;
+}*/
+
+table.layerTable td:nth-child(2) {
+	padding-top: 5px;
+	width: 150px;
+}
+
+table.layerTable td:nth-child(3) {
+	padding-top: 8px;
+}
+
 #availableLayers label {
 	font-size: 16px;
-	height: 25px;
-
+	/*height: 25px;*/
 }
 
 #checkBoxnetworkLocations {
@@ -318,6 +348,52 @@ button {
 
 #helpTextContent {
 	overflow-y: auto;
+}
+
+#termExpHeader {
+	font-size: 20px;
+	font-weight: bold;
+	color: #E7E4CE;
+	background-color: #59595C;
+}
+
+#termExpHeaderClose {
+	float: right;
+	padding-right: 5px;
+	color: #E7E4CE;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#termExp {
+	font-family: BryantRegular;
+	font-size: 16px;
+	max-width: 452px;
+	margin-top: 0px;
+	position: absolute;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	/*height: 525px;
+	width: 500px;*/
+	z-index: 5;
+	background-color: #FFFFFF;
+	line-height: 1.5;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	box-shadow: 0 0 .25em #000;
+}
+
+#termExpDiv {
+	border: 2px solid;
+	z-index: 9999;
+	height: 506px;
+	width: 452px;
+}
+
+#termExpContent {
+	overflow-y: auto;
+	max-height: 443px;
 }
 
 .tableTitle {
@@ -431,7 +507,7 @@ table.esriLegendLayer td:nth-child(even) {
 
 #layerStuff {
 	position:absolute;
-	top: 155px;
+	top: 70px;
 	right: 0px;
 	z-index: 2;
 	display: inline;
@@ -489,7 +565,7 @@ table.esriLegendLayer td:nth-child(even) {
 	font-size: 14px;
 	font-weight: normal;
 	padding: 5px;
-	max-height: 400px;
+	min-height: 100px;
 	overflow: auto;
 }
 
@@ -711,7 +787,7 @@ td div {
 	-moz-border-bottom-right-radius: 5px;
 	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
 	position: absolute;
-	right: 5px;
+	right: 500px;
 	top: 65px;
 	z-index: 3;
 }
