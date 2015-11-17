@@ -463,6 +463,10 @@ table.infoTable tr:nth-child(even) {
 	background-color: #dddddd;
 }
 
+table.infoTable td:nth-child(odd) {
+	width: 160px;
+}
+
 table.esriLegendLayer td:nth-child(even) {
 	/*text-align: left;*/
 }

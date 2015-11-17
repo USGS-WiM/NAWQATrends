@@ -813,6 +813,7 @@ function init() {
 			
 			"<tr><td><b>Additional information</b></td><td>${tbl_Networks.AdditionalInfo}</td></tr>" +
 			"<tr><td><b>NAWQA network code</b></td><td>${tbl_Networks.SUCode}</td></tr>" +
+			"<tr><td><b>Sample dates (1<sup>st</sup>, 2<sup>nd</sup>)</b></td><td>${tbl_NetworkDates.FirstDecadalSample}, ${tbl_NetworkDates.SecondDecadalSample}</td></tr>" +
 			
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 			
