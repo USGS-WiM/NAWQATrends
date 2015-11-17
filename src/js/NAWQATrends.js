@@ -20,6 +20,7 @@ dojo.require("esri.dijit.InfoWindow");
 dojo.require("esri.geometry.ScreenPoint");
 dojo.require("esri.geometry.webMercatorUtils")
 dojo.require("esri.graphic");
+dojo.require("esri.layers.graphics");
 dojo.require("esri.map");
 dojo.require("esri.renderers.UniqueValueRenderer");
 dojo.require("esri.symbol");
@@ -65,6 +66,13 @@ var greenSmallSymbol;
 var blankSymbol;
 var noDataSymbol;
 
+var latestHover;
+
+var previousConst = "Chloride";
+var OID = "";
+var oldValue = "";
+var attFieldSpecial = "";
+
 var z = 0;
 
 var legend;
@@ -92,7 +100,7 @@ function init() {
     esri.addProxyRule({
     	urlPrefix: "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
     	proxyUrl: "http://107.20.96.245/SIGLProxies/proxy.ashx"
-    })
+    });
 
     // ajaxTransport exists in jQuery 1.5+
     jQuery.ajaxTransport('text html xml json', function(options, userOptions, jqXHR){
@@ -265,97 +273,21 @@ function init() {
 		basemapGallery.select("basemap_3");
 	});
 
+	$(window).resize(function () {
+        maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 152;
+        //$('#legend').css('height', maxLegendHeight);
+        $('#legend').css('max-height', maxLegendHeight);
+
+        var maxHeaderWidth = $(window).width() - $("#usgsLogoDiv").width() - 50;
+        $("#title").css('max-width', maxHeaderWidth);
+        $("#subTitle").css('max-width', maxHeaderWidth);
+    });
+
 	//basemapGallery error catcher
 	dojo.connect(basemapGallery, "onError", function() {console.log("Basemap gallery failed")});
 	
 	//calls the executeSiteIdentifyTask function from a click on the map. 
 	dojo.connect(map, "onClick", executeSiteIdentifyTask);
-	//method to adjust symbol size for larger scales
-	dojo.connect(map, "onExtentChange", function() {
-		/*var symbolFactor = 1.5;
-		if (map.getLevel() > 8) {
-			renderer.infos[2].symbol.width = 45*symbolFactor;
-			renderer.infos[2].symbol.height = 25*symbolFactor;
-		} else {
-			renderer.infos[2].symbol.width = 45;
-			renderer.infos[2].symbol.height = 25;
-		}*/
-		var sp = new esri.geometry.ScreenPoint(0,400);
-
-        //var sp = map.toScreen(evt.mapPoint);
-		
-		//sp.x = 0;
-        ///sp.y = 650;
-
-        //alert("x: " + sp.x + ", y: " + sp.y);
-
-        var mp = map.toMap(sp);
-        //var mp = evt.mapPoint;
-
-        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
-
-        map.infoWindow.show(sp, mp);
-        map.infoWindow.resize(400,400);
-
-        require([
-	    'esri/arcgis/utils',
-	    'dojo/dnd/Moveable',
-	    'dojo/query',
-	    'dojo/on',
-	    'dojo/dom-class'
-		], function (
-		    arcgisUtils,
-		    Moveable,
-		    query,
-		    on,
-		    domClass
-		) {
-		    var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
-	        domClass.add(arrowNode, "hidden");
-	            
-	        var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
-	        domClass.add(arrowNode, "hidden");
-		});
-	});
-
-	dojo.connect(map, "onPan", function() {
-		var sp = new esri.geometry.ScreenPoint(0,400);
-
-        //var sp = map.toScreen(evt.mapPoint);
-		
-		//sp.x = 0;
-        ///sp.y = 650;
-
-        //alert("x: " + sp.x + ", y: " + sp.y);
-
-        var mp = map.toMap(sp);
-        //var mp = evt.mapPoint;
-
-        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
-
-        map.infoWindow.show(sp, mp);
-        map.infoWindow.resize(400,400);
-
-        require([
-	    'esri/arcgis/utils',
-	    'dojo/dnd/Moveable',
-	    'dojo/query',
-	    'dojo/on',
-	    'dojo/dom-class'
-		], function (
-		    arcgisUtils,
-		    Moveable,
-		    query,
-		    on,
-		    domClass
-		) {
-		    var arrowNode =  query(".outerPointer", map.infoWindow.domNode)[0];
-	        domClass.add(arrowNode, "hidden");
-	            
-	        var arrowNode =  query(".pointer", map.infoWindow.domNode)[0];
-	        domClass.add(arrowNode, "hidden");
-		});
-	});
 
 	dojo.connect(dojo.byId("printButton"), "onclick", printMap);
 
@@ -366,14 +298,14 @@ function init() {
 	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P00940_Chloride");
 	renderer2 = new esri.renderer.UniqueValueRenderer(defaultSymbol);
 
-	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("./images/orange_large.png", 45, 45);
-	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("./images/green_large.png", 45, 45);
-	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("./images/no_change.png", 45, 25);
-	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("./images/no_change.png", 75, 40);
-	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("./images/orange_small.png", 45, 25);
-	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("./images/green_small.png", 45, 25);
-	blankSymbol = new esri.symbol.PictureMarkerSymbol("./images/blank.png", 45, 25);
-	noDataSymbol = new esri.symbol.PictureMarkerSymbol("./images/no_data.png", 45, 25);
+	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/orange_large.png", 45, 45);
+	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/green_large.png", 45, 45);
+	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 45, 25);
+	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 75, 40);
+	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/orange_small.png", 45, 25);
+	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/green_small.png", 45, 25);
+	blankSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/blank.png", 45, 25);
+	noDataSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_data.png", 45, 25);
 
 	renderer.addValue({
 		value: "2", 
@@ -455,7 +387,7 @@ function init() {
 
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
-			" Change in Network Concentrations" : {
+			"Change in Network Concentrations" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
@@ -468,6 +400,8 @@ function init() {
 					"type": "layer",
 					"layerType": "agisFeature",
 					"includeInLayerList": true,
+					"hasMoreInfo": true,
+					"moreInfoText": "Click on a network change icon to get more info",
 					"renderer": renderer
 				}
 			}, "": {
@@ -480,7 +414,7 @@ function init() {
 					"type": "heading",
 					"includeInLayerList": true
 				}
-			}, " Land use 2001" : {
+			}, "Land use 2001" : {
 				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_01/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
@@ -493,7 +427,7 @@ function init() {
 					"includeInLayerList": true,
 					"includeLegend": true 
 				}
-			}, " Network Boundary" : {
+			}, "Network Boundaries" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
@@ -504,7 +438,9 @@ function init() {
 				"wimOptions": {
 					"type": "layer",
 					"includeInLayerList": true,
-					"includeLegend": false 
+					"includeLegend": false,
+					"hasMoreInfo": true,
+					"moreInfoText": "A network is a set of 20 to 30 wells selected to represent water-quality conditions in a given geographical area, aquifer, and in some cases, a specific land use. A network resampled at approximately 10 year intervals is a decadal trend network"
 				}
 			}, /*"Principal Aquifers" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
@@ -518,7 +454,7 @@ function init() {
 					"includeInLayerList": true,
 					"esriLegendLabel": false
 				}
-			}, */" Principal Aquifers" : {
+			}, */"Principal Aquifers" : {
 				"url": "http://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
@@ -531,9 +467,11 @@ function init() {
 					"includeInLayerList": true,
 					"includeLegend": false,
 					"renderer": renderer,
+					"hasMoreInfo": true,
+					"moreInfoText": "Click on a principal aquifer to get more info",
 					"otherLayer": "glacialAquifer"
 				}
-			}, " Glacial Aquifer" : {
+			}, "Glacial Aquifer" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
 				"visibleLayers": [2],
 				"arcOptions": {
@@ -564,6 +502,9 @@ function init() {
 		
 		$(".esriSimpleSliderIncrementButton").attr("title", "zoom in");
 		$(".esriSimpleSliderDecrementButton").attr("title", "zoom out");
+
+		//this is to keep the select symbol from blocking clicks on the trend arrows
+		map.reorderLayer(map.getLayer("moLayer"), 0);
 	
 		//this counter to track first and last of items in legendLayers
 		var i = 0;
@@ -657,7 +598,7 @@ function init() {
 					dojo.place("<br/>",radioLabel,"after");
 					
 				} else {
-					
+
 					var checkBox = new dijit.form.CheckBox({
 						id:"checkBox" + layer.layer.id,
 						name:"checkBox" + layer.layer.id,
@@ -682,11 +623,13 @@ function init() {
 							}				
 						}
 					});
+
 					if (allLayers[layerName].wimOptions.zoomScale) {
 						//create the holder for the checkbox and zoom icon
 						var toggleDiv = dojo.doc.createElement("div");
 						dojo.place(toggleDiv,dojo.byId("toggle"),"after");
 						dojo.place(checkBox.domNode,toggleDiv,"first");
+
 						var checkLabel = dojo.create('label',{'for':checkBox.name,innerHTML:layerName},checkBox.domNode,"after");
 						var scale = allLayers[layerName].wimOptions.zoomScale;
 						var zoomImage = dojo.doc.createElement("div");
@@ -715,25 +658,62 @@ function init() {
 						dojo.addClass(toggleDiv, "toggleDiv");
 						dojo.setStyle(toggleDiv, "verticalAlign", "middle");
 						dojo.place(toggleDiv,dojo.byId("toggle"),"after");
-						dojo.place(checkBox.domNode,toggleDiv,"first");
-						dojo.setStyle(toggleDiv, "paddingLeft", "15px");
+						//dojo.place(checkBox.domNode,toggleDiv,"first");
+
+						//testing with table
+						var table = dojo.doc.createElement("table");
+						$(table).addClass('layerTable');
+						var rowOne = dojo.doc.createElement("tr");
+						
+						var colOne = dojo.doc.createElement("td");
+						dojo.place(checkBox.domNode,colOne);
+						dojo.place(colOne,rowOne);
+
+						//var checkLabel = $("<label>").text(layerName);
+						var checkLabel = dojo.doc.createElement("label");
+						checkLabel.innerHTML = layerName;
+						var colTwo = dojo.doc.createElement("td");
+						dojo.place(checkLabel,colTwo);
+						dojo.place(colTwo,rowOne);
+
+						dojo.place(rowOne,table);
+
+						dojo.place(table,dojo.byId("toggle"),"first");
+						//end testing
+
+						if (allLayers[layerName].wimOptions.hasMoreInfo == true) {
+							//var infoIcon = $('<i class="fa fa-info-circle"></i>');
+							var infoIcon = dojo.doc.createElement("i");
+							$(infoIcon).addClass('fa');
+							$(infoIcon).addClass('fa-info-circle');
+							//var infoIcon = dojo.doc.createElement("img");
+							//infoImage.src = "./images/help_tip.png";
+							infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
+							var colThree = dojo.doc.createElement("td");
+							dojo.place(infoIcon,colThree);
+							dojo.place(colThree,rowOne);
+						}
+
+
+						/*dojo.setStyle(toggleDiv, "paddingLeft", "15px");
 						if (i == 0) {
 							dojo.setStyle(toggleDiv, "paddingBottom", "10px");
 						} else if (i == lastItem) {
 							dojo.setStyle(toggleDiv, "paddingTop", "10px");
-						}
+						}*/
 						//var checkLabel = dojo.create('label',{'for':checkBox.name,innerHTML:layerName},checkBox.domNode,"after");
-						var checkLabel = $("<label>").text(layerName);
+						//var checkLabel = $("<label>").text(layerName);
 						//toggleDiv.append(checkBox);
-						$(toggleDiv).append(checkLabel);
-						dojo.place("<br/>",checkLabel,"after");
+						//$(toggleDiv).append(checkLabel);
+						//dojo.place("<br/>",checkLabel,"after");
 					}
 					
 				}
 			} else {
 				var headingDiv = dojo.doc.createElement("div");
 				headingDiv.innerHTML = layer.title;
-				dojo.place(headingDiv,dojo.byId("toggle"),"after");
+				//dojo.place(headingDiv,dojo.byId("toggle"),"after");
+				dojo.place(headingDiv,dojo.byId("toggle"),"first");
 				dojo.setStyle(headingDiv, "paddingTop", "10px");
 				dojo.setStyle(headingDiv, "dojo.Color", "#D3CFBA");
 				if (i == 0) {
@@ -757,6 +737,11 @@ function init() {
 				}
 			});
 			$("#legendDiv").show();
+
+			maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 152;
+    		$('#legend').css('max-height', maxLegendHeight);
+
+    	
 		}, 1000);
 		
 	});
@@ -776,11 +761,14 @@ function init() {
     //identifyTask = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
     identifyTask = new esri.tasks.IdentifyTask(map.getLayer("networks").url);
 
-    /*dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
+    dojo.connect(map.getLayer("networkLocations"), "onClick", function(evt) {
     	
+    	map.getLayer("moLayer").clear();
+
     	console.log('clicked a feature');	
     	var feature = evt.graphic;
 		var attr = feature.attributes;
+		//alert('hovered');
 
 		if (dojo.byId("organicButton").checked) {
 			select = dojo.byId("organicConstituentSelect");
@@ -788,17 +776,17 @@ function init() {
 			select = dojo.byId("inorganicConstituentSelect");
 		}
 		
-		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
-		var currentConst = select[select.selectedIndex].attributes.constituent.textContent
-		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
-		var displayConst = select[select.selectedIndex].attributes.displayname.textContent
+		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.value;
+		var currentConst = select[select.selectedIndex].attributes.constituent.value;
+		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.value;
+		var displayConst = select[select.selectedIndex].attributes.displayname.value;
 
 		sucode4FeatureLinkZoom = attr["network_centroids.SUCode"];
 
 		var attField;
 		var mapFields = map.getLayer("networkLocations").fields;
 		$.each(mapFields, function(index, value) {
-			if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
+			if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.value.toLowerCase()) != -1) {
 				attField = mapFields[index].name;
 			}
 		});
@@ -829,7 +817,7 @@ function init() {
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 			
 			"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:linkClick()'>ZOOM TO NETWORK</a></b></td></tr>" + 
-			"<tr><td colspan='2' align='center'><a href='javascript:void'>For explanation of table entries click here</a></td></tr></table>");
+			"<tr><td colspan='2' align='center'><a href='javascript:showTermExp()'>For explanation of table entries click here</a></td></tr></table>");
 
     	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
 			
@@ -842,105 +830,8 @@ function init() {
         map.infoWindow.show(evt.mapPoint);
         map.infoWindow.resize(400,400);
 
-        setCursorByID("mainDiv", "default");
-        map.setCursor("default");
-
-        function checkSigFigs(value) {
-        	var outVal;
-
-        	var splitVal = value.toString().split('.');
-
-        	if ((splitVal[1] != null || splitVal[1] != undefined) && splitVal[1].length > 2) {
-        		outVal = value.toFixed(2);
-        	} else {
-        		outVal = value;
-        	}
-
-        	return outVal;
-        }
-
-	});*/
-
-	dojo.connect(map.getLayer("networkLocations"), "onMouseOver", function(evt) {
-    	
-    	console.log('hovered over a feature');	
-    	var feature = evt.graphic;
-		var attr = feature.attributes;
-		//alert('hovered');
-
-		if (dojo.byId("organicButton").checked) {
-			select = dojo.byId("organicConstituentSelect");
-		} else if (dojo.byId("inorganicButton").checked) {
-			select = dojo.byId("inorganicConstituentSelect");
-		}
-		
-		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
-		var currentConst = select[select.selectedIndex].attributes.constituent.textContent
-		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
-		var displayConst = select[select.selectedIndex].attributes.displayname.textContent
-
-		sucode4FeatureLinkZoom = attr["network_centroids.SUCode"];
-
-		var attField;
-		var mapFields = map.getLayer("networkLocations").fields;
-		$.each(mapFields, function(index, value) {
-			if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
-				attField = mapFields[index].name;
-			}
-		});
-
-		var depth25 = attr["tbl_Networks.Depth25thpercentile"];
-		var depth75 = attr["tbl_Networks.Depth75thpercentile"];
-
-    	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
-			"<table class='infoTable'><tr><td><b>" + displayConst + "</b></td><td><span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></td></tr>" +
-			
-			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-			
-			"<tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
-			"<tr><td><b>Types of wells</b></td><td>${tbl_Networks.WellTypeDesc}</td></tr>" +
-			"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
-
-			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-			
-			"<tr><td><b>Principal aquifer</b></td><td>${tbl_Networks.PrincipleAquifer}</td></tr>" +
-			"<tr><td><b>Regional aquifer</b></td><td>${tbl_Networks.RegionalAquifer}</td></tr>" +
-			"<tr><td><b>Aquifer material</b></td><td>${tbl_Networks.AquiferMaterial}</td></tr>" +
-
-			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-			
-			"<tr><td><b>Additional information</b></td><td>${tbl_Networks.AdditionalInfo}</td></tr>" +
-			"<tr><td><b>NAWQA network code</b></td><td>${tbl_Networks.SUCode}</td></tr>" +
-			
-			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-			
-			"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:linkClick()'>ZOOM TO NETWORK</a></b></td></tr>" + 
-			"<tr><td colspan='2' align='center'><a href='javascript:void'>For explanation of table entries click here</a></td></tr></table>");
-
-    	//var template = new esri.InfoTemplate("Trends Info","<p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");
-			
-		//ties the above defined InfoTemplate to the feature result returned from a click event	
-        
-        feature.setInfoTemplate(template);
-
-        map.infoWindow.setFeatures([feature]);
-        
-        var sp = new esri.geometry.ScreenPoint(0,400);
-
-        //var sp = map.toScreen(evt.mapPoint);
-		
-		//sp.x = 0;
-        ///sp.y = 650;
-
-        //alert("x: " + sp.x + ", y: " + sp.y);
-
-        var mp = map.toMap(sp);
-        //var mp = evt.mapPoint;
-
-        //map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
-
-        map.infoWindow.show(sp, mp);
-        map.infoWindow.resize(400,400);
+        OID = feature.attributes["network_centroids.OBJECTID"];
+        oldValue = getValue(attr[attField]);
 
         require([
 	    'esri/arcgis/utils',
@@ -981,6 +872,39 @@ function init() {
 
 	});
 
+	var mouseoverHighlight = dojo.connect(map.getLayer("networkLocations"), "onMouseOver", function(evt) {
+    	
+    	console.log('hovered over a feature');
+
+    	if (map.infoWindow.isShowing == false) {
+	    	//map.graphics.clear();
+	    	console.log(map.infoWindow.count);
+	    	map.getLayer("moLayer").clear();
+
+	    	var path = "M 749,412 795,412 795,458 749,458 749,412 M 742,435 749,435 M 772,405 772,412 M 802,435 795,435 M 772,465 772,458";
+
+	    	var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+	        markerSymbol.setPath(path);
+	       
+	        //markerSymbol.setColor(new Color(color));
+	        markerSymbol.setOutline(null);
+	        markerSymbol.setSize("32");
+	        markerSymbol.setColor(new dojo.Color([0,0,0,0.0]));
+	        markerSymbol.setOutline(new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+	  								new dojo.Color([0,255,255]), 
+	  								2));
+
+	        var highlight = new esri.Graphic();
+	        latestHover = evt;
+	        highlight.geometry = evt.graphic.geometry;
+	        highlight.setSymbol(markerSymbol);
+
+	        map.getLayer("moLayer").add(highlight);
+	        //map.graphics.add(highlight);
+	    }
+
+	});
+
 	function networkTypeFind(networkType) {
     	var networkText;
 
@@ -1002,40 +926,6 @@ function init() {
 		  	if (elem.style) elem.style.cursor=cursorStyle;
 		 }
 	}
-
-	function getValue(val) {
-		var textValue = "";
-		if (val !== undefined) {
-			val = val.toString();
-			switch (val) {
-				case "-2":
-					textValue = "large decrease";
-					break;
-				case "-1":
-					textValue = "small decrease";
-					break;
-				case "0":
-					textValue = "no change";
-					break;
-				case "1":
-					textValue = "small increase";
-					break;
-				case "2":
-					textValue = "large increase";
-					break;
-				default:
-					textValue = "no data";
-					break;
-			}
-		}
-		return textValue;
-	}
-
-	function camelize(str) {
-        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-            return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
-        }).replace(/\s+/g, '');
-    }
 
 	//OPTIONAL: the following function carries out an identify task query on a layer and returns attributes for the feature in an info window according to the 
 	//InfoTemplate defined below. It is also possible to set a default info window on the layer declaration which will automatically display all the attributes 
@@ -1075,11 +965,12 @@ function init() {
 				var graphic = feature;
 				graphic.setSymbol(symbol);
 
-				//map.graphics.add(graphic);
+				map.graphics.add(graphic);
 
 				// Begin query on networks centroid to get attributes for network popup
 				var featureQuery = new esri.tasks.Query();
 				featureQuery.returnGeometry = true;
+
 				featureQuery.outFields = ["*"];
 				featureQuery.where = "network_centroids.SUCode = '" + sucode + "'";
 
@@ -1088,19 +979,22 @@ function init() {
 					// The string before the comma within the parens immediately following the constructor sets the title of the info window.
 		        	var attr = featureSet.features[0].attributes;
 
-	        		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
-	        		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
+	        		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.value;
+	        		//var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.value;
 
 		        	/*var template = new esri.InfoTemplate("Trends Info: " + attr["tbl_Networks.SUCode"],
 						"<b>Network type:</b> " + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "<br/>"+
 						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "<br/><br/>" +
 						"<b>Well type:</b></p>" +
 						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");*/
+					
+					var depth25 = attr["tbl_Networks.Depth25thpercentile"];
+					var depth75 = attr["tbl_Networks.Depth75thpercentile"];
 
 		        	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
 						"<table class='infoTable'><tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 						"<tr><td><b>Types of wells</b></td><td>" + attr["tbl_Networks.WellTypeDesc"] + "</td></tr>" +
-						"<tr><td><b>Typical depth range</b></td><td></td></tr>" +
+						"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
 
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 						
@@ -1116,7 +1010,7 @@ function init() {
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
 						
 						"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:void(0)'>ZOOM TO NETWORK</a></b></td></tr>" + 
-						"<tr><td colspan='2' align='center'><a href='javascript:void(0)'>For explanation of table entries click here</a></td></tr></table>");
+						"<tr><td colspan='2' align='center'><a href='javascript:showTermExp()'>For explanation of table entries click here</a></td></tr></table>");
 
 						
 					//ties the above defined InfoTemplate to the feature result returned from a click event	
@@ -1148,6 +1042,20 @@ function init() {
 				}, function(error) {
 					alert('error');
 				});
+
+				function checkSigFigs(value) {
+		        	var outVal;
+
+		        	var splitVal = value.toString().split('.');
+
+		        	if ((splitVal[1] != null || splitVal[1] != undefined) && splitVal[1].length > 2) {
+		        		outVal = value.toFixed(2);
+		        	} else {
+		        		outVal = value;
+		        	}
+
+		        	return outVal;
+		        }
 				//var feature = featureSet.features[0];
         	} else {
         		
@@ -1369,6 +1277,10 @@ function addAllLayers() {
 	}
 	
 	map.addLayers(layerArray);
+
+	var moLayer = new esri.layers.GraphicsLayer();
+	moLayer.id = "moLayer";
+	map.addLayer(moLayer);
 	
 	function addToObjects(fullObject, wimOptions) {
 		if (wimOptions.includeInLayerList != false) {
@@ -1411,6 +1323,61 @@ function showUSGSLinks(evt) {
 	}
 }
 
+function showTermExp(evt) {
+	if (!dojo.byId('termExp')){
+
+		var termExpDiv = dojo.doc.createElement("div");
+		termExpDiv.id = 'termExp';
+		$("#termExp").addClass("ui-widget-content");
+		termExpDiv.innerHTML = "<div id='helpTextInner'>" +
+			'<div id="termExpHeaderClose">close</div>' +
+		  	'<div id="termExpHeader" class="usgsLinksHeader">Explanation of Terms</div>' +
+		  	'<div id="termExpContent"><table class="infoTable"><tr><td><b>Constituent</b></td><td>Statistically significant finding for increase, decrease, or no change is based on Wilcoxon-Pratt signed rank test. Methods are described in: Lindsey and Rupert, 2012 <a href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a> or Toccalino and others, 2014 <a href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract</a>. Fewer than 10 pairs of samples are considered insufficient data for statistical analysis.</td></tr>' +
+			
+			"<tr><td><b>Network type</b></td><td>Network types can be major aquifer studies, which target drinking-water wells in a selected aquifer without respect to land use, or agricultural or urban land use studies, in which wells are selected to represent a specific land use.</td></tr>" +
+			"<tr><td><b>Types of wells</b></td><td>If no qualifier is listed, network is entirely of one well type. ‘Predominantly’ indicates that 80 percent of the wells in the network are of that type. Mixed networks list those well types making up at least 75 percent of the wells in the network. Possible well types include commercial, domestic, industrial, irrigation, monitoring, public-supply, stock, recreational, and other.</td></tr>" +
+			"<tr><td><b>Typical depth range</b></td><td>Range of well depths listed are first and third quartile for the network.</td></tr>" +
+			"<tr><td><b>Principal aquifer</b></td><td>Aquifer name comes from Principal aquifers of the 48 conterminous United States, Hawaii, Puerto Rico, and the U.S. Virgin Islands.  U.S. Geological Survey, 2003, <a href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a></td></tr>" +
+			"<tr><td><b>Regional aquifer</b></td><td>The local or regional name for the aquifer sampled.</td></tr>" +
+			"<tr><td><b>Aquifer material</b></td><td>Aquifer material comes from Principal aquifers of the 48 conterminous United States, Hawaii, Puerto Rico, and the U.S. Virgin Islands.  U.S. Geological Survey, 2003, <a href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a></td></tr>" +
+			"<tr><td><b>Additional information</b></td><td>Lists the specific land use activity, if available.</td></tr>" +
+			"<tr><td><b>NAWQA network code</b></td><td>The network name acronym used by the USGS NAWQA program.</td></tr></table></div>";
+			
+
+		var percentOfScreenHeight = 0.8;
+	    var percentOfScreenWidth = 0.8;
+
+	    var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+	    var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+		
+		termExpDiv.style.top = top; //evt.clientY-5 + 'px';
+		termExpDiv.style.left = left; //evt.clientX-5 + 'px';
+		
+		//termExpDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+		//termExpDiv.style.width = (dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+		dojo.byId('map').appendChild(termExpDiv);
+
+		dojo.connect(dojo.byId("termExpHeaderClose"), "onclick", removeTermExp);
+
+		$('#termExp').draggable({
+		    start: function() {
+		        // if we're scrolling, don't start and cancel drag
+		        if ($(this).data("scrolled")) {
+		            $(this).data("scrolled", false).trigger("mouseup");
+		            return false;
+		        }
+		    }
+		}).find("*").andSelf().scroll(function() {               
+		    // bind to the scroll event on current elements, and all children.
+		    //  we have to bind to all of them, because scroll doesn't propagate.
+
+		    //set a scrolled data variable for any parents that are draggable, so they don't drag on scroll.
+		    $(this).parents(".ui-draggable").data("scrolled", true);
+		});
+	}
+}
+
 function showHelpText(evt) {
 	if (!dojo.byId('helpText')){
 
@@ -1425,6 +1392,7 @@ function showHelpText(evt) {
 			'<div id="helpTextHeaderClose">close</div>' +
 		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
+		  	'<p><a target="_blank" href="files/Constituent_table3.pdf">Print this table</a> (PDF)</p>' +
 		  	'<p style="line-height: 22px">Concentrations of key constituents analyzed between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
 	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' + 
 	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
@@ -1520,8 +1488,7 @@ function showHelpText(evt) {
 		var ht = $("#helpText").height() - $("#helpTextHeader").height() - 20;
 	    $("#helpTextContent").height(ht + "px");
 
-	    //on mouse leave, call the removeLinks function
-		dojo.connect(dojo.byId("helpTextHeaderClose"), "onclick", removeHelpText);
+	    dojo.connect(dojo.byId("helpTextHeaderClose"), "onclick", removeHelpText);
 
 	    $('#helpText').draggable({
 		    start: function() {
@@ -1571,6 +1538,10 @@ function removeHelpText(){
 	dojo.destroy('helpText');
 }
 
+function removeTermExp(){
+	dojo.destroy('termExp');
+}
+
 function constTypeSelect(event) {
 	
 	var button = event.currentTarget;
@@ -1598,14 +1569,14 @@ function constituentUpdate(event) {
 
 	var select = event.target;
 
-	var astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.textContent).toString() + "<br/>" + 
-				(select[select.selectedIndex].attributes.gendesclargechg.textContent).toString() + "</p>" +
-				"<p>For " + (select[select.selectedIndex].attributes.displayname.textContent).toString() + ", " +
-				(select[select.selectedIndex].attributes.description_smallchange.textContent).toString() + ", " + 
-				(select[select.selectedIndex].attributes.description_largechange.textContent).toString() + "</p>";
+	var astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.value).toString() + "<br/>" + 
+				(select[select.selectedIndex].attributes.gendesclargechg.value).toString() + "</p>" +
+				"<p>For " + (select[select.selectedIndex].attributes.displayname.value).toString() + ", " +
+				(select[select.selectedIndex].attributes.description_smallchange.value).toString() + ", " + 
+				(select[select.selectedIndex].attributes.description_largechange.value).toString() + "</p>";
 
 	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
-		astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.textContent).toString() + "</p>";
+		astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.value).toString() + "</p>";
 	}
 
 	if (select.id == "organicConstituentSelect") {
@@ -1627,7 +1598,7 @@ function constituentUpdate(event) {
 	var attField ="";
 	var mapFields = map.getLayer("networkLocations").fields;
 	$.each(mapFields, function(index, value) {
-		if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.textContent.toLowerCase()) != -1) {
+		if (mapFields[index].name.toLowerCase().indexOf(select[select.selectedIndex].attributes.constituent.value.toLowerCase()) != -1) {
 			attField = mapFields[index].name;
 		}
 	});
@@ -1644,6 +1615,84 @@ function constituentUpdate(event) {
 	featureLayer.refresh();
 	legend.refresh();
 
+	var info = map.infoWindow._contentPane.innerHTML;
+	var info = info.replace(previousConst, event.target.value);
+
+	map.infoWindow._contentPane.innerHTML = info;
+
+	previousConst = event.target.value;
+	console.log("after: " + previousConst);
+
+	/*var e = new jQuery.Event("click");
+	e.pageX = latestHover.pageX;
+	e.pageY = latestHover.pageY;
+	jQuery("body").trigger(e);*/
+
+	var query = new esri.tasks.Query();
+  	var featureLayer = map.getLayer("networkLocations");
+  	query.returnGeometry = false;
+  	query.where = "network_centroids.OBJECTID = " + OID;
+  	featureLayer.queryFeatures(query, function(event) {
+  		
+  		for (var i = 0; i < constObj.features.length; i++) {
+  			//console.log(i);
+  			if (constObj.features[i].attributes["DisplayName"] == previousConst) {
+  				attFieldSpecial = "ChemData." + constObj.features[i].attributes["Constituent"];
+  				var constSplit = constObj.features[i].attributes["Constituent"].split("_");
+  				attFieldSpecialLower = "ChemData." + constSplit[0] + "_" + constSplit[1].toLowerCase();
+  			}
+  		}
+
+  		var val = getValue(event.features[0].attributes[attFieldSpecial]);
+  		if (val == "") {
+  			val = getValue(event.features[0].attributes[attFieldSpecialLower])
+  			//val = "no data";
+  		}
+  		console.log("val: " + val + ", oldValue: " + oldValue);
+  		var info2 = map.infoWindow._contentPane.innerHTML;
+  		info2 = info2.replace(oldValue, val);
+  		info2 = info2.replace(camelize(oldValue), camelize(val));
+
+  		map.infoWindow._contentPane.innerHTML = info2;
+
+  		oldValue = val;
+
+  	});
+
+}
+
+function getValue(val) {
+	var textValue = "";
+	if (val !== undefined) {
+		val = val.toString();
+		switch (val) {
+			case "-2":
+				textValue = "large decrease";
+				break;
+			case "-1":
+				textValue = "small decrease";
+				break;
+			case "0":
+				textValue = "no change";
+				break;
+			case "1":
+				textValue = "small increase";
+				break;
+			case "2":
+				textValue = "large increase";
+				break;
+			default:
+				textValue = "no data";
+				break;
+		}
+	}
+	return textValue;
+}
+
+function camelize(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+    }).replace(/\s+/g, '');
 }
 
 function printMap() {
@@ -1656,9 +1705,18 @@ function printMap() {
 		select = dojo.byId("inorganicConstituentSelect");
 	}
 
-	var currConst = select[select.selectedIndex].attributes.displayname.textContent;
+	var currConst = select[select.selectedIndex].attributes.displayname.value;
 
 	var printParams = new esri.tasks.PrintParameters();
+
+	//deal with potential layers that will cause an error in the print task
+	var setItBack;
+
+	if (map.infoWindow.isShowing == true) {}
+	map.getLayer("moLayer").setVisibility(false);
+	map.graphics.setVisibility(false);
+	map.infoWindow.hide();
+
 	printParams.map = map;
 
 	var template = new esri.tasks.PrintTemplate();
@@ -1671,7 +1729,9 @@ function printMap() {
 	template.layout = "Letter ANSI A Landscape 2";
 	template.preserveScale = false;
 	var legendLayer = new esri.tasks.LegendLayer();
-	legendLayer.layerId = "networkLocations";
+	legendLayer.layerId = "networks";
+	legendLayers = [];
+	legendLayers.push(legendLayer);
 	//legendLayer.subLayerIds = [*];
 
 	var d = new Date();
@@ -1681,12 +1741,16 @@ function printMap() {
 
 	template.layoutOptions = {
 		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2",
-		"legendlayers": [legendLayer]
+		"legendlayers": []
 	};
 	printParams.template = template;
 
 	var printMap = new esri.tasks.PrintTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
 	printMap.execute(printParams, printDone, printError);
+
+	map.getLayer("moLayer").setVisibility(true);
+	map.graphics.setVisibility(true);
+	map.infoWindow.show();
 
 	map.setCursor("wait");
 
