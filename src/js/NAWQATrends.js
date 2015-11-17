@@ -1712,10 +1712,11 @@ function printMap() {
 	//deal with potential layers that will cause an error in the print task
 	var setItBack;
 
+	map.getLayer("moLayer").setVisibility(false);
+	map.graphics.setVisibility(false);
+
 	if (map.infoWindow.isShowing == true) {
 		setItBack = true;
-		map.getLayer("moLayer").setVisibility(false);
-		map.graphics.setVisibility(false);
 		map.infoWindow.hide();
 	}
 
