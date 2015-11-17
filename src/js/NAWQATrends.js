@@ -258,7 +258,7 @@ function init() {
 	var basemapGallery = new esri.dijit.BasemapGallery({
 		showArcGISBasemaps: true,
 		map: map
-	}, "basemapGallery");
+	}, "basemapGallery"); 
 	basemapGallery.startup();
 	
 	dojo.connect(basemapGallery, "onLoad", function() {
@@ -1712,10 +1712,12 @@ function printMap() {
 	//deal with potential layers that will cause an error in the print task
 	var setItBack;
 
-	if (map.infoWindow.isShowing == true) {}
-	map.getLayer("moLayer").setVisibility(false);
-	map.graphics.setVisibility(false);
-	map.infoWindow.hide();
+	if (map.infoWindow.isShowing == true) {
+		setItBack = true;
+		map.getLayer("moLayer").setVisibility(false);
+		map.graphics.setVisibility(false);
+		map.infoWindow.hide();
+	}
 
 	printParams.map = map;
 
@@ -1750,8 +1752,10 @@ function printMap() {
 
 	map.getLayer("moLayer").setVisibility(true);
 	map.graphics.setVisibility(true);
-	map.infoWindow.show();
-
+	if (setItBack == true) {
+		map.infoWindow.show();
+	}
+	
 	map.setCursor("wait");
 
 	function printDone(event) {
