@@ -398,6 +398,7 @@ table.layerTable td:nth-child(3) {
 
 .tableTitle {
 	font-weight: bold;
+	font-size: 24px;
 }
 
 table.infoTable {

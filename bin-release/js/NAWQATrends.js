@@ -99,7 +99,7 @@ function init() {
 
     esri.addProxyRule({
     	urlPrefix: "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
-    	proxyUrl: "http://107.20.96.245/SIGLProxies/proxy.ashx"
+    	proxyUrl: "http://nawqatrends.wim.usgs.gov/resource-proxy/proxy.ashx"
     });
 
     // ajaxTransport exists in jQuery 1.5+
@@ -1744,7 +1744,7 @@ function printMap() {
 	var year = d.getFullYear();
 
 	template.layoutOptions = {
-		"titleText": "Decadal Change in " + currConst + " from Cycle 1 to Cycle 2",
+		"titleText": "Decadal Change in " + currConst + " from 1988-2001 to 2002-2012",
 		"legendlayers": []
 	};
 	printParams.template = template;
