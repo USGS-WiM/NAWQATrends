@@ -1393,14 +1393,14 @@ function showHelpText(evt) {
 			'<div id="helpTextHeaderClose">close</div>' +
 		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
-		  	'<p><a target="_blank" href="files/Constituent_table3.pdf">Print this table</a> (PDF)</p>' +
+		  	'<p><a target="_blank" href="files/Constituent_table.pdf">Print this table</a> (PDF)</p>' +
 		  	'<p style="line-height: 22px">Concentrations of key constituents analyzed between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
 	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' + 
 	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
 	        '(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' + 
 	        '(4) Constituents of special or regional interest. <br/><br/>' +
 
-	        '<p><label class="tableTitle">Constituents meeting analysis criteria, results mapped</label>' +
+	        '<p><label class="tableTitle">Table 1: Constituents meeting analysis criteria, results mapped</label>' +
           	'<table id="constTable" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1418,7 +1418,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +*/
 
-	        '<p><label class="tableTitle">Not mapped, insufficient data for statistical analysis</label>' +
+	        '<p><label class="tableTitle">Table 2: Not mapped, insufficient data for statistical analysis</label>' +
           	'<table id="constTableInsuffData" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1428,7 +1428,7 @@ function showHelpText(evt) {
 	        '</table></p><br/>' +
 	        
 
-	        '<p id="footnotes">1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular ' + 
+	        '<p id="footnotes"><label class="tableTitle">References: </label><br/>1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular ' + 
 	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1332/">http://pubs.usgs.gov/circ/circ1332/</a>' + 
 	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular ' +
 	        '<a target="_blank" href="http://pubs.usgs.gov/circ/1346/">http://pubs.usgs.gov/circ/1346/</a>' + 
@@ -1437,7 +1437,8 @@ function showHelpText(evt) {
 	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular. ' + 
 	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>' + 
 	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular. ' + 
-	        '<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>' + 
+	        '<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a><br/><br/>' + 
+	        '<b>Details of statistical analysis and data management (6,7):</b>' +
 	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176' +
 	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.</p></div>' +
 	        '</div>';
