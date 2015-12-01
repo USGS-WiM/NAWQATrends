@@ -428,7 +428,7 @@ function init() {
 					"includeLegend": true 
 				}
 			}, "Network Boundaries" : {
-				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DChangeTestMap4/MapServer",
+				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/NetworkBoundaries/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
