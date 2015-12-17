@@ -401,7 +401,7 @@ function init() {
 					"layerType": "agisFeature",
 					"includeInLayerList": true,
 					"hasMoreInfo": true,
-					"moreInfoText": "Click on a network change icon to get more info",
+					"moreInfoText": "Click on network arrow or dot for more information",
 					"renderer": renderer
 				}
 			}, "": {
