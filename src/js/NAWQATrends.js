@@ -1699,6 +1699,8 @@ function camelize(str) {
 
 function printMap() {
 
+	$("#printStatus").show();
+
 	var select;
 
 	if (dojo.byId("organicButton").checked) {
@@ -1765,6 +1767,7 @@ function printMap() {
 		//alert(event.url);
 		window.open(event.url, "_blank");
 		map.setCursor("default");
+		$("#printStatus").hide();
 	}
 
 	function printError(event) {

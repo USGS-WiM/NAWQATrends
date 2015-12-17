@@ -161,6 +161,25 @@ html, body {
 	display: none;
 }
 
+#printStatus {
+	font-weight: 500;
+	font-size: 16px;
+	color: black;
+	background-color: #e7e4ce;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	-moz-border-bottom-left-radius: 5px;
+	-moz-border-bottom-right-radius: 5px;
+	font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+	position: absolute;
+	left: 520px;
+	top: 65px;
+	padding: 6px;
+	z-index: 3;
+	cursor: pointer;
+	display: none;
+}
+
 #printText {
 	cursor: pointer;
 }
