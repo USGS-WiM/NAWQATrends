@@ -1439,9 +1439,11 @@ function showHelpText(evt) {
 	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular. ' + 
 	        '<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a><br/><br/>' + 
 	        '<b>Details of statistical analysis and data management (6,7):</b>' +
-	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176' +
-	        '<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p.</p></div>' +
-	        '</div>';
+	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176 ' +
+			'<a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full</a>' +
+			'<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p. ' +
+			'<a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a></p></div>' +
+			'</div>';
 
 		
 		var percentOfScreenHeight = 0.8;
