@@ -688,28 +688,34 @@ function init() {
 							$(infoIcon).addClass('fa-info-circle');
 							//var infoIcon = dojo.doc.createElement("img");
 							//infoImage.src = "./images/help_tip.png";
-							infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
+							var toolTip = allLayers[layerName].wimOptions.moreInfoText;
+							//infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
 							$(infoIcon).click(function (evt) {
-								//showToolTip(evt);
+								showToolTip(evt, toolTip);
 							});
+							/*$(infoIcon).mouseover(function (evt) {
+								window.setTimeout(function() {
+									showToolTip(evt);
+								}, 1000);
+							});*/
 							var colThree = dojo.doc.createElement("td");
 							dojo.place(infoIcon,colThree);
 							dojo.place(colThree,rowOne);
 						}
 
-						function showToolTip(evt) {
+						function showToolTip(evt, toolTip) {
 							if (!dojo.byId('iconToolTip')){
 								var toolTipDiv = dojo.doc.createElement("div");
 								toolTipDiv.id = 'iconToolTip';
 								//LINKS BOX HEADER TITLE HERE
-								toolTipDiv.innerHTML = '<div class="toolTip"><b>' + evt.currentTarget.title + '</b></div>';
+								toolTipDiv.innerHTML = '<div class="toolTip"><b>' + toolTip + '</b></div>';
 
 								//place the new div at the click point minus 5px so the mouse cursor is within the div
 								toolTipDiv.style.top =  evt.clientY-5 + 'px';
-								toolTipDiv.style.left = evt.clientX-5 + 'px';
+								toolTipDiv.style.right = $("#map").width() - evt.clientX - 5 + 'px';
 
 								//add the div to the document
-								dojo.byId('layerStuff').appendChild(toolTipDiv);
+								dojo.byId('map').appendChild(toolTipDiv);
 
 								dojo.connect(dojo.byId("iconToolTip"), "onmouseleave", removeToolTip);
 							}
