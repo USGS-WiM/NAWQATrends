@@ -690,7 +690,7 @@ function init() {
 							//infoImage.src = "./images/help_tip.png";
 							infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
 							$(infoIcon).click(function (evt) {
-								showToolTip(evt);
+								//showToolTip(evt);
 							});
 							var colThree = dojo.doc.createElement("td");
 							dojo.place(infoIcon,colThree);
