@@ -689,23 +689,32 @@ function init() {
 							//var infoIcon = dojo.doc.createElement("img");
 							//infoImage.src = "./images/help_tip.png";
 							infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
+							$(infoIcon).click(function (evt) {
+								showToolTip(evt);
+							});
 							var colThree = dojo.doc.createElement("td");
 							dojo.place(infoIcon,colThree);
 							dojo.place(colThree,rowOne);
 						}
 
+						function showToolTip(evt) {
+							if (!dojo.byId('iconToolTip')){
+								var toolTipDiv = dojo.doc.createElement("div");
+								toolTipDiv.id = 'iconToolTip';
+								//LINKS BOX HEADER TITLE HERE
+								toolTipDiv.innerHTML = '<div class="toolTip"><b>' + evt.currentTarget.title + '</b></div>';
 
-						/*dojo.setStyle(toggleDiv, "paddingLeft", "15px");
-						if (i == 0) {
-							dojo.setStyle(toggleDiv, "paddingBottom", "10px");
-						} else if (i == lastItem) {
-							dojo.setStyle(toggleDiv, "paddingTop", "10px");
-						}*/
-						//var checkLabel = dojo.create('label',{'for':checkBox.name,innerHTML:layerName},checkBox.domNode,"after");
-						//var checkLabel = $("<label>").text(layerName);
-						//toggleDiv.append(checkBox);
-						//$(toggleDiv).append(checkLabel);
-						//dojo.place("<br/>",checkLabel,"after");
+								//place the new div at the click point minus 5px so the mouse cursor is within the div
+								toolTipDiv.style.top =  evt.clientY-5 + 'px';
+								toolTipDiv.style.left = evt.clientX-5 + 'px';
+
+								//add the div to the document
+								dojo.byId('layerStuff').appendChild(toolTipDiv);
+
+								dojo.connect(dojo.byId("iconToolTip"), "onmouseleave", removeToolTip);
+							}
+						}
+
 					}
 					
 				}
@@ -1538,6 +1547,10 @@ function removeLinks(){
 	dojo.destroy('usgsLinks');
 }
 
+function removeToolTip(){
+	dojo.destroy('iconToolTip');
+}
+
 function removeHelpText(){
 	dojo.destroy('helpText');
 }
@@ -1774,6 +1787,7 @@ function printMap() {
 
 	function printError(event) {
 		alert(event.error);
+		$("#printStatus").hide();
 	}
 }
 
