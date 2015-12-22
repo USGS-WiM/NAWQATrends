@@ -690,7 +690,7 @@ function init() {
 							//infoImage.src = "./images/help_tip.png";
 							var toolTip = allLayers[layerName].wimOptions.moreInfoText;
 							//infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
-							$(infoIcon).click(function (evt) {
+							$(rowOne).click(function (evt) {
 								showToolTip(evt, toolTip);
 							});
 							/*$(infoIcon).mouseover(function (evt) {
