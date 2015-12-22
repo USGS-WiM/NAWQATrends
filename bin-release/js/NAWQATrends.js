@@ -425,7 +425,8 @@ function init() {
 				"wimOptions": {
 					"type": "layer",
 					"includeInLayerList": true,
-					"includeLegend": true 
+					"includeLegend": true,
+					"hasMoreInfo": false
 				}
 			}, "Network Boundaries" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/NetworkBoundaries/MapServer",
@@ -663,6 +664,9 @@ function init() {
 						//testing with table
 						var table = dojo.doc.createElement("table");
 						$(table).addClass('layerTable');
+						if (allLayers[layerName].wimOptions.hasMoreInfo == false) {
+							$(table).addClass('noInfo');
+						}
 						var rowOne = dojo.doc.createElement("tr");
 						
 						var colOne = dojo.doc.createElement("td");
