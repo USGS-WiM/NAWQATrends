@@ -322,6 +322,10 @@ table.layerTable label {
     cursor: pointer;
 }
 
+table.noInfo label {
+    cursor: default;
+}
+
 table.layerTable td:nth-child(3) {
     padding-top: 8px;
 }
