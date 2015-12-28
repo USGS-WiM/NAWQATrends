@@ -138,7 +138,7 @@ function init() {
                                         }
                                     } else if ((userType === 'xml') || ((userType !== 'text') && xmlRegEx.test(xdr.contentType))) {
                                         var doc = new ActiveXObject('Microsoft.XMLDOM');
-                                        doc.async = false;
+                                        //doc.async = false;
                                         try {
                                             doc.loadXML(xdr.responseText);
                                         } catch(e) {
@@ -1799,6 +1799,7 @@ function printMap() {
 	function printDone(event) {
 		//alert(event.url);
 		window.open(event.url, "_blank");
+		window.open(event.url, "test.pdf");
 		map.setCursor("default");
 		$("#printStatus").hide();
 	}
