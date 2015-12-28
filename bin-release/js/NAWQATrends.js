@@ -138,7 +138,7 @@ function init() {
                                         }
                                     } else if ((userType === 'xml') || ((userType !== 'text') && xmlRegEx.test(xdr.contentType))) {
                                         var doc = new ActiveXObject('Microsoft.XMLDOM');
-                                        //doc.async = false;
+                                        doc.async = true;
                                         try {
                                             doc.loadXML(xdr.responseText);
                                         } catch(e) {
