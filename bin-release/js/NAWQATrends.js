@@ -253,6 +253,13 @@ function init() {
 	
 	//dojo.connect method (a common Dojo framework construction) used to call mapReady function. Fires when the first or base layer has been successfully added to the map.
     dojo.connect(map, "onLoad", mapReady);
+	dojo.connect(map, "onExtentChange", function() {
+		//map level check here?
+		var level = map.getLevel();
+		if (level > 11) {
+			map.setLevel(11);
+		}
+	});
 	
 	//basemapGallery constructor which serves the basemap selector tool. List of available basemaps can be customized. Here,default ArcGIS online basemaps are set to be available.
 	var basemapGallery = new esri.dijit.BasemapGallery({
@@ -1721,6 +1728,7 @@ function camelize(str) {
         return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
 }
+
 
 function printMap() {
 
