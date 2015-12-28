@@ -21,6 +21,7 @@ dojo.require("esri.geometry.ScreenPoint");
 dojo.require("esri.geometry.webMercatorUtils")
 dojo.require("esri.graphic");
 dojo.require("esri.layers.graphics");
+dojo.require("esri.layers.FeatureLayer");
 dojo.require("esri.map");
 dojo.require("esri.renderers.UniqueValueRenderer");
 dojo.require("esri.symbol");
