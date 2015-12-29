@@ -32,7 +32,6 @@ dojo.require("esri.tasks.locator");
 dojo.require("esri.tasks.PrintParameters");
 dojo.require("esri.tasks.PrintTask");
 dojo.require("esri.tasks.query");
-dojo.require("esri.virtualearth.VETiledLayer");
 
 dojo.require("dijit.form.CheckBox");
 dojo.require("dijit.layout.BorderContainer");
