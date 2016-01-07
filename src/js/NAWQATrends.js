@@ -401,6 +401,7 @@ function init() {
 					"visible": true,
 					"outFields": "*",
 					"mode": esri.layers.FeatureLayer.MODE_ONDEMAND,
+					"orderByFields": [ "network_centroids.P00940_Chloride ASC" ],
 					"id": "networkLocations"
 				},
 				"wimOptions": {
@@ -474,7 +475,6 @@ function init() {
 					"layerType": "webTiledLayer",
 					"includeInLayerList": true,
 					"includeLegend": false,
-					"renderer": renderer,
 					"hasMoreInfo": true,
 					"moreInfoText": "Click on a principal aquifer to get more info",
 					"otherLayer": "glacialAquifer"
@@ -984,7 +984,7 @@ function init() {
 				var sucode = attr.SUCODE;
 
 				// Code for adding network highlight
-				var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, 
+				var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
 				    new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
 				    new dojo.Color([98,194,204]), 2), new dojo.Color([98,194,204,0.5])
 				);
@@ -1769,8 +1769,8 @@ function printMap() {
 	template.layout = "Letter ANSI A Landscape 2";
 	template.preserveScale = false;
 	var legendLayer = new esri.tasks.LegendLayer();
-	legendLayer.layerId = "networks";
-	legendLayers = [];
+	legendLayer.layerId = "networkLocations";
+	var legendLayers = [];
 	legendLayers.push(legendLayer);
 	//legendLayer.subLayerIds = [*];
 
@@ -1781,7 +1781,7 @@ function printMap() {
 
 	template.layoutOptions = {
 		"titleText": "Decadal Change in " + currConst + " from 1988-2001 to 2002-2012",
-		"legendlayers": []
+		"legendLayers": [legendLayer]
 	};
 	printParams.template = template;
 
@@ -1799,8 +1799,12 @@ function printMap() {
 	function printDone(event) {
 		//alert(event.url);
 		window.open(event.url, "_blank");
-		window.open(event.url, "test.pdf");
+		//window.open(event.url, "test.pdf");
 		map.setCursor("default");
+
+		//("#moreInfoText").append("<a id='link' download='test' href='" + event.url + "'></a>");
+		//$("#link")[0].click();
+
 		$("#printStatus").hide();
 	}
 
