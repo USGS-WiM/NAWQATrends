@@ -245,7 +245,17 @@ function init() {
 		slider: true,
 		sliderStyle: "small", //use "small" for compact version, "large" for long slider version
 		logo:false,
-		infoWindow: popup
+		infoWindow: popup,
+		lods: [
+		 	{"level" : 4, "resolution" : 9783.93962049996, "scale" : 36978595.474472},
+		 	{"level" : 5, "resolution" : 4891.96981024998, "scale" : 18489297.737236},
+		 	{"level" : 6, "resolution" : 2445.98490512499, "scale" : 9244648.868618},
+			{"level" : 7, "resolution" : 1222.99245256249, "scale" : 4622324.434309},
+			{"level" : 8, "resolution" : 611.49622628138, "scale" : 2311162.217155},
+			{"level" : 9, "resolution" : 305.748113140558, "scale" : 1155581.108577},
+			{"level" : 10, "resolution" : 152.874056570411, "scale" : 577790.554289},
+			{"level" : 11, "resolution" : 76.4370282850732, "scale" : 288895.277144}
+		]
 	});
 	
 	//navToolbar constructor declared, which serves the extent navigator tool.
@@ -254,7 +264,9 @@ function init() {
 	//dojo.connect method (a common Dojo framework construction) used to call mapReady function. Fires when the first or base layer has been successfully added to the map.
     dojo.connect(map, "onLoad", mapReady);
 	dojo.connect(map, "onExtentChange", function() {
-		//map level check here?
+		//map level check for limiting zoom on geocodes
+		console.log(map.getLevel());
+		console.log(map.getScale());
 		var level = map.getLevel();
 		if (level > 11) {
 			map.setLevel(11);
@@ -975,11 +987,12 @@ function init() {
 
         deferredResult.addCallback(function(response) {     
             
-            if (response.length > 0) {
+            if (response.length > 0 && map.getLayer("networks").visible) {
+
             	var feature = response[0].feature;
             	var networkFeature = response[0].feature;
 		        var attr = feature.attributes;
-		        
+
 				var featureLayer = map.getLayer("networkLocations");
 				var sucode = attr.SUCODE;
 
@@ -1014,7 +1027,7 @@ function init() {
 						"<p><b>Description:</b> " + attr["tbl_Networks.NetDescMedium"] + "<br/><br/>" +
 						"<b>Well type:</b></p>" +
 						"<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Network</a></p>");*/
-					
+
 					var depth25 = attr["tbl_Networks.Depth25thpercentile"];
 					var depth75 = attr["tbl_Networks.Depth75thpercentile"];
 
@@ -1024,24 +1037,24 @@ function init() {
 						"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
 
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-						
+
 						"<tr><td><b>Principal aquifer</b></td><td>" + attr["tbl_Networks.PrincipleAquifer"] + "</td></tr>" +
 						"<tr><td><b>Regional aquifer</b></td><td>" + attr["tbl_Networks.RegionalAquifer"] + "</td></tr>" +
 						"<tr><td><b>Aquifer material</b></td><td>" + attr["tbl_Networks.AquiferMaterial"] + "</td></tr>" +
 
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-						
+
 						"<tr><td><b>Additional information</b></td><td>" + attr["tbl_Networks.AdditionalInfo"] + "</td></tr>" +
 						"<tr><td><b>NAWQA network code</b></td><td>" + attr["tbl_Networks.SUCode"] + "</td></tr>" +
-						
+
 						"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
-						
-						"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:void(0)'>ZOOM TO NETWORK</a></b></td></tr>" + 
+
+						"<tr><td colspan='2' align='center'><b><a id='infoWindowLink' href='javascript:void(0)'>ZOOM TO NETWORK</a></b></td></tr>" +
 						"<tr><td colspan='2' align='center'><a href='javascript:showTermExp()'>For explanation of table entries click here</a></td></tr></table>");
 
-						
-					//ties the above defined InfoTemplate to the feature result returned from a click event	
-		            
+
+					//ties the above defined InfoTemplate to the feature result returned from a click event
+
 		            feature.setInfoTemplate(template);
 
 		            map.infoWindow.setFeatures([feature]);
@@ -1060,7 +1073,7 @@ function init() {
 		            	var convertedGeom = esri.geometry.webMercatorToGeographic(networkFeature.geometry);
 
 						var featExtent = convertedGeom.getExtent();
-		            	
+
 		            	map.setExtent(featExtent, true);
 		            });
 
@@ -1157,6 +1170,9 @@ function init() {
 					}
 
 				});
+
+				setCursorByID("mainDiv", "default");
+				map.setCursor("default");
 			    
 			}
 
@@ -1182,7 +1198,9 @@ function init() {
 //mapReady function that fires when the first or base layer has been successfully added to the map. Very useful in many situations. called above by this line: dojo.connect(map, "onLoad", mapReady)
 function mapReady(map){
 	//Sets the globe button on the extent nav tool to reset extent to the initial extent.
-	dijit.byId("extentSelector").set("initExtent", map.extent); 
+	dijit.byId("extentSelector").set("initExtent", map.extent);
+
+	//var mapLods = map.lods;
 
 	//map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
 
