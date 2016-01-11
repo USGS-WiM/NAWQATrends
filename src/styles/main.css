@@ -298,7 +298,7 @@ button {
 }
 
 table.layerTable tr {
-    cursor: pointer;
+    //cursor: pointer;
 }
 
 table.layerTable td {
@@ -315,11 +315,11 @@ table.layerTable td {
 table.layerTable td:nth-child(2) {
     padding-top: 5px;
     width: 150px;
-    cursor: pointer;
+    //cursor: pointer;
 }
 
 table.layerTable label {
-    cursor: pointer;
+    //cursor: pointer;
 }
 
 table.noInfo label {
