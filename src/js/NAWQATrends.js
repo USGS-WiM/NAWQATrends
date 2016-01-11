@@ -418,7 +418,7 @@ function init() {
 					"visible": true,
 					"outFields": "*",
 					"mode": esri.layers.FeatureLayer.MODE_ONDEMAND,
-					"orderByFields": [ "network_centroids.P00940_Chloride ASC" ],
+					"orderByFields": [ "network_centroids.P00940_Chloride DESC" ],
 					"id": "networkLocations"
 				},
 				"wimOptions": {

@@ -418,7 +418,7 @@ function init() {
 					"visible": true,
 					"outFields": "*",
 					"mode": esri.layers.FeatureLayer.MODE_ONDEMAND,
-					"orderByFields": [ "network_centroids.P00940_Chloride ASC" ],
+					"orderByFields": [ "network_centroids.P00940_Chloride DESC" ],
 					"id": "networkLocations"
 				},
 				"wimOptions": {
@@ -714,13 +714,15 @@ function init() {
 							var infoIcon = dojo.doc.createElement("i");
 							$(infoIcon).addClass('fa');
 							$(infoIcon).addClass('fa-info-circle');
+							$(infoIcon).addClass('infoClick');
+							$(infoIcon).attr("title", "click for more info");
 							//var infoIcon = dojo.doc.createElement("img");
 							//infoImage.src = "./images/help_tip.png";
 							var toolTip = allLayers[layerName].wimOptions.moreInfoText;
 							//infoIcon.title = allLayers[layerName].wimOptions.moreInfoText;
-							$(rowOne).click(function (evt) {
+							/*$(rowOne).click(function (evt) {
 								showToolTip(evt, toolTip);
-							});
+							});*/
 							/*$(infoIcon).mouseover(function (evt) {
 								window.setTimeout(function() {
 									showToolTip(evt);
@@ -729,6 +731,10 @@ function init() {
 							var colThree = dojo.doc.createElement("td");
 							dojo.place(infoIcon,colThree);
 							dojo.place(colThree,rowOne);
+
+							$(colThree).click(function (evt) {
+								showToolTip(evt, toolTip);
+							});
 						}
 
 						function showToolTip(evt, toolTip) {
