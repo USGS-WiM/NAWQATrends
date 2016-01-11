@@ -1120,6 +1120,7 @@ function init() {
 					var identifyParams2 = new esri.tasks.IdentifyParameters();
 				    identifyParams2.tolerance = 0;
 				    identifyParams2.returnGeometry = false;
+					identifyParams2.mapExtent = map.extent;
 				    identifyParams2.layerIds = [1];
 				    identifyParams2.width  = map.width;
 				    identifyParams2.height = map.height;
@@ -1442,10 +1443,10 @@ function showHelpText(evt) {
 			'<div id="helpTextHeaderClose">close</div>' +
 		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
 		  	'<div id="helpTextContent">' +
-		  	'<p><a target="_blank" href="files/Constituent_table.pdf">Print this table</a> (PDF)</p>' +
-		  	'<p style="line-height: 22px">Concentrations of key constituents analyzed between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA program.  Priority for analysis is based on:<br/>' + 
-	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' + 
-	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' + 
+		  	'<p><a target="_blank" href="files/Constituent_table.pdf">Create a printable PDF of this table</a></p>' +
+		  	'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA Program. The analysis criteria were:<br/>' +
+	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' +
+	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' +
 	        '(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' + 
 	        '(4) Constituents of special or regional interest. <br/><br/>' +
 
