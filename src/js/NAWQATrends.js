@@ -287,6 +287,11 @@ function init() {
 				$(".headerTab").show();
 				dojo.disconnect(basemapGallery, basemapUpdate);
 				$("#loadingScreen").hide();
+
+				//new function to close gallery when basemap clicked
+				dojo.connect(basemapGallery, "onSelectionChange", function() {
+					$("#basemapSelector .dijitTitlePaneTitle").click();
+				});
 			}
 		});
 		basemapGallery.select("basemap_3");
@@ -461,7 +466,7 @@ function init() {
 					"includeInLayerList": true,
 					"includeLegend": false,
 					"hasMoreInfo": true,
-					"moreInfoText": "A network is a set of 20 to 30 wells selected to represent water-quality conditions in a given geographical area, aquifer, and in some cases, a specific land use. A network resampled at approximately 10 year intervals is a decadal trend network"
+					"moreInfoText": "A network is a set of 20 to 30 wells selected to represent water-quality conditions in a given geographical area, aquifer, and in some cases, a specific land use. A network resampled at approximately 10-year intervals is a decadal trend network"
 				}
 			}, /*"Principal Aquifers" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
