@@ -1384,14 +1384,14 @@ function showTermExp(evt) {
 		  	'<div id="termExpHeader" class="usgsLinksHeader">Explanation of Terms</div>' +
 		  	'<div id="termExpContent"><table class="infoTable"><tr><td><b>Constituent</b></td><td>Statistically significant finding for increase, decrease, or no change is based on Wilcoxon-Pratt signed rank test. Methods are described in: Lindsey and Rupert, 2012 <a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a> or Toccalino and others, 2014 <a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract</a>. Fewer than 10 pairs of samples are considered insufficient data for statistical analysis.</td></tr>' +
 			
-			"<tr><td><b>Network type</b></td><td>Network types can be major aquifer studies, which target drinking-water wells in a selected aquifer without respect to land use, or agricultural or urban land use studies, in which wells are selected to represent a specific land use.</td></tr>" +
+			"<tr><td><b>Network type</b></td><td>Major aquifer studies target drinking water wells in a selected aquifer. Land use studies target wells that underlie areas of urban or agricultural land use in a selected aquifer, and are typically shallower than wells sampled in major aquifer studies.</td></tr>" +
 			"<tr><td><b>Types of wells</b></td><td>If no qualifier is listed, network is entirely of one well type. ‘Predominantly’ indicates that 80 percent of the wells in the network are of that type. Mixed networks list those well types making up at least 75 percent of the wells in the network. Possible well types include commercial, domestic, industrial, irrigation, monitoring, public-supply, stock, recreational, and other.</td></tr>" +
 			"<tr><td><b>Typical depth range</b></td><td>Range of well depths listed are first and third quartile for the network.</td></tr>" +
-			"<tr><td><b>Principal aquifer</b></td><td>Aquifer name comes from Principal aquifers of the 48 conterminous United States, Hawaii, Puerto Rico, and the U.S. Virgin Islands.  U.S. Geological Survey, 2003, <a target='_blank' href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a></td></tr>" +
+			"<tr><td><b>Principal aquifer</b></td><td>Aquifer names are from the map of the principal aquifers of the United States (U.S. Geological Survey, 2003, <a target='_blank' href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a>).</td></tr>" +
 			"<tr><td><b>Regional aquifer</b></td><td>The local or regional name for the aquifer sampled.</td></tr>" +
-			"<tr><td><b>Aquifer material</b></td><td>Aquifer material comes from Principal aquifers of the 48 conterminous United States, Hawaii, Puerto Rico, and the U.S. Virgin Islands.  U.S. Geological Survey, 2003, <a target='_blank' href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a></td></tr>" +
+			"<tr><td><b>Aquifer material</b></td><td>Aquifer materials are from the map of the principal aquifers of the United States (U.S. Geological Survey, 2003, <a target='_blank' href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a>).</td></tr>" +
 			"<tr><td><b>Additional information</b></td><td>Lists the specific land use activity, if available.</td></tr>" +
-			"<tr><td><b>NAWQA network code</b></td><td>The network name acronym used by the USGS NAWQA program.</td></tr></table></div>";
+			"<tr><td><b>NAWQA network code</b></td><td>The network name acronym used by the USGS NAWQA project.</td></tr></table></div>";
 			
 
 		var percentOfScreenHeight = 0.8;
@@ -1467,7 +1467,7 @@ function showHelpText(evt) {
 	        '<th>Why Study?</th></tr>' +
 	        '</table></p><br/>' +*/
 
-	        '<p><label class="tableTitle">Table 2: Not mapped, insufficient data for statistical analysis</label>' +
+	        '<p><label class="tableTitle">Table 2: Constituents met criteria, not mapped due to insufficient data</label>' +
           	'<table id="constTableInsuffData" class="constTable">' +
 	        '<tr><th>Constituent Name</th>' +
 	        '<th>Constituent Class</th>' +
@@ -1739,7 +1739,7 @@ function getValue(val) {
 				textValue = "large increase";
 				break;
 			default:
-				textValue = "no data";
+				textValue = "trend data not available";
 				break;
 		}
 	}
