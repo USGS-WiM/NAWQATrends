@@ -132,14 +132,62 @@ html, body {
     position: absolute;
     left: 155px;
     top: 65px;
-    padding: 6px;
-    z-index: 3;
+    z-index: 1000;
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    width: 180px;
     cursor: pointer;
     display: none;
 }
 
 #moreInfoText {
     cursor: pointer;
+    padding-bottom: 15px;
+}
+
+#dataDocWrap {
+    width: 100%;
+    padding-top: 5px;
+    text-decoration: none;
+    padding-left: 6px;
+    margin-left: -6px;
+    margin-right: -16px;
+    margin-bottom: -6px;
+    background-color: #f37a49;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+#dataLinkDiv {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+.dataDocLinkDiv {
+    width: 187px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-left: -6px;
+    padding-left: 5px;
+}
+
+
+
+.dataDocLink {
+    text-decoration: none;
+    color: black;
+    width: 180px;
+}
+
+.dataDocLinkDiv:hover {
+    background-color: #e7e4ce;
+    color: white;
 }
 
 #printButton {
@@ -153,7 +201,7 @@ html, body {
     -moz-border-bottom-right-radius: 5px;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
-    left: 420px;
+    left: 360px;
     top: 65px;
     padding: 6px;
     z-index: 3;
@@ -172,7 +220,7 @@ html, body {
     -moz-border-bottom-right-radius: 5px;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
-    left: 520px;
+    left: 460px;
     top: 65px;
     padding: 6px;
     z-index: 3;
@@ -330,6 +378,10 @@ table.layerTable td:nth-child(3) {
     padding-top: 8px;
 }
 
+.infoClick {
+    cursor: pointer;
+}
+
 #availableLayers label {
     font-size: 16px;
     /*height: 25px;*/
@@ -396,6 +448,11 @@ table.layerTable td:nth-child(3) {
 }
 
 #helpTextDiv {
+    border: 2px solid;
+    z-index: 9999;
+}
+
+#docTabsDiv {
     border: 2px solid;
     z-index: 9999;
 }
