@@ -87,7 +87,8 @@ var sucode4FeatureLinkZoom;
 function init() {
 	//sets up the onClick listeners for the USGS logo and help text
 	dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
-	dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
+	//dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
+	dojo.connect(dojo.byId('moreInfoButton'), 'onmouseover', dataDocOptions);
 	dojo.connect(dojo.byId("arrowSizeRelative"), "onclick", showConstituentExp);
 
 	// Added for handling of ajaxTransport in IE
@@ -257,7 +258,10 @@ function init() {
 			{"level" : 11, "resolution" : 76.4370282850732, "scale" : 288895.277144}
 		]
 	});
-	
+
+	$("#dataDocWrap").hide();
+	$("#moreInfoButton").hoverIntent(function(){ $("#dataDocWrap").slideDown(500); }, function() { $("#dataDocWrap").slideUp(500); });
+
 	//navToolbar constructor declared, which serves the extent navigator tool.
     navToolbar = new esri.toolbars.Navigation(map);
 	
@@ -716,6 +720,7 @@ function init() {
 							$(infoIcon).addClass('fa-info-circle');
 							$(infoIcon).addClass('infoClick');
 							$(infoIcon).attr("title", "click for more info");
+							$(checkLabel).addClass('infoClick');
 							//var infoIcon = dojo.doc.createElement("img");
 							//infoImage.src = "./images/help_tip.png";
 							var toolTip = allLayers[layerName].wimOptions.moreInfoText;
@@ -731,6 +736,10 @@ function init() {
 							var colThree = dojo.doc.createElement("td");
 							dojo.place(infoIcon,colThree);
 							dojo.place(colThree,rowOne);
+
+							$(colTwo).click(function (evt) {
+								showToolTip(evt, toolTip);
+							});
 
 							$(colThree).click(function (evt) {
 								showToolTip(evt, toolTip);
@@ -1389,8 +1398,8 @@ function showTermExp(evt) {
 		termExpDiv.innerHTML = "<div id='helpTextInner'>" +
 			'<div id="termExpHeaderClose">close</div>' +
 		  	'<div id="termExpHeader" class="usgsLinksHeader">Explanation of Terms</div>' +
-		  	'<div id="termExpContent"><table class="infoTable"><tr><td><b>Constituent</b></td><td>Statistically significant finding for increase, decrease, or no change is based on Wilcoxon-Pratt signed rank test. Methods are described in: Lindsey and Rupert, 2012 <a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a> or Toccalino and others, 2014 <a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/abstract</a>. Fewer than 10 pairs of samples are considered insufficient data for statistical analysis.</td></tr>' +
-			
+		  	'<div id="termExpContent"><table class="infoTable"><tr><td><b>Constituent</b></td><td>Statistically significant finding of increase, decrease, or no change in concentration for this network. Details of statistical analysis are available in the <a  href="javascript:void()">documentation</a>. Small and large changes are defined in the explanation.</td></tr>' +
+
 			"<tr><td><b>Network type</b></td><td>Major aquifer studies target drinking water wells in a selected aquifer. Land use studies target wells that underlie areas of urban or agricultural land use in a selected aquifer, and are typically shallower than wells sampled in major aquifer studies.</td></tr>" +
 			"<tr><td><b>Types of wells</b></td><td>If no qualifier is listed, network is entirely of one well type. ‘Predominantly’ indicates that 80 percent of the wells in the network are of that type. Mixed networks list those well types making up at least 75 percent of the wells in the network. Possible well types include commercial, domestic, industrial, irrigation, monitoring, public-supply, stock, recreational, and other.</td></tr>" +
 			"<tr><td><b>Typical depth range</b></td><td>Range of well depths listed are first and third quartile for the network.</td></tr>" +
@@ -1435,84 +1444,262 @@ function showTermExp(evt) {
 	}
 }
 
-function showHelpText(evt) {
+function dataDocOptions(evt) {
+	console.log('hovered');
+}
+
+function dataDocClick(option) {
+	console.log(option);
+	showHelpText(option)
+}
+
+function showHelpText(option) {
+
+	$('#helpTextHeaderClose').click();
+
 	if (!dojo.byId('helpText')){
 
 		map.infoWindow.hide();
 
-		//create linksDiv 
+	 	//create linksDiv
 		var helpTextDiv = dojo.doc.createElement("div");
 		helpTextDiv.id = 'helpText';
 		$("#helpText").addClass("ui-widget-content");
 		//LINKS BOX HEADER TITLE HERE
-		helpTextDiv.innerHTML = '<div id="helpTextInner">' +
-			'<div id="helpTextHeaderClose">close</div>' +
-		  	'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
-		  	'<div id="helpTextContent">' +
-		  	'<p><a target="_blank" href="files/Constituent_table.pdf">Create a printable PDF of this table</a></p>' +
-		  	'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA Program. The analysis criteria were:<br/>' +
-	        '(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' +
-	        '(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' +
-	        '(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' + 
-	        '(4) Constituents of special or regional interest. <br/><br/>' +
 
-	        '<p><label class="tableTitle">Table 1: Constituents meeting analysis criteria, results mapped</label>' +
-          	'<table id="constTable" class="constTable">' +
-	        '<tr><th>Constituent Name</th>' +
-	        '<th>Constituent Class</th>' +
-	        '<th>Benchmark</th>' + 
-	        '<th>Units</th>' +
-	        '<th>Why Study?</th></tr>' +
-	        '</table></p><br/>' +
+		if (option == 'Criteria for Mapping Constituents') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
+				'<div id="helpTextContent">' +
+				'<p><a target="_blank" href="files/Constituent_table.pdf">Create a printable PDF of this table</a></p>' +
+				'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA Program. The analysis criteria were:<br/>' +
+				'(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' +
+				'(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' +
+				'(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' +
+				'(4) Constituents of special or regional interest. <br/><br/>' +
 
-	        /*'<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
-          	'<table id="constTableNoChange" class="constTable">' +
-	        '<tr><th>Constituent Name</th>' +
-	        '<th>Constituent Class</th>' +
-	        '<th>Benchmark</th>' +
-	        '<th>Units</th>' +
-	        '<th>Why Study?</th></tr>' +
-	        '</table></p><br/>' +*/
+				'<p><label class="tableTitle">Table 1: Constituents meeting analysis criteria, results mapped</label>' +
+				'<table id="constTable" class="constTable">' +
+				'<tr><th>Constituent name</th>' +
+				'<th>Constituent class</th>' +
+				'<th>Benchmark</th>' +
+				'<th>Units</th>' +
+				'<th>Why study?</th></tr>' +
+				'</table></p><br/>' +
 
-	        '<p><label class="tableTitle">Table 2: Constituents met criteria, not mapped due to insufficient data</label>' +
-          	'<table id="constTableInsuffData" class="constTable">' +
-	        '<tr><th>Constituent Name</th>' +
-	        '<th>Constituent Class</th>' +
-	        '<th>Benchmark</th>' +
-	        '<th>Units</th>' +
-	        '<th>Why Study?</th></tr>' +
-	        '</table></p><br/>' +
-	        
+					/*'<p><label class="tableTitle">Not mapped, no decadal change in any network</label>' +
+					 '<table id="constTableNoChange" class="constTable">' +
+					 '<tr><th>Constituent Name</th>' +
+					 '<th>Constituent Class</th>' +
+					 '<th>Benchmark</th>' +
+					 '<th>Units</th>' +
+					 '<th>Why Study?</th></tr>' +
+					 '</table></p><br/>' +*/
 
-	        '<p id="footnotes"><label class="tableTitle">References: </label><br/>1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of Water from Domestic Wells in Principal Aquifers of the United States, 1991-2004 - Overview of Major Findings: Reston, VA, U.S. Geological Survey, p. 48 Circular ' + 
-	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1332/">http://pubs.usgs.gov/circ/circ1332/</a>' + 
-	        '<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters-Quality of water from public-supply wells in the United States, 1993-2007-Overview of major findings, U.S. Geological Survey, p. 58 Circular ' +
-	        '<a target="_blank" href="http://pubs.usgs.gov/circ/1346/">http://pubs.usgs.gov/circ/1346/</a>' + 
-	        '<br/>3.  Ayotte, J.D. Gronberg, J.M., and Apodaca, L.E., 2011, Trace Elements and Radon in Groundwater Across the United States: U.S. Geological Survey Scientific Investigations Report 2011-5059, 115 p. ' + 
-	        '<a target="_blank" href="http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/">http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/</a>' + 
-	        '<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, T., Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The Quality of our Nation\'s waters--Volatile Organic Compounds in the Nation\'s Ground Water and Drinking-Water Supply Wells: Reston, VA, U.S. Geological Survey, p. 101 Circular. ' + 
-	        '<a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>' + 
-	        '<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, N., Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The Quality of our Nation\'s Waters--Pesticides in the Nation\'s Streams and Ground Water, 1992-2001: Reston, VA, U.S. Geological Survey, p. 172 Circular. ' + 
-	        '<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a><br/><br/>' + 
-	        '<b>Details of statistical analysis and data management (6,7):</b>' +
-	        '<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., Pesticides in Groundwater of the United States: Decadal-Scale Changes, 1993-2011, 2014, Groundwater, DOI: 10.1111/gwat.12176 ' +
-			'<a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full</a>' +
-			'<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p. ' +
-			'<a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a></p></div>' +
-			'</div>';
+				'<p><label class="tableTitle">Table 2: Constituents met criteria, not mapped due to insufficient data</label>' +
+				'<table id="constTableInsuffData" class="constTable">' +
+				'<tr><th>Constituent name</th>' +
+				'<th>Constituent class</th>' +
+				'<th>Benchmark</th>' +
+				'<th>Units</th>' +
+				'<th>Why study?</th></tr>' +
+				'</table></p><br/>' +
 
-		
-		var percentOfScreenHeight = 0.8;
+				'<p id="footnotes"><label class="tableTitle">References: </label><br/>1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of water from ' +
+				'domestic wells in principal aquifers of the United States, 1991–2004—Overview of major findings: U.S. Geological Survey Circular 1332, 48 p. [Also available online at ' +
+				'<a target="_blank" href="http://pubs.usgs.gov/circ/circ1332/">http://pubs.usgs.gov/circ/circ1332/</a>]' +
+				'<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters—Quality of water from public supply wells in the United States, ' +
+				'1993–2007—Overview of major findings: U.S. Geological Survey Circular 1346, 58 p. [Also available at ' +
+				'<a target="_blank" href="http://pubs.usgs.gov/circ/1346/">http://pubs.usgs.gov/circ/1346/</a>]' +
+				'<br/>3.  Ayotte, J.D., Gronberg, J.M., and Apodaca, L.E., 2011, Trace elements and radon in groundwater across the United States: U.S. Geological Survey ' +
+				'Scientific Investigations Report 2011–5059, 115 p. [Also available at ' +
+				'<a target="_blank" href="http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/">http://water.usgs.gov/nawqa/trace/pubs/sir2011-5059/</a>]' +
+				'<br/>4.  Zogorski, J.S., Carter, J.M., Ivahnenko, Tamara, Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The quality of our ' +
+				'Nation’s waters—Volatile organic compounds in the Nation’s ground water and drinking-water supply wells: U.S. Geological Survey Circular 1292, 101 p. [Also available at ' +
+				'<a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>]' +
+				'<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, Naomi, Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and ' +
+				'Wolock, D.M., 2006, The quality of our Nation\'s waters—Pesticides in the Nation\'s streams and ground water, 1992–2001: U.S. Geological Survey Circular 1291, 172 p. [Also available at ' +
+				'<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>]<br/><br/>' +
+				'<b>Details of statistical analysis and data management (6,7):</b>' +
+				'<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., 2014, Pesticides in groundwater of the United States—Decadal-scale changes, ' +
+				'1993–2011: Groundwater, v. 52, Supplement S1, p. 112–125. [Also available at ' +
+				'<a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full</a>]' +
+				'<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved ' +
+				'solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p. [Also available at ' +
+				'<a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a>]</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = (dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+		} else if (option == 'About') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">About</div>' +
+				'<div id="helpTextContent">' +
+					'<p id="about">The groundwater decadal change dataset consists of 1,511 wells in 67 networks in various principal ' +
+					'aquifers across the country from the U.S. Geological Survey (USGS) National Water-Quality Assessment (NAWQA) ' +
+					'project. Each network has been sampled once during the period of 1988–2001 and again during 2002–12. Network ' +
+					'size varies from 11 to 30 wells. Major aquifer studies are networks designed to give a broad overview of groundwater ' +
+					'quality in an aquifer used as a source of drinking-water supply. Land-use studies are networks designed to examine ' +
+					'natural and human factors that affect the quality of shallow groundwater that underlies key types of land use in a ' +
+					'specific aquifer and are usually not wells used as a source of drinking-water supply. The primary objective of ' +
+					'resampling these networks is to determine changes in concentrations of constituents during a decadal period. Select an ' +
+					'arrow or dot for additional information about a network. See the documentation for additional background and details.</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = "470px"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "700px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+		} else if (option == 'Documentation') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Documentation</div>' +
+				'<div id="helpTextContent">' +
+				'<h2>Background</h2>'+
+						'<p>The U.S. Geological Survey (USGS) implemented the National Water-Quality Assessment (NAWQA) Project in 1991 to develop long-term consistent and comparable information on ' +
+				'streams, rivers, groundwater, and aquatic systems in support of national, regional, state, and local information needs related to water-quality management and policy. A central goal of ' +
+				'the NAWQA Project is to determine whether groundwater-quality conditions are getting better or worse with time. One of the ways this goal is addressed for groundwater is by comparing ' +
+				'water-quality changes that happen during a decadal period in selected well networks across the Nation. Networks were chosen for decadal-scale water-quality sampling based on geographic ' +
+				'distribution across the Nation and to represent the most important aquifers and specific land use types. A network typically is a group of 20–30 wells representing an aquifer (major ' +
+				'aquifer study), or a specific depth and (or) land use (land use study) (Lapham and others, 1995). The same wells from each of the selected networks are sampled on a decadal-scale ' +
+				'interval (Rosen and Lapham, 2008). Samples are collected according to nationally consistent protocols (U.S. Geological Survey, variously dated).</p>' +
+						'<p>As of 2012, a total of 1,502 wells in 67 networks had been sampled twice, providing an opportunity to evaluate changes in groundwater quality. Selected results from the first ' +
+					'sampling event, completed from 1993 to 2000, were compared statistically to the second sampling event, completed from 2001 to 2012, using a matched pair approach ' +
+					'(Lindsey and Rupert, 2012). Although Lindsey and Rupert (2012) and Toccalino and others (2014a) summarized results for some constituents, many other constituents were not ' +
+					'included in these evaluations. The NAWQA Project developed an interactive mapping tool that could display changes in concentrations for several constituents that were judged ' +
+					'to be of particular interest based on certain criteria. From among the more than 300 constituents sampled during the two decades, constituents were prioritized for analysis ' +
+					'of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public ' +
+					'supply wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum ' +
+					'contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic ' +
+					'compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). ' +
+					'Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have ' +
+					'sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in ' +
+					'the mapping tool. Benchmark types considered in prioritizing constituents are: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), ' +
+					'EPA Human-Health Benchmarks for Pesticides (HHBPs) (U.S. Environmental Protection Agency, 2013), Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), ' +
+					'and nonregulatory SMCLs (U.S. Environmental Protection Agency, 2012). Of these, only MCLs are enforceable (regulatory) standards; all but SMCLs are human-health benchmarks.</p>' +
+							'<h2>Data Retrieval and Preparation for Statistical Analysis</h2>' +
+						'<p>In preparation for statistical analysis, environmental water-quality data for selected sites are retrieved from the USGS National Water Information System database. ' +
+					'Ancillary data are appended to the water-quality data, including NAWQA sampling cycle (first or second decade), principal aquifer, network type, and network name. Laboratory ' +
+					'reporting levels are summarized for each constituent. A maximum common reporting level (CRLMAX) is chosen for the data analysis, usually the lowest reporting level that still ' +
+					'retains the maximum amount of data for analysis. All nondetections with a reporting level greater than the CRLMAX are deleted from the dataset. All nondetections and reported ' +
+					'values less than the CRLMAX are recoded to a unique value selected to specifically represent values below the CRLMAX. The value used for recoding is typically slightly less than ' +
+					'the CLRMAX, but its exact value does not affect the statistical analysis, which calculates results using the ranking of values relative to each other rather than using the actual ' +
+					'values themselves. The CRLMAX and the value used for recoding nondetections are reported for each constituent in the “readme” tab of the data files. The selection of a CRLMAX and ' +
+					'the recoding are done to make correct comparisons among nondetections and between nondetections and low-level detections; for example, if a CRLMAX of 0.2 is selected, reported ' +
+					'results of < 0.1 and < 0.2 are recoded as 0.19 before statistical analysis so that the statistical program does not interpret these two nondetections as different values and also ' +
+					'to distinguish both from a reported value of 0.2. Reported results of 0.17 (a detection) and < 0.2 (a nondetection) are also recoded as 0.19 before statistical analysis because ' +
+					'it is not possible to determine if the two values differ. Data for the pesticide compounds atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine (a degradate ' +
+					'of atrazine) are prepared using the method described in Toccalino and others (2014a). Differences in data preparation for pesticide compounds and degradates include that concentrations ' +
+					'were adjusted for recovery and that nondetections were replaced with a single value less than the lowest detection (rather than a value less than the CRLMAX). The number of sample ' +
+					'pairs per constituent is summarized by network to ensure a minimum of 10 pairs of data for analysis at the network level. Analysis is not completed for networks with fewer than 10 ' +
+					'pairs. The final data used for statistical analysis are available in the data archive files (Data_archive_inorganic.xlsx, Data_archive_VOC.xlsx, and Data_archive_pesticides.xlsx).</p>' +
+						'<h2>Statistical Analysis</h2>' +
+						'<p>For each constituent, data are analyzed for statistically significant changes between the decadal samples within a network using the Wilcoxon-Pratt signed-rank test ' +
+					'(Pratt, 1959) using the R-statistical software. Details of this method are described in Lindsey and Rupert (2012). Briefly, the method first calculates changes in concentrations ' +
+					'at individual wells and then uses the pattern of those changes to determine whether or not there has been a statistically significant change for a well network as a whole. For ' +
+					'these tests, a 90-percent confidence level, or a p-value of less than 0.10, is used to signify a statistically significant change. Because the R-statistical program cannot analyze ' +
+					'networks if all the data are tied (no differences in any pair), networks with all ties are assumed to have no significant change.</p>' +
+							'<h2>Mapping of Results</h3>' +
+						'<p>Results of the statistical analysis for each well network were classified as indicating a statistically significant increase, a statistically significant decrease, ' +
+					'or no significant change. Results were further classified as being “relatively large” or “relatively small” changes to provide context for the results. A statistically significant ' +
+					'change for an individual network is displayed on the mapping tool by an arrow pointing up or down. One point on the map represents a network of multiple wells. The size of the arrow ' +
+					'indicates the magnitude of change. To provide this context, the median change between the first and second sampling events was calculated for each well network with a statistically ' +
+					'significant change, and the median was compared to the benchmark (MCL, SMCL, or HBSL). For inorganic constituents, if the median change was greater than 5 percent of the benchmark, ' +
+					'the change was considered relatively large. If the change was less than or equal to 5 percent of the benchmark, then the change was considered to be relatively small. For organic ' +
+					'compounds, if the median change was greater than 1 percent of the benchmark, the change was considered relatively large, and if the change was less than or equal to 1 percent of the ' +
+					'benchmark, then the change was considered to be relatively small. This approach provides a way to distinguish very small but statistically significant changes from changes that are of ' +
+					'a larger magnitude. Organic constituents are treated differently than inorganic constituents because the organic constituents are generally introduced to the environment as a result of ' +
+					'human activity, whereas most of the inorganic constituents are found naturally at some level. In some cases, networks had statistically significant changes, but the median change ' +
+					'between sampling events was zero. In those cases, the data were analyzed graphically to determine whether the change was a decrease or an increase, and the change was considered to ' +
+					'be relatively small. Networks without any statistically significant change are displayed as a solid circle in the mapping tool. Networks with insufficient data to analyze are displayed ' +
+					'with a similarly sized open circle; this could be because fewer than 10 pairs were available or because a constituent was sampled in one sampling period but not in the other.</p>' +
+							'<h2>Mapping Selections</h2>' +
+						'<p>The mapping tool has a number of options for display. The “Map Layers” box allows principal aquifers, network boundaries, and land use to be displayed as background layers. ' +
+					'The “Change in Network Concentrations” part of this box allows the user to choose inorganic or organic constituents and select a specific constituent within either category. After ' +
+					'making a selection, the statistical results will display on the map. Clicking on an information “i” icon provides descriptions of terms. The map layers box may be collapsed to ' +
+					'display more of the mapped area. The “Explanation” box explains the arrows and dots that appear at the network centroid, displaying the statistical results. Hollow dots indicate ' +
+					'that decadal change data are not available. Within this box, clicking the text “Arrow size relative to benchmark” opens a dialog describing what a relatively large and relatively ' +
+					'small change is for each constituent, both as a percentage of a benchmark or as a concentration. The “Explanation” box can also be collapsed to display more of the mapped area.</p>' +
+							'<p>Tabs along the top of the map include a table explaining the criteria for selecting which constituents to map, a tool that allows printing of the selected map, and a variety ' +
+					'of base maps that can be used as background layers. The search option allows the user to search for a location such as a city, state, zip code, or general place name. In the upper ' +
+					'left area of the tool are “+” and “–” icons to zoom in and out, respectively, along with icons to zoom to the previous extent or the entire extent of the map. The user can also zoom ' +
+					'using the scroll wheel on a mouse and can pan by clicking on the map and holding while moving the mouse.</p>' +
+							'<p>Clicking on an arrow or circle (plotted at the center of the well network) will bring up a table with details about the network, along with an option to zoom to the network, ' +
+					'and an explanation about the items on the table. With the principal aquifer or network boundaries selected, the user can click on the map and a popup will display the name of the ' +
+					'selected principal aquifer or network.</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "700px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+		} else if (option == 'Data') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Data</div>' +
+					'<div id="helpTextContent">' +
+						'<p>Click <a target="_blank" href="files/Data_archive_inorganic.xlsx">here</a> to download the data used to analyze for decadal change in inorganic constituents</p>' +
+						'<p>Click <a target="_blank" href="files/Data_archive_VOC.xlsx">here</a> to download the data used to analyze for decadal change in volatile organic compounds</p>' +
+						'<p>Click <a target="_blank" href="files/Data_archive_pesticide.xlsx">here</a> to download the data used to analyze for decadal changes in pesticides</p>' +
+					'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = (Number(left.split("px")[0]) + 180) + "px"; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = "300px"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "420px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+		}
+
+		/*var percentOfScreenHeight = 0.8;
 	    var percentOfScreenWidth = 0.8;
 
 	    var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
 	    var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
-		
+
 		helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
 		helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
 		
 		helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
-		helpTextDiv.style.width = (dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+		helpTextDiv.style.width = (dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";*/
 
 		//add the div to the document
 		dojo.byId('map').appendChild(helpTextDiv);
