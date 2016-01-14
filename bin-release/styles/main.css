@@ -132,7 +132,7 @@ html, body {
     position: absolute;
     left: 155px;
     top: 65px;
-    z-index: 1000;
+    z-index: 3;
     padding-left: 6px;
     padding-top: 6px;
     padding-right: 6px;
