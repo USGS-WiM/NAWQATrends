@@ -1407,8 +1407,9 @@ function showTermExp(evt) {
 			"<tr><td><b>Regional aquifer</b></td><td>The local or regional name for the aquifer sampled.</td></tr>" +
 			"<tr><td><b>Aquifer material</b></td><td>Aquifer materials are from the map of the principal aquifers of the United States (U.S. Geological Survey, 2003, <a target='_blank' href='http://water.usgs.gov/ogw/aquifer/map.html'>http://water.usgs.gov/ogw/aquifer/map.html</a>).</td></tr>" +
 			"<tr><td><b>Additional information</b></td><td>Lists the specific land use activity, if available.</td></tr>" +
-			"<tr><td><b>NAWQA network code</b></td><td>The network name acronym used by the USGS NAWQA project.</td></tr></table></div>";
-			
+			"<tr><td><b>NAWQA network code</b></td><td>The network name acronym used by the USGS NAWQA project.</td></tr>" +
+			"<tr><td><b>Sample dates (1<sup>st</sup>, 2<sup>nd</sup>)</b></td><td>The year of the first and second sampling event.</td></tr></table></div>";
+
 
 		var percentOfScreenHeight = 0.8;
 	    var percentOfScreenWidth = 0.8;
@@ -1470,13 +1471,13 @@ function showHelpText(option) {
 		if (option == 'Criteria for Mapping Constituents') {
 			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 				'<div id="helpTextHeaderClose">close</div>' +
-				'<div id="helpTextHeader" class="usgsLinksHeader">SUMMARY OF STATISTICAL ANALYSIS OF DECADAL CHANGE</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Criteria for mapping constituents</div>' +
 				'<div id="helpTextContent">' +
 				'<p><a target="_blank" href="files/Constituent_table.pdf">Create a printable PDF of this table</a></p>' +
-				'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988-2001) and Cycle 2 (2002-2012) of the NAWQA Program. The analysis criteria were:<br/>' +
-				'(1) Constituents that exceeded a Maximum Contaminant Level (MCL) or other human-health benchmark in more than 1 percent of public or domestic-supply wells (1,2,3); or  <br/>' +
-				'(2) Constituents that exceeded a Secondary Maximum Contaminant Level (SMCL) in more than 1 percent of public or domestic-supply wells (1,2,3);  or <br/>' +
-				'(3) The five most frequently detected pesticides and VOCs (4,5);  or  <br/>' +
+				'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988–2001) and Cycle 2 (2002–2012) of the National Water-Quality Assessment (NAWQA) Project. Mapped constituents met one of the four following criteria:<br/>' +
+				'(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public- or domestic-supply wells (1,2,3); or  <br/>' +
+				'(2) Constituents that exceeded a Secondary Maximum Contaminant Level in more than 1 percent of public- or domestic-supply wells (1,2,3); or <br/>' +
+				'(3) The five most frequently detected pesticide compounds and volatile organic comounds (VOCs) in groundwater (4,5); or  or  <br/>' +
 				'(4) Constituents of special or regional interest. <br/><br/>' +
 
 				'<p><label class="tableTitle">Table 1: Constituents meeting analysis criteria, results mapped</label>' +
@@ -1520,14 +1521,7 @@ function showHelpText(option) {
 				'<a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>]' +
 				'<br/>5.  Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, Naomi, Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and ' +
 				'Wolock, D.M., 2006, The quality of our Nation\'s waters—Pesticides in the Nation\'s streams and ground water, 1992–2001: U.S. Geological Survey Circular 1291, 172 p. [Also available at ' +
-				'<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>]<br/><br/>' +
-				'<b>Details of statistical analysis and data management (6,7):</b>' +
-				'<br/>6.  Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., 2014, Pesticides in groundwater of the United States—Decadal-scale changes, ' +
-				'1993–2011: Groundwater, v. 52, Supplement S1, p. 112–125. [Also available at ' +
-				'<a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full">http://onlinelibrary.wiley.com/doi/10.1111/gwat.12176/full</a>]' +
-				'<br/>7.  Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved ' +
-				'solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p. [Also available at ' +
-				'<a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a>]</p>' +
+				'<a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>]' +
 				'</div>' +
 				'</div>';
 
@@ -1649,6 +1643,21 @@ function showHelpText(option) {
 							'<p>Clicking on an arrow or circle (plotted at the center of the well network) will bring up a table with details about the network, along with an option to zoom to the network, ' +
 					'and an explanation about the items on the table. With the principal aquifer or network boundaries selected, the user can click on the map and a popup will display the name of the ' +
 					'selected principal aquifer or network.</p>' +
+
+					'<p id="footnotes"><label class="tableTitle">References Cited: </label>' +
+					'<br/><br/>DeSimone, L.A., 2009, Quality of water from domestic wells in principal aquifers of the United States, 1991–2004: U.S. Geological Survey Scientific Investigations Report 2008–5227, 139 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/sir/2008/5227/">http://pubs.usgs.gov/sir/2008/5227/</a>.]' +
+					'<br/><br/>Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, Naomi, Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The quality of our Nation’s waters—Pesticides in the Nation’s streams and ground water, 1992–2001: U.S. Geological Survey Circular 1291, 172 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>.]' +
+					'<br/><br/>Lapham, W.W., Wilde, F.D., and Koterba, M.T., 1995, Ground-water data-collection protocols and procedures for the National Water-Quality Assessment Program—Selection, installation, and documentation of wells, and collection of related data: U.S. Geological Survey Open-File Report 95–398, 71 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/of/1995/ofr-95-398/">http://pubs.usgs.gov/of/1995/ofr-95-398/</a>.]' +
+					'<br/><br/>Lindsey, B.D., and Rupert, M.G., 2012, Methods for evaluating temporal groundwater quality data and results of decadal-scale changes in chloride, dissolved solids, and nitrate concentrations in groundwater in the United States, 1988–2010: U.S. Geological Survey Scientific Investigations Report 2012–5049, 46 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/sir/2012/5049/">http://pubs.usgs.gov/sir/2012/5049/</a>.]' +
+					'<br/><br/>Pratt, J.W., 1959, Remarks on zeros and ties in the Wilcoxon signed rank procedures: American Statistical Association Journal, v. 54, no. 287, p. 655–667. [Also available at <a target="_blank" href="http://www.jstor.org/stable/2282543">http://www.jstor.org/stable/2282543</a>.]' +
+					'<br/><br/>Rosen, M.R., and Lapham, W.W., 2008, Introduction to the U.S. Geological Survey National Water-Quality Assessment (NAWQA) of ground-water quality trends and comparison to other national programs: the Journal of Environmental Quality, v. 37, no. 5, Supplement, p. S–190–S–198. [Also available at <a target="_blank" href="http://dx.doi.org/10.2134/jeq2008.0049">http://dx.doi.org/10.2134/jeq2008.0049</a>.]' +
+					'<br/><br/>Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters—Quality of water from public supply wells in the United States, 1993–2007—Overview of major findings: U.S. Geological Survey Circular 1346, 58 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/circ/1346/">http://pubs.usgs.gov/circ/1346/</a>.]' +
+					'<br/><br/>Toccalino, P.L., Gilliom, R.J., Lindsey, B.D., and Rupert, M.G., 2014a, Pesticides in groundwater of the United States—Decadal-scale changes, 1993–2011: Groundwater, v. 52, Supplement S1, p. 112–125. [Also available at <a target="_blank" href="http://dx.doi.org/10.1111/gwat.12176">http://dx.doi.org/10.1111/gwat.12176</a>.]' +
+					'<br/><br/>Toccalino, P.L., Norman, J.E., and Schoephoester, K.M., 2014b, Health-based screening levels for evaluating water-quality data: U.S. Geological Survey, Health-Based Screening Levels (HBSL) Web site, accessed July 13, 2015, at <a target="_blank" href="http://dx.doi.org/10.5066/F71C1TWP">http://dx.doi.org/10.5066/F71C1TWP</a>.' +
+					'<br/><br/>U.S. Environmental Protection Agency, 2012, 2012 edition of the drinking water standards and health advisories: U.S. Environmental Protection Agency, Office of Water, EPA 822–S–12–001, 20 p. [Also available at <a target="_blank" href="http://nepis.epa.gov/Exe/ZyPDF.cgi/P100N01H.PDF?Dockey=P100N01H.PDF">http://nepis.epa.gov/Exe/ZyPDF.cgi/P100N01H.PDF?Dockey=P100N01H.PDF</a>.]' +
+					'<br/><br/>U.S. Environmental Protection Agency, 2013, Human health benchmarks for pesticides—2013 update: U.S. Environmental Protection Agency, Office of Water, EPA–820–F–13–019, 2 p. [Also available at <a target="_blank" href="http://www.epa.gov/sites/production/files/2015-10/documents/hh-benchmarks-factsheet.pdf">http://www.epa.gov/sites/production/files/2015-10/documents/hh-benchmarks-factsheet.pdf</a>.]' +
+					'<br/><br/>U.S. Geological Survey, variously dated, National field manual for the collection of water-quality data: U.S. Geological Survey Techniques of Water-Resources Investigations, book 9, chaps. A1–A10, accessed July 31, 2009, at <a target="_blank" href="http://water.usgs.gov/owq/FieldManual/">http://water.usgs.gov/owq/FieldManual/</a>.' +
+					'<br/><br/>Zogorski, J.S., Carter, J.M., Ivahnenko, Tamara, Lapham, W.W., Moran, M.J., Rowe, B.L., Squillace, P.J., and Toccalino, P.L., 2006, The quality of our Nation’s waters—Volatile organic compounds in the Nation’s ground water and drinking-water supply wells: U.S. Geological Survey Circular 1292, 101 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/circ/circ1292/">http://pubs.usgs.gov/circ/circ1292/</a>.]' +
 				'</div>' +
 				'</div>';
 
