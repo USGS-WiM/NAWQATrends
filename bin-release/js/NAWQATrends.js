@@ -1475,10 +1475,10 @@ function showHelpText(option) {
 				'<div id="helpTextContent">' +
 				'<p><a target="_blank" href="files/Constituent_table.pdf">Create a printable PDF of this table</a></p>' +
 				'<p style="line-height: 22px">Table 1 lists the chemical constituents that met the criteria for a statistical analysis of decadal-scale changes in concentrations in groundwater between Cycle 1 (1988–2001) and Cycle 2 (2002–2012) of the National Water-Quality Assessment (NAWQA) Project. Mapped constituents met one of the four following criteria:<br/>' +
-				'(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of public- or domestic-supply wells (1,2,3); or  <br/>' +
-				'(2) Constituents that exceeded a Secondary Maximum Contaminant Level in more than 1 percent of public- or domestic-supply wells (1,2,3); or <br/>' +
-				'(3) The five most frequently detected pesticide compounds and volatile organic comounds (VOCs) in groundwater (4,5); or  or  <br/>' +
-				'(4) Constituents of special or regional interest. <br/><br/>' +
+				'(1) Constituents that exceeded a Maximum Contaminant Level or other human-health benchmark in more than 1 percent of domestic- or public-supply wells <sup>(1,2,3)</sup>; or<br/>' +
+				'(2) Constituents that exceeded a Secondary Maximum Contaminant Level in more than 1 percent of domestic- or public-supply wells <sup>(1,2,3)</sup>; or <br/>' +
+				'(3) The five most frequently detected pesticide compounds and volatile organic compounds (VOCs) in groundwater <sup>(4,5)</sup>; or <br/>' +
+				'(4) Constituents of special or regional interest.<br/><br/>' +
 
 				'<p><label class="tableTitle">Table 1: Constituents meeting analysis criteria, results mapped</label>' +
 				'<table id="constTable" class="constTable">' +
