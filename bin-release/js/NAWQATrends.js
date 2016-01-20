@@ -1505,9 +1505,11 @@ function showHelpText(option) {
 				'<th>Benchmark</th>' +
 				'<th>Units</th>' +
 				'<th>Why study?</th></tr>' +
-				'</table></p><br/>' +
+				'</table></p>' +
 
-				'<p id="footnotes"><label class="tableTitle">References: </label><br/>1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of water from ' +
+				'<p>Abbreviations: [µg/L, micrograms per liter; mg/L, milligrams per liter; SMCL, Secondary Maximum Contaminant Level]</p><br/>' +
+
+				'<p id="footnotes"><label class="tableTitle">References Cited: </label><br/>1.  DeSimone, L.A., Hamilton, P.A., and Gilliom, R.J., 2009, Quality of water from ' +
 				'domestic wells in principal aquifers of the United States, 1991–2004—Overview of major findings: U.S. Geological Survey Circular 1332, 48 p. [Also available online at ' +
 				'<a target="_blank" href="http://pubs.usgs.gov/circ/circ1332/">http://pubs.usgs.gov/circ/circ1332/</a>]' +
 				'<br/>2.  Toccalino, P.L., and Hopple, J.A., 2010, The quality of our Nation’s waters—Quality of water from public supply wells in the United States, ' +
