@@ -1574,43 +1574,35 @@ function showHelpText(option) {
 				'<div id="helpTextHeader" class="usgsLinksHeader">Documentation</div>' +
 				'<div id="helpTextContent">' +
 				'<h2>Background</h2>'+
-						'<p>The U.S. Geological Survey (USGS) implemented the National Water-Quality Assessment (NAWQA) Project in 1991 to develop long-term consistent and comparable information on ' +
-				'streams, rivers, groundwater, and aquatic systems in support of national, regional, state, and local information needs related to water-quality management and policy. A central goal of ' +
-				'the NAWQA Project is to determine whether groundwater-quality conditions are getting better or worse with time. One of the ways this goal is addressed for groundwater is by comparing ' +
-				'water-quality changes that happen during a decadal period in selected well networks across the Nation. Networks were chosen for decadal-scale water-quality sampling based on geographic ' +
-				'distribution across the Nation and to represent the most important aquifers and specific land use types. A network typically is a group of 20–30 wells representing an aquifer (major ' +
-				'aquifer study), or a specific depth and (or) land use (land use study) (Lapham and others, 1995). The same wells from each of the selected networks are sampled on a decadal-scale ' +
-				'interval (Rosen and Lapham, 2008). Samples are collected according to nationally consistent protocols (U.S. Geological Survey, variously dated).</p>' +
-						'<p>As of 2012, a total of 1,502 wells in 67 networks had been sampled twice, providing an opportunity to evaluate changes in groundwater quality. Selected results from the first ' +
-					'sampling event, completed from 1993 to 2000, were compared statistically to the second sampling event, completed from 2001 to 2012, using a matched pair approach ' +
+						'<p>The U.S. Geological Survey (USGS) implemented the National Water-Quality Assessment (NAWQA) Project in 1991 to develop long-term consistent and comparable ' +
+					'information on streams, rivers, groundwater, and aquatic systems in support of national, regional, state, and local information needs related to water-quality management ' +
+					'and policy. A central goal of the NAWQA Project is to determine whether groundwater-quality conditions are getting better or worse with time. One of the ways this goal ' +
+					'is addressed for groundwater is by comparing water-quality changes that happen during a decadal period in selected well networks across the Nation. Networks were chosen for ' +
+					'decadal-scale water-quality sampling based on geographic distribution across the Nation and to represent the most important aquifers and specific land use types. A network ' +
+					'typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land use study) (Lapham and others, 1995). The ' +
+					'same wells from each of the selected networks are sampled on a decadal-scale interval (Rosen and Lapham, 2008). Samples are collected according to nationally consistent ' +
+					'protocols (U.S. Geological Survey, variously dated).</p>' +
+						'<p>As of 2012, a total of 1,502 wells in 67 networks had been sampled twice, providing an opportunity to evaluate changes in groundwater quality. Selected results ' +
+					'from the first sampling event, completed from 1993 to 2000, were compared statistically to the second sampling event, completed from 2001 to 2012, using a matched pair approach ' +
 					'(Lindsey and Rupert, 2012). Although Lindsey and Rupert (2012) and Toccalino and others (2014a) summarized results for some constituents, many other constituents were not ' +
 					'included in these evaluations. The NAWQA Project developed an interactive mapping tool that could display changes in concentrations for several constituents that were judged ' +
-					'to be of particular interest based on certain criteria. From among the more than 300 constituents sampled during the two decades, constituents were prioritized for analysis ' +
-					'of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public ' +
-					'supply wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum ' +
-					'contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic ' +
-					'compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). ' +
-					'Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have ' +
-					'sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in ' +
-					'the mapping tool. Benchmark types considered in prioritizing constituents are: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), ' +
-					'EPA Human-Health Benchmarks for Pesticides (HHBPs) (U.S. Environmental Protection Agency, 2013), Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), ' +
-					'and nonregulatory SMCLs (U.S. Environmental Protection Agency, 2012). Of these, only MCLs are enforceable (regulatory) standards; all but SMCLs are human-health benchmarks.</p>' +
-							'<h2>Data Retrieval and Preparation for Statistical Analysis</h2>' +
+					'to be of particular interest based on certain criteria. From among the more than 300 constituents sampled during the two decades, constituents were prioritized for analysis of ' +
+					'decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public supply ' +
+					'wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level ' +
+					'(SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation ' +
+					'(Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). Other constituents were added to this ' +
+					'list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have sufficient data for analysis; thus, they are not ' +
+					'included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in the mapping tool. Benchmark types considered in prioritizing ' +
+					'constituents are: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), EPA Human-Health Benchmarks for Pesticides (HHBPs) (U.S. Environmental Protection ' +
+					'Agency, 2013), Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), and nonregulatory SMCLs (U.S. Environmental Protection Agency, 2012). Of these, only MCLs are ' +
+					'enforceable (regulatory) standards; all but SMCLs are human-health benchmarks.</p>' +
+						'<h2>Data Retrieval and Preparation for Statistical Analysis</h2>' +
 						'<p>In preparation for statistical analysis, environmental water-quality data for selected sites are retrieved from the USGS National Water Information System database. ' +
-					'Ancillary data are appended to the water-quality data, including NAWQA sampling cycle (first or second decade), principal aquifer, network type, and network name. Laboratory ' +
-					'reporting levels are summarized for each constituent. A maximum common reporting level (CRLMAX) is chosen for the data analysis, usually the lowest reporting level that still ' +
-					'retains the maximum amount of data for analysis. All nondetections with a reporting level greater than the CRLMAX are deleted from the dataset. All nondetections and reported ' +
-					'values less than the CRLMAX are recoded to a unique value selected to specifically represent values below the CRLMAX. The value used for recoding is typically slightly less than ' +
-					'the CLRMAX, but its exact value does not affect the statistical analysis, which calculates results using the ranking of values relative to each other rather than using the actual ' +
-					'values themselves. The CRLMAX and the value used for recoding nondetections are reported for each constituent in the “readme” tab of the data files. The selection of a CRLMAX and ' +
-					'the recoding are done to make correct comparisons among nondetections and between nondetections and low-level detections; for example, if a CRLMAX of 0.2 is selected, reported ' +
-					'results of < 0.1 and < 0.2 are recoded as 0.19 before statistical analysis so that the statistical program does not interpret these two nondetections as different values and also ' +
-					'to distinguish both from a reported value of 0.2. Reported results of 0.17 (a detection) and < 0.2 (a nondetection) are also recoded as 0.19 before statistical analysis because ' +
-					'it is not possible to determine if the two values differ. Data for the pesticide compounds atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine (a degradate ' +
-					'of atrazine) are prepared using the method described in Toccalino and others (2014a). Differences in data preparation for pesticide compounds and degradates include that concentrations ' +
-					'were adjusted for recovery and that nondetections were replaced with a single value less than the lowest detection (rather than a value less than the CRLMAX). The number of sample ' +
-					'pairs per constituent is summarized by network to ensure a minimum of 10 pairs of data for analysis at the network level. Analysis is not completed for networks with fewer than 10 ' +
-					'pairs. The final data used for statistical analysis are available in the data archive files (Data_archive_inorganic.xlsx, Data_archive_VOC.xlsx, and Data_archive_pesticides.xlsx).</p>' +
+					'Ancillary data are appended to the water-quality data, including NAWQA sampling cycle (first or second decade), principal aquifer, network type, and network name. Laboratory reporting ' +
+					'levels are summarized for each constituent. A maximum common reporting level (CRLMAX) is chosen for the data analysis, usually the lowest reporting level that still retains the maximum ' +
+					'amount of data for analysis. The CRLMAX and the value used for recoding nondetections are reported for each constituent in the “readme” tab of the data files and details are provided ' +
+					'at the end of this documentation. Analysis is completed for networks with at least 10 pairs of samples. The final data used for statistical analysis are available in the data archive ' +
+					'files (Data_archive_inorganic.xlsx, Data_archive_VOC.xlsx, and Data_archive_pesticides.xlsx). </p>' +
 						'<h2>Statistical Analysis</h2>' +
 						'<p>For each constituent, data are analyzed for statistically significant changes between the decadal samples within a network using the Wilcoxon-Pratt signed-rank test ' +
 					'(Pratt, 1959) using the R-statistical software. Details of this method are described in Lindsey and Rupert (2012). Briefly, the method first calculates changes in concentrations ' +
@@ -1618,34 +1610,45 @@ function showHelpText(option) {
 					'these tests, a 90-percent confidence level, or a p-value of less than 0.10, is used to signify a statistically significant change. Because the R-statistical program cannot analyze ' +
 					'networks if all the data are tied (no differences in any pair), networks with all ties are assumed to have no significant change.</p>' +
 							'<h2>Mapping of Results</h3>' +
-						'<p>Results of the statistical analysis for each well network were classified as indicating a statistically significant increase, a statistically significant decrease, ' +
-					'or no significant change. Results were further classified as being “relatively large” or “relatively small” changes to provide context for the results. A statistically significant ' +
-					'change for an individual network is displayed on the mapping tool by an arrow pointing up or down. One point on the map represents a network of multiple wells. The size of the arrow ' +
-					'indicates the magnitude of change. To provide this context, the median change between the first and second sampling events was calculated for each well network with a statistically ' +
-					'significant change, and the median was compared to the benchmark (MCL, SMCL, or HBSL). For inorganic constituents, if the median change was greater than 5 percent of the benchmark, ' +
-					'the change was considered relatively large. If the change was less than or equal to 5 percent of the benchmark, then the change was considered to be relatively small. For organic ' +
-					'compounds, if the median change was greater than 1 percent of the benchmark, the change was considered relatively large, and if the change was less than or equal to 1 percent of the ' +
-					'benchmark, then the change was considered to be relatively small. This approach provides a way to distinguish very small but statistically significant changes from changes that are of ' +
-					'a larger magnitude. Organic constituents are treated differently than inorganic constituents because the organic constituents are generally introduced to the environment as a result of ' +
-					'human activity, whereas most of the inorganic constituents are found naturally at some level. In some cases, networks had statistically significant changes, but the median change ' +
-					'between sampling events was zero. In those cases, the data were analyzed graphically to determine whether the change was a decrease or an increase, and the change was considered to ' +
-					'be relatively small. Networks without any statistically significant change are displayed as a solid circle in the mapping tool. Networks with insufficient data to analyze are displayed ' +
-					'with a similarly sized open circle; this could be because fewer than 10 pairs were available or because a constituent was sampled in one sampling period but not in the other.</p>' +
+						'<p>Results of the statistical analysis for each well network were classified as indicating a statistically significant increase, a statistically significant decrease, or no ' +
+					'significant change. Results were further classified as being “relatively large” or “relatively small” changes to provide context for the results. A statistically significant change for ' +
+					'an individual network is displayed on the mapping tool by an arrow pointing up or down. One point on the map represents a network of multiple wells. The size of the arrow indicates ' +
+					'the magnitude of change. To provide this context, the median change between the first and second sampling events was calculated for each well network with a statistically significant ' +
+					'change, and the median was compared to the benchmark (MCL, SMCL, or HBSL). For inorganic constituents, if the median change was greater than 5 percent of the benchmark, the change was ' +
+					'considered relatively large. If the change was less than or equal to 5 percent of the benchmark, then the change was considered to be relatively small. For organic compounds, if the ' +
+					'median change was greater than 1 percent of the benchmark, the change was considered relatively large, and if the change was less than or equal to 1 percent of the benchmark, then the ' +
+					'change was considered to be relatively small. This approach provides a way to distinguish very small but statistically significant changes from changes that are of a larger magnitude. ' +
+					'Organic constituents are treated differently than inorganic constituents because the organic constituents are generally introduced to the environment as a result of human activity, ' +
+					'whereas most of the inorganic constituents are found naturally at some level. In some cases, networks had statistically significant changes, but the median change between sampling events ' +
+					'was zero. In those cases, the data were analyzed graphically to determine whether the change was a decrease or an increase, and the change was considered to be relatively small. ' +
+					'Networks without any statistically significant change are displayed as a solid circle in the mapping tool. Networks with insufficient data to analyze are displayed with a similarly ' +
+					'sized open circle; this could be because fewer than 10 pairs were available or because a constituent was sampled in one sampling period but not in the other. </p>' +
 							'<h2>Mapping Selections</h2>' +
 						'<p>The mapping tool has a number of options for display. The “Map Layers” box allows principal aquifers, network boundaries, and land use to be displayed as background layers. ' +
-					'The “Change in Network Concentrations” part of this box allows the user to choose inorganic or organic constituents and select a specific constituent within either category. After ' +
-					'making a selection, the statistical results will display on the map. Clicking on an information “i” icon provides descriptions of terms. The map layers box may be collapsed to ' +
-					'display more of the mapped area. The “Explanation” box explains the arrows and dots that appear at the network centroid, displaying the statistical results. Hollow dots indicate ' +
-					'that decadal change data are not available. Within this box, clicking the text “Arrow size relative to benchmark” opens a dialog describing what a relatively large and relatively ' +
-					'small change is for each constituent, both as a percentage of a benchmark or as a concentration. The “Explanation” box can also be collapsed to display more of the mapped area.</p>' +
-							'<p>Tabs along the top of the map include a table explaining the criteria for selecting which constituents to map, a tool that allows printing of the selected map, and a variety ' +
-					'of base maps that can be used as background layers. The search option allows the user to search for a location such as a city, state, zip code, or general place name. In the upper ' +
-					'left area of the tool are “+” and “–” icons to zoom in and out, respectively, along with icons to zoom to the previous extent or the entire extent of the map. The user can also zoom ' +
-					'using the scroll wheel on a mouse and can pan by clicking on the map and holding while moving the mouse.</p>' +
-							'<p>Clicking on an arrow or circle (plotted at the center of the well network) will bring up a table with details about the network, along with an option to zoom to the network, ' +
-					'and an explanation about the items on the table. With the principal aquifer or network boundaries selected, the user can click on the map and a popup will display the name of the ' +
-					'selected principal aquifer or network.</p>' +
-
+					'The “Change in Network Concentrations” part of this box allows the user to choose inorganic or organic constituents and select a specific constituent within either category. After making ' +
+					'a selection, the statistical results will display on the map. Clicking on an information “i” icon provides descriptions of terms. The map layers box may be collapsed to display more of ' +
+					'the mapped area. The “Explanation” box explains the arrows and dots that appear at the network centroid, displaying the statistical results. Hollow dots indicate that decadal change data ' +
+					'are not available. Within this box, clicking the text “Arrow size relative to benchmark” opens a dialog describing what a relatively large and relatively small change is for each constituent, ' +
+					'both as a percentage of a benchmark or as a concentration. The “Explanation” box can also be collapsed to display more of the mapped area.</p>' +
+						'<p>Tabs along the top of the map include a table explaining the criteria for selecting which constituents to map, a tool that allows printing of the selected map, and a variety ' +
+					'of base maps that can be used as background layers. The search option allows the user to search for a location such as a city, state, zip code, or general place name. In the upper left ' +
+					'area of the tool are “+” and “–” icons to zoom in and out, respectively, along with icons to zoom to the previous extent or the entire extent of the map. The user can also zoom using the ' +
+					'scroll wheel on a mouse and can pan by clicking on the map and holding while moving the mouse. </p>' +
+						'<p>Clicking on an arrow or circle (plotted at the center of the well network) will bring up a table with details about the network, along with an option to zoom to the network, ' +
+					'and an explanation about the items on the table. With the principal aquifer or network boundaries selected, the user can click on the map and a popup will display the name of the selected ' +
+					'principal aquifer or network. </p>' +
+						'<h2>Details on data preparation</h2>' +
+						'<p>Once a CRLMAX is selected for a given constituent, all nondetections with a reporting level greater than the CRLMAX are deleted from the dataset. All nondetections and ' +
+					'reported values less than the CRLMAX are recoded to a unique value selected to specifically represent values below the CRLMAX. The value used for recoding is typically slightly less than ' +
+					'the CLRMAX, but its exact value does not affect the statistical analysis, which calculates results using the ranking of values relative to each other rather than using the actual values ' +
+					'themselves. The selection of a CRLMAX and the recoding are done to make correct comparisons among nondetections and between nondetections and low-level detections; for example, if a ' +
+					'CRLMAX of 0.2 is selected, reported results of < 0.1 and < 0.2 are recoded as 0.19 before statistical analysis so that the statistical program does not interpret these two nondetections ' +
+					'as different values and also to distinguish both from a reported value of 0.2. Reported results of 0.17 (a detection) and < 0.2 (a nondetection) are also recoded as 0.19 before statistical ' +
+					'analysis because it is not possible to determine if the two values differ. The CRLMAX and the value used for recoding nondetections are reported for each constituent in the “readme” tab ' +
+					'of the data files. Data for the pesticide compounds atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine (a degradate of atrazine) are prepared using a different method, ' +
+					'as described in Toccalino and others (2014a). Differences in data preparation for pesticide compounds and degradates include that concentrations were adjusted for recovery and that ' +
+					'nondetections were replaced with a single value less than the lowest detection (rather than a value less than the CRLMAX). For methyl tert-butyl ether, the CRLMAX was determined for each ' +
+					'pair rather than for the entire data set.</p>' +
 					'<p id="footnotes"><label class="tableTitle">References Cited: </label>' +
 					'<br/><br/>DeSimone, L.A., 2009, Quality of water from domestic wells in principal aquifers of the United States, 1991–2004: U.S. Geological Survey Scientific Investigations Report 2008–5227, 139 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/sir/2008/5227/">http://pubs.usgs.gov/sir/2008/5227/</a>.]' +
 					'<br/><br/>Gilliom, R.J., Barbash, J.E., Crawford, C.G., Hamilton, P.A., Martin, J.D., Nakagaki, Naomi, Nowell, L.H., Scott, J.C., Stackelberg, P.E., Thelin, G.P., and Wolock, D.M., 2006, The quality of our Nation’s waters—Pesticides in the Nation’s streams and ground water, 1992–2001: U.S. Geological Survey Circular 1291, 172 p. [Also available at <a target="_blank" href="http://pubs.usgs.gov/circ/2005/1291/">http://pubs.usgs.gov/circ/2005/1291/</a>.]' +
