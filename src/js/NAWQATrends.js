@@ -301,6 +301,12 @@ function init() {
 		basemapGallery.select("basemap_3");
 	});
 
+	var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
+		map.graphics.clear();
+		map.getLayer("trendSites").setVisibility(false);
+		dojo.disconnect(map.infoWindow, infoWindowClose);
+	});
+
 	$(window).resize(function () {
         maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 152;
         //$('#legend').css('height', maxLegendHeight);
@@ -484,7 +490,21 @@ function init() {
 					"includeInLayerList": true,
 					"esriLegendLabel": false
 				}
-			}, */"Principal Aquifers" : {
+			}, */"Trend sites" : {
+				"url": "http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/trendSites/MapServer",
+				"arcOptions": {
+					"opacity": 1.0,
+					"visible": false,
+					"id": "trendSites"
+				},
+				"wimOptions": {
+					"type": "layer",
+					"includeInLayerList": false,
+					"includeLegend": false,
+					"hasMoreInfo": false,
+					"moreInfoText": "place holder text"
+				}
+			}, "Principal Aquifers" : {
 				"url": "http://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
@@ -833,6 +853,14 @@ function init() {
 		} else if (dojo.byId("inorganicButton").checked) {
 			select = dojo.byId("inorganicConstituentSelect");
 		}
+
+		var trendSitesLayer = map.getLayer("trendSites");
+
+		trendSitesLayer.setVisibility(true);
+		var tsLayerDefs = [];
+		tsLayerDefs[0] = "SuCode = '" + attr["network_centroids.SUCode"] + "'";
+		trendSitesLayer.setLayerDefinitions(tsLayerDefs);
+		trendSitesLayer.refresh();
 		
 		//var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.value;
 		var currentConst = select[select.selectedIndex].attributes.constituent.value;
@@ -1083,6 +1111,7 @@ function init() {
 
 		            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
 		            	map.graphics.clear();
+						map.getLayer("trendSites").setVisibility(false);
 		            	dojo.disconnect(map.infoWindow, infoWindowClose);
 		            });
 
@@ -1177,7 +1206,8 @@ function init() {
 
 					            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
 					            	map.graphics.clear();
-					            	dojo.disconnect(map.infoWindow, infoWindowClose);
+									map.getLayer("trendSites").setVisibility(false);
+									dojo.disconnect(map.infoWindow, infoWindowClose);
 					            });
 
 					            setCursorByID("mainDiv", "default");
