@@ -260,7 +260,10 @@ function init() {
 	});
 
 	$("#dataDocWrap").hide();
-	$("#moreInfoButton").hoverIntent(function(){ $("#dataDocWrap").slideDown(500); }, function() { $("#dataDocWrap").slideUp(500); });
+	$("#moreInfoButton").hoverIntent(function(){ $("#dataDocWrap").slideDown(300); }, function() { $("#dataDocWrap").slideUp(30); });
+
+	$("#userGuideWrap").hide();
+	$("#userGuideButton").hoverIntent(function(){ $("#userGuideWrap").slideDown(300); }, function() { $("#userGuideWrap").slideUp(300); });
 
 	//navToolbar constructor declared, which serves the extent navigator tool.
     navToolbar = new esri.toolbars.Navigation(map);
@@ -276,6 +279,8 @@ function init() {
 			map.setLevel(11);
 		}
 	});
+
+	showIntro();
 	
 	//basemapGallery constructor which serves the basemap selector tool. List of available basemaps can be customized. Here,default ArcGIS online basemaps are set to be available.
 	var basemapGallery = new esri.dijit.BasemapGallery({
@@ -880,7 +885,7 @@ function init() {
 		var depth25 = attr["tbl_Networks.Depth25thpercentile"];
 		var depth75 = attr["tbl_Networks.Depth75thpercentile"];
 
-    	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
+    	var template = new esri.InfoTemplate("<span class='infoTitle'>*click and drag this area to reposition table</span>",
 			"<table class='infoTable'><tr><td><b>" + displayConst + "</b></td><td><span class='" + camelize(getValue(attr[attField])) + "'>" + getValue(attr[attField]) + "</span></td></tr>" +
 			
 			"<tr><td><div class='tableSpacer'></div></td><td></td></tr>" +
@@ -1079,7 +1084,7 @@ function init() {
 					var depth25 = attr["tbl_Networks.Depth25thpercentile"];
 					var depth75 = attr["tbl_Networks.Depth75thpercentile"];
 
-		        	var template = new esri.InfoTemplate("<span class='infoTitle'>.</span>",
+		        	var template = new esri.InfoTemplate("<span class='infoTitle'>*click and drag this area to reposition table</span>",
 						"<table class='infoTable'><tr><td><b>Network type</b></td><td>" + networkTypeFind(attr["network_centroids.NETWORK_TYPE"]) + "</td></tr>" +
 						"<tr><td><b>Types of wells</b></td><td>" + attr["tbl_Networks.WellTypeDesc"] + "</td></tr>" +
 						"<tr><td><b>Typical depth range</b></td><td>" + checkSigFigs(depth25) + " to " + checkSigFigs(depth75) + " feet</td></tr>" +
@@ -1287,7 +1292,7 @@ function mapReady(map){
 	//end code for adding draggability to infoWindow
 
 	/*if (dojo.byId('disclaimer').children[1] != null) {
-		dojo.byId('disclaimer').children[1].innerHTML = "<b>test</b>html";
+		dojo.byId('disclaimer').children[1].innerHTML = "<b>Mapper Intro</b>";
 		//if (configOptions.showDisclaimer == true) {
 			var disclaimerNode = dojo.byId('disclaimer');
 			
@@ -1482,6 +1487,47 @@ function dataDocOptions(evt) {
 function dataDocClick(option) {
 	console.log(option);
 	showHelpText(option)
+}
+
+function showIntro() {
+	//create linksDiv
+	var introDiv = dojo.doc.createElement("div");
+	introDiv.id = 'intro';
+	$("#intro").addClass("ui-widget-content");
+
+	introDiv.innerHTML = '<div id="introInner">' +
+			'<div id="introContent">' +
+				'<h1 id="introTitle" class="introHeaders">A Decadal Look at Groundwater Quality</h1>' +
+				'<h4 id="introSubtitle" class="introHeaders"><i>A first of its kind, national assessment of an unseen, valuable resource</i></h4>' +
+				'<img id="mapScreenshot" src="./images/map-screenshot.png"/>' +
+				'<p>About 140 million people—almost half of the Nation’s population—rely on groundwater for drinking water, and the demand for groundwater for irrigation and agriculture continues to grow.</p>' +
+				'<p>This mapper shows how concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater are changing over decadal periods across the Nation.</p>' +
+				'<p>Tracking changes in groundwater quality and investigating the reasons for these changes is crucial for informing mangement decisions to protect and sustain our valuable groundwater resources.</p>' +
+				'<div id="buttonDiv"><button class="introButton">Enter the mapper</button></div>' +
+			'</div>' +
+		'</div>';
+
+	var viewportWidth = $(window).width();
+	var viewportHeight = $(window).height();
+	
+	//var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+	//var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+	var top = (viewportHeight/2 - 263) + "px";
+	var left = (viewportWidth/2 - 350) + "px";
+
+	introDiv.style.top = top; //evt.clientY-5 + 'px';
+	introDiv.style.left = left;//(Number(left.split("px")[0]) + 180) + "px"; //evt.clientX-5 + 'px';
+
+	//introDiv.style.height = "300px"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+	//introDiv.style.width = "420px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
+	dojo.byId('introHolder').appendChild(introDiv);
+
+	var ht = $("#intro").height() - $("#introHeader").height() - 20;
+	$("#introContent").height(ht + "px");
+
+	dojo.connect(dojo.byId("buttonDiv"), "onclick", removeIntro);
 }
 
 function showHelpText(option) {
@@ -1731,6 +1777,26 @@ function showHelpText(option) {
 			helpTextDiv.style.height = "300px"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
 			helpTextDiv.style.width = "420px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 
+		} else if (option == 'FAQ') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Frequently Asked Questions</div>' +
+				'<div id="helpTextContent">' +
+					
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = (Number(left.split("px")[0]) + 180) + "px"; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = "300px"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "420px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 		}
 
 		/*var percentOfScreenHeight = 0.8;
@@ -1831,6 +1897,10 @@ function removeToolTip(){
 
 function removeHelpText(){
 	dojo.destroy('helpText');
+}
+
+function removeIntro(){
+	dojo.destroy('introHolder');
 }
 
 function removeTermExp(){

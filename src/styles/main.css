@@ -119,6 +119,29 @@ html, body {
     color: #AAAAB5;
 }
 
+#faqButton {
+    font-weight: 500;
+    font-size: 16px;
+    color: White;
+    background-color: #f37a49;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+    font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+    position: absolute;
+    left: 95px;
+    top: 65px;
+    z-index: 3;
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    width: 35px;
+    cursor: pointer;
+    display: none;
+}
+
 #moreInfoButton {
     font-weight: 500;
     font-size: 16px;
@@ -137,7 +160,7 @@ html, body {
     padding-top: 6px;
     padding-right: 6px;
     padding-bottom: 6px;
-    width: 180px;
+    width: 35px;
     cursor: pointer;
     display: none;
 }
@@ -148,7 +171,7 @@ html, body {
 }
 
 #dataDocWrap {
-    width: 100%;
+    width: 215px;
     padding-top: 5px;
     text-decoration: none;
     padding-left: 6px;
@@ -162,7 +185,7 @@ html, body {
     -moz-border-bottom-right-radius: 5px;
 }
 
-#dataLinkDiv {
+.lastDataLinkDiv {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     -moz-border-bottom-left-radius: 5px;
@@ -170,14 +193,18 @@ html, body {
 }
 
 .dataDocLinkDiv {
-    width: 187px;
+    width: 216px;
     padding-bottom: 5px;
     padding-top: 5px;
     margin-left: -6px;
     padding-left: 5px;
 }
 
-
+.dataDocHeaderDiv {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-weight: bold;
+}
 
 .dataDocLink {
     text-decoration: none;
@@ -188,6 +215,71 @@ html, body {
 .dataDocLinkDiv:hover {
     background-color: #e7e4ce;
     color: white;
+    cursor: default;
+}
+
+.dataDocSub {
+    width: 206px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-left: -6px;
+    padding-left: 15px;
+    font-size: smaller;
+}
+
+#userGuideButton {
+    font-weight: 500;
+    font-size: 16px;
+    color: White;
+    background-color: #f37a49;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+    font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+    position: absolute;
+    left: 215px;
+    top: 65px;
+    z-index: 3;
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    width: 83px;
+    cursor: pointer;
+    display: none;
+}
+
+#userGuideWrap {
+    width: 180px;
+    padding-top: 5px;
+    text-decoration: none;
+    padding-left: 6px;
+    margin-left: -6px;
+    margin-right: -16px;
+    margin-bottom: -6px;
+    background-color: #f37a49;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+.userGuideLinkDiv {
+    width: 181px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-left: -6px;
+    padding-left: 5px;
+}
+
+.userGuideSub {
+    width: 180px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-left: -6px;
+    padding-left: 15px;
+    font-size: smaller;
 }
 
 #printButton {
@@ -459,6 +551,107 @@ table.layerTable td:nth-child(3) {
 
 #helpTextContent {
     overflow-y: auto;
+}
+
+#introHeader {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#introHeaderClose {
+    float: right;
+    padding-right: 5px;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#introHolder {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    /* display: table !important; */
+    /* vertical-align: middle; */
+    /* text-align: center; */
+    background-position: center;
+    background-color: rgba(231,228,206,0.9);
+    /*background-alpha: 0.9;
+    opacity: 0.9;*/
+    z-index: 99;
+}
+
+#intro {
+    font-family: BryantRegular;
+    font-size: 16px;
+    max-width: 1000px;
+    /*margin-top: 0px;*/
+    position: absolute;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 526px;
+    width: 700px;
+    z-index: 5;
+    background-color: #e7e4ce;
+    line-height: 1.75;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 0 0 .25em #000;
+    margin: 0 auto;
+}
+
+
+
+#introTitle {
+    margin-bottom: -30px;
+}
+
+.introHeaders {
+    width: 100%;
+    text-align: center;
+}
+
+#introSubtitle {
+    padding-bottom: 20px;
+}
+
+#introDiv {
+    border: 2px solid;
+    z-index: 9999;
+}
+
+#introContent {
+    overflow-y: auto;
+}
+
+#mapScreenshot {
+    max-width: 200px;
+    height: auto;
+    float: left;
+    padding-right: 10px;
+}
+
+#buttonDiv {
+    padding-top: 20px;
+    width: 100%;
+    text-align: center;
+    line-height: 0.8;
+}
+
+.introButton {
+    background-color: rgb(243, 122, 73);
+    height: 40px;
+    width: 125px;
+    color: white;
+    font-family: BryantWebMedium, "Lucinda Sans Unicode", "Lucinda Grande", sans-serif;
+    /* letter-spacing: 1px; */
+    font-size: 16px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 0px;
+    cursor: pointer;
 }
 
 #termExpHeader {
@@ -734,7 +927,8 @@ table.esriLegendLayer td:nth-child(even) {
 }
 
 .infoTitle {
-    color: #444444;
+    /*color: #444444;*/
+    font-size: smaller;
 }
 
 .largeIncrease {
