@@ -1754,6 +1754,47 @@ function showHelpText(option) {
 			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
 			helpTextDiv.style.width = "700px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 
+		} else if (option == 'DataPrep') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Data preparation steps</div>' +
+				'<div id="helpTextContent">' +
+				'<p>In preparation for statistical analysis, environmental water-quality data for selected sites are retrieved from the ' +
+				'USGS National Water Information System database. A maximum common reporting level (CRLMAX) is chosen for the data analysis, ' +
+				'usually the lowest reporting level that still retains the maximum amount of data for analysis. The CRLMAX and the value ' +
+				'used for recoding nondetections are reported for each constituent in the “readme” tab of the data files and details are ' +
+				'provided ‘details on data preparation’ link. Analysis is completed for networks with at least 10 pairs of samples. Once a ' +
+				'CRLMAX is selected for a given constituent, all nondetections with a reporting level greater than the CRLMAX are deleted ' +
+				'from the dataset. All nondetections and reported values less than the CRLMAX are recoded to a unique value selected to ' +
+				'specifically represent values below the CRLMAX. The value used for recoding is typically slightly less than the CLRMAX, ' +
+				'but its exact value does not affect the statistical analysis, which calculates results using the ranking of values relative ' +
+				'to each other rather than using the actual values themselves. The selection of a CRLMAX and the recoding are done to make ' +
+				'correct comparisons among nondetections and between nondetections and low-level detections; for example, if a CRLMAX of ' +
+				'0.2 is selected, reported results of < 0.1 and < 0.2 are recoded as 0.19 before statistical analysis so that the statistical ' +
+				'program does not interpret these two nondetections as different values and also to distinguish both from a reported value ' +
+				'of 0.2. Reported results of 0.17 (a detection) and < 0.2 (a nondetection) are also recoded as 0.19 before statistical ' +
+				'analysis because it is not possible to determine if the two values differ. The CRLMAX and the value used for recoding ' +
+				'nondetections are reported for each constituent in the “readme” tab of the data files. Data for the pesticide compounds ' +
+				'atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine (a degradate of atrazine) are prepared using a ' +
+				'different method, as described in Toccalino and others (2014a). Differences in data preparation for pesticide compounds ' +
+				'and degradates include that concentrations were adjusted for recovery and that nondetections were replaced with a single ' +
+				'value less than the lowest detection (rather than a value less than the CRLMAX). For methyl <i>tert</i>-butyl ether, the CRLMAX ' +
+				'was determined for each pair rather than for the entire data set.</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "600px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
 		} else if (option == 'Stats') {
 			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 				'<div id="helpTextHeaderClose">close</div>' +
