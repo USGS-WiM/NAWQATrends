@@ -1754,6 +1754,34 @@ function showHelpText(option) {
 			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
 			helpTextDiv.style.width = "700px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 
+		} else if (option == 'Stats') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Statistical Analysis</div>' +
+				'<div id="helpTextContent">' +
+				'<p>For each constituent, data are analyzed for statistically significant changes between the decadal ' +
+				'samples within a network using the Wilcoxon-Pratt signed-rank test (Pratt, 1959) using the R-statistical ' +
+				'software. Details of this method are described in Lindsey and Rupert (2012). Briefly, the method first ' +
+				'calculates changes in concentrations at individual wells and then uses the pattern of those changes to ' +
+				'determine whether or not there has been a statistically significant change for a well network as a whole. ' +
+				'For these tests, a 90-percent confidence level, or a <i>p</i>-value of less than 0.10, is used to signify a ' +
+				'statistically significant change. Because the R-statistical program cannot analyze networks if all the ' +
+				'data are tied (no differences in any pair), networks with all ties are assumed to have no significant change.</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.height = "450px";
+			helpTextDiv.style.width = "500px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
 		} else if (option == 'References') {
 			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 				'<div id="helpTextHeaderClose">close</div>' +
