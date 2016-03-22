@@ -1754,6 +1754,34 @@ function showHelpText(option) {
 			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
 			helpTextDiv.style.width = "700px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 
+		} else if (option == 'Criteria') {
+			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
+				'<div id="helpTextHeaderClose">close</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader">Mapping criteria and benchmarks</div>' +
+				'<div id="helpTextContent" class="criteria">' +
+				'<p>The NAWQA Project has developed an interactive mapping tool that displays decadal changes in concentrations. From among the more than 300 constituents sampled during the two decades, 24 constituents were prioritized for analysis for decadal change based on the following criteria:</p>' +
+				'<div class="criteriaItems"><p>(1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public supply wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009),</p>' +
+				'<p>(2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water,</p>' +
+				'<p>(3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or</p>' +
+				'<p>(4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006).</p></div>' +
+				'<p>Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have sufficient data for analysis; thus, they are not included in the mapping tool.</p>' +
+				'<p>Benchmarks used to prioritize the constituents were: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), USGS Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), and nonregulatory SMCLs (U.S. Environmental Protection Agency, 2012). Of these benchmarks, only MCLs are legally enforceable (regulatory) drinking-water standards; all but SMCLs are human-health benchmarks. For more information about these benchmarks, click here . For a listing of the 24 constituents selected for analysis and the reason they were selected, click here .</p>' +
+				'</div>' +
+				'</div>';
+
+			var percentOfScreenHeight = 0.8;
+			var percentOfScreenWidth = 0.8;
+
+			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
+			var left = (dojo.byId('map').style.width.replace(/\D/g,''))*((1.0-percentOfScreenWidth)/2) + "px";
+
+			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
+			helpTextDiv.style.left = left; //evt.clientX-5 + 'px';
+
+			helpTextDiv.style.maxHeight = "750px";
+			helpTextDiv.style.height = (dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "600px"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+
 		} else if (option == 'DataPrep') {
 			helpTextDiv.innerHTML = '<div id="helpTextInner">' +
 				'<div id="helpTextHeaderClose">close</div>' +
