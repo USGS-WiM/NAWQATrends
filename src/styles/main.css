@@ -301,6 +301,36 @@ html, body {
     display: none;
 }
 
+#constituentSelectDiv {
+    font-weight: 500;
+    font-size: 16px;
+    color: White;
+    background-color: black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+    font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+    position: absolute;
+    left: 635px;
+    top: 65px;
+    padding: 6px;
+    z-index: 3;
+    cursor: pointer;
+    display: none;
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(126, 126, 132);
+    /* RGBa with 0.55 opacity */
+    background: rgba(126, 126, 132, 1.0);
+    /* For IE 5.5 - 7*/
+    /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7E7E8400, endColorstr=#7E7E8400);*/
+    /* For IE 8*/
+    /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7E7E8400, endColorstr=#7E7E8400)";*/
+    border: 1px solid #59595C;
+    font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
+    color: #E7E4CE;
+}
+
 #printStatus {
     font-weight: 500;
     font-size: 16px;
@@ -310,6 +340,7 @@ html, body {
     border-bottom-right-radius: 5px;
     -moz-border-bottom-left-radius: 5px;
     -moz-border-bottom-right-radius: 5px;
+    border: solid 1px black;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
     left: 460px;
@@ -484,12 +515,15 @@ table.layerTable td:nth-child(3) {
 }
 
 #constituentUpdater {
-    padding-left: 50px;
+
+}
+
+#constStatus {
+    margin-top: 15px;
 }
 
 #inputs {
     padding: 0px 10px 0px 0px;
-    text-align: bottom;
 }
 
 .usgsLinksHeader {
@@ -508,9 +542,9 @@ table.layerTable td:nth-child(3) {
 }
 
 #helpTextHeader {
-    font-size: 20px;
-    font-weight: bold;
-}
+     font-size: 20px;
+     font-weight: bold;
+ }
 
 #helpTextHeaderClose {
     float: right;
@@ -539,7 +573,44 @@ table.layerTable td:nth-child(3) {
     box-shadow: 0 0 .25em #000;
 }
 
-#helpTextDiv {
+#FAQTextDiv {
+    border: 2px solid;
+    z-index: 9999;
+}
+
+#FAQTextHeader {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#FAQTextHeaderClose {
+    float: right;
+    padding-right: 5px;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#FAQText {
+    font-family: BryantRegular;
+    font-size: 16px;
+    max-width: 1000px;
+    margin-top: 0px;
+    position: absolute;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*height: 525px;
+    width: 500px;*/
+    z-index: 5;
+    background-color: #e7e4ce;
+    line-height: 1.75;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 0 0 .25em #000;
+}
+
+#FAQTextDiv {
     border: 2px solid;
     z-index: 9999;
 }
@@ -550,6 +621,10 @@ table.layerTable td:nth-child(3) {
 }
 
 #helpTextContent {
+     overflow-y: auto;
+}
+
+#FAQTextContent {
     overflow-y: auto;
 }
 
@@ -634,15 +709,38 @@ table.layerTable td:nth-child(3) {
 }
 
 #buttonDiv {
-    padding-top: 20px;
     width: 100%;
     text-align: center;
+    vertical-align: middle;
     line-height: 0.8;
+}
+
+.learnButton {
+    background-color: rgb(243, 122, 73);
+    height: 100%;
+    width: 125px;
+    color: white;
+    margin-right: 30px;
+    font-family: BryantWebMedium, "Lucinda Sans Unicode", "Lucinda Grande", sans-serif;
+    /* letter-spacing: 1px; */
+    font-size: 16px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 0px;
+    cursor: pointer;
+}
+
+#rec {
+    font-size: smaller;
+}
+
+#span {
+    height: 100%;
 }
 
 .introButton {
     background-color: rgb(243, 122, 73);
-    height: 40px;
+    height: 100%;
     width: 125px;
     color: white;
     font-family: BryantWebMedium, "Lucinda Sans Unicode", "Lucinda Grande", sans-serif;
@@ -911,7 +1009,6 @@ table.esriLegendLayer td:nth-child(even) {
 
 #constitExp {
     font-size: 14px;
-    display: none;
 }
 
 #constDropdowns {

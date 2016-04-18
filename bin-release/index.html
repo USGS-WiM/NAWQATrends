@@ -133,6 +133,29 @@
               <span><i class="fa fa-refresh fa-spin fa-fw margin-bottom"></i><label> Print in progress</label></span>
           </div>
 
+          <div id="constituentSelectDiv" class="headerTab">
+              <div id="constituentUpdater">
+                  <label>Choose Constituent: </label>
+                  <!--<select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="constituentSelect" onchange="constituentUpdate(event)">
+                  </select>-->
+                  <br/>
+
+                  <input type="radio" name="constButtons" id="inorganicButton" onchange="constTypeSelect(event)" value="inorganic" checked>
+                  <label for="inorganicButton">Inorganic</label>
+                  <input type="radio" name="constButtons" id="organicButton" value="organic" onchange="constTypeSelect(event)">
+                  <label for="organicButton">Organic</label>
+                  <br/>
+                  <div id="inputs">
+                      <select class="constDropDowns" style="padding: 2px 2px 2px 2px; max-width: 180px; margin-bottom: 10px" id="inorganicConstituentSelect" onchange="constituentUpdate(event)">
+                      </select>
+                      <br/>
+                      <select class="constDropDowns" style="padding: 2px 2px 2px 2px; max-width: 180px; margin-bottom: 10px" id="organicConstituentSelect" onchange="constituentUpdate(event)">
+                      </select>
+                  </div>
+                  <label id="constStatus" style="color: green; font-weight: bold">Updated</label>
+              </div>
+          </div>
+
           <!-- basemap selection tool -->
           <div id="basemapSelector" >
             <div data-dojo-type="dijit.TitlePane" data-dojo-props="title:'<img id=\'galleryIcon\' src=\'images/basemap_new_small.png\'> Basemaps', closable:false, open:false">
@@ -179,38 +202,17 @@
             <div id="availableLayers" data-dojo-type="wim.CollapsingContainer" data-dojo-props="title:'MAP LAYERS',imageUrl:'images/basemap_new_small.png'">
               <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Click to toggle'">
                 <div id="toggle" style="padding: 2px 2px;"></div>
-              </div> 
-              <div id="constituentUpdater">
-                <label>Choose Constituent: </label>
-                <!--<select class="constDropDowns" style="padding: 2px 2px 2px 2px;" id="constituentSelect" onchange="constituentUpdate(event)">
-                </select>-->
-                <br/>
-
-                <input type="radio" name="constButtons" id="inorganicButton" onchange="constTypeSelect(event)" value="inorganic" checked>
-                <label for="inorganicButton">Inorganic</label>
-                <input type="radio" name="constButtons" id="organicButton" value="organic" onchange="constTypeSelect(event)">
-                <label for="organicButton">Organic</label>
-                <br/>
-                <div id="inputs">
-                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px; max-width: 180px" id="inorganicConstituentSelect" onchange="constituentUpdate(event)">
-                  </select>
-                  <br/>
-                  <select class="constDropDowns" style="padding: 2px 2px 2px 2px; max-width: 180px" id="organicConstituentSelect" onchange="constituentUpdate(event)">
-                  </select>
-                </div>
-                <br/>
-                <label id="constStatus" style="color: green; font-weight: bold">Updated</label>
               </div>
               
             </div>
             <div id="explanation" data-dojo-type="wim.CollapsingContainer" data-dojo-props="title:'EXPLANATION',imageUrl:'images/basemap_new_small.png'">
            	<div id="legend" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Explanation',selected:true">
-              <label id="arrowSizeRelative">Arrow size relative to benchmark</label>
-              <br/>
-              <label id="constitExp"></label>
-              <br/>
+              <!--<label id="arrowSizeRelative">Arrow size relative to benchmark</label>
+              <br/>-->
               <div id="legendDiv">
               </div>
+              <br/>
+              <label id="constitExp"></label>
             </div>
           </div>
 
