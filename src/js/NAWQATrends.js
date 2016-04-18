@@ -89,7 +89,7 @@ function init() {
 	dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
 	//dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
 	dojo.connect(dojo.byId('moreInfoButton'), 'onmouseover', dataDocOptions);
-	dojo.connect(dojo.byId("arrowSizeRelative"), "onclick", showConstituentExp);
+	//dojo.connect(dojo.byId("arrowSizeRelative"), "onclick", showConstituentExp);
 
 	// Added for handling of ajaxTransport in IE
     if (!jQuery.support.cors && window.XDomainRequest) {
@@ -196,11 +196,9 @@ function init() {
 		         			//.attr({"value": value.attributes.Constituent, "description": value.attributes.Description})
 		         		//$('#constitExp').html("Inorganic text<br/>*For " + value.attributes.DisplayName + ", " + value.attributes.Description);
 		         		if (value.attributes.DisplayName == "Chloride") {
-		         			$('#constitExp').html("<p>" + value.attributes.GenDescSmallChg + "<br/>" + 
-								value.attributes.GenDescLargeChg + "</p>" +
-								"<p>For " + value.attributes.DisplayName + ", " +
-								value.attributes.Description_SmallChange + ", " + 
-								value.attributes.Description_LargeChange + "</p>");
+		         			$('#constitExp').html("<p>" + value.attributes.GenDescSmallChg + "</p>" +
+								"<p>" + value.attributes.GenDescLargeChg + "</p>" +
+								"<p>" + value.attributes.GenDescBenchmark + "</p>");
 		         		}
             		} else if (value.attributes.ConstituentType == 'organic' && value.attributes.Tableorder == "Mappable") {
             		  	$('#organicConstituentSelect')
@@ -349,12 +347,12 @@ function init() {
 	renderer.addValue({
 		value: "2", 
 		symbol: orangeBigSymbol,
-		label: "Relatively large increase"
+		label: "Large increase"
 	});
     renderer.addValue({
 		value: "1", 
 		symbol: orangeSmallSymbol,
-		label: "Relatively small increase"
+		label: "Small increase"
 	});
     /*renderer.addValue({
     	value: "0", 
@@ -372,12 +370,12 @@ function init() {
     renderer.addValue({
 		value: "-1", 
 		symbol: greenSmallSymbol,
-		label: "Relatively small decrease"
+		label: "Small decrease"
 	});
     renderer.addValue({
 		value: "-2", 
 		symbol: greenBigSymbol,
-		label: "Relatively large decrease"
+		label: "Large decrease"
 	});
 	renderer.addValue({
 		value: "null", 
@@ -426,7 +424,7 @@ function init() {
 
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
-			"Change in Network Concentrations" : {
+			"Magnitude of change" : {
 				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
@@ -546,6 +544,8 @@ function init() {
 	//this function creates the legend element based on the legendLayers array which contains the relevant data for each layer. 
 	dojo.connect(map,'onLayersAddResult',function(results){
 		$("#legendDiv").hide();
+
+		legendLayers[0].title = "Magnitude of change";
 
 		legend = new esri.dijit.Legend({
 			map:map,
@@ -727,8 +727,12 @@ function init() {
 						dojo.place(colOne,rowOne);
 
 						//var checkLabel = $("<label>").text(layerName);
+						var checkboxLabel = layerName;
+						if (layerName == "Magnitude of change") {
+							checkboxLabel = "Change in Network Concentrations";
+						}
 						var checkLabel = dojo.doc.createElement("label");
-						checkLabel.innerHTML = layerName;
+						checkLabel.innerHTML = checkboxLabel;
 						var colTwo = dojo.doc.createElement("td");
 						dojo.place(checkLabel,colTwo);
 						dojo.place(colTwo,rowOne);
@@ -1484,9 +1488,9 @@ function dataDocOptions(evt) {
 	console.log('hovered');
 }
 
-function dataDocClick(option) {
+function dataDocClick(option,faqNumber) {
 	console.log(option);
-	showHelpText(option)
+	showHelpText(option,faqNumber);
 }
 
 function showIntro() {
@@ -1496,14 +1500,20 @@ function showIntro() {
 	$("#intro").addClass("ui-widget-content");
 
 	introDiv.innerHTML = '<div id="introInner">' +
-			'<div id="introContent">' +
+			              '<div id="introContent">' +
 				'<h1 id="introTitle" class="introHeaders">A Decadal Look at Groundwater Quality</h1>' +
 				'<h4 id="introSubtitle" class="introHeaders"><i>A first of its kind, national assessment of an unseen, valuable resource</i></h4>' +
 				'<img id="mapScreenshot" src="./images/map-screenshot.png"/>' +
-				'<p>About 140 million people—almost half of the Nation’s population—rely on groundwater for drinking water, and the demand for groundwater for irrigation and agriculture continues to grow.</p>' +
-				'<p>This mapper shows how concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater are changing over decadal periods across the Nation.</p>' +
-				'<p>Tracking changes in groundwater quality and investigating the reasons for these changes is crucial for informing mangement decisions to protect and sustain our valuable groundwater resources.</p>' +
-				'<div id="buttonDiv"><button class="introButton">Enter the mapper</button></div>' +
+				'<p>About 140 million people—almost one-half of the Nation’s population—rely on groundwater for drinking water, and the demand for groundwater for irrigation and agriculture continues to increase.</p>' +
+				'<p>This mapper shows how concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater are changing during decadal periods across the Nation.</p>' +
+				'<p>Tracking changes in groundwater quality and investigating the reasons for these changes is crucial for informing management decisions to protect and sustain our valuable groundwater resources.</p>' +
+				'<div id="buttonDiv">' +
+					'<button class="learnButton">Learn more ' +
+						'<span id="rec">(recommended for first time users)</span>' +
+					'</button>' +
+					'<button id="introButton" onclick="removeIntro()" class="introButton"><span id="enter">Enter the mapper</span>' +
+					'</button>' +
+				'</div>' +
 			'</div>' +
 		'</div>';
 
@@ -1526,11 +1536,9 @@ function showIntro() {
 
 	var ht = $("#intro").height() - $("#introHeader").height() - 20;
 	$("#introContent").height(ht + "px");
-
-	dojo.connect(dojo.byId("buttonDiv"), "onclick", removeIntro);
 }
 
-function showHelpText(option) {
+function showHelpText(option, faqNumber) {
 
 	$('#helpTextHeaderClose').click();
 
@@ -1760,16 +1768,20 @@ function showHelpText(option) {
 				'<div id="helpTextHeader" class="usgsLinksHeader">Mapping criteria and benchmarks</div>' +
 				'<div id="helpTextContent" class="criteria">' +
 				'<p>The NAWQA Project has developed an interactive mapping tool that displays decadal changes in concentrations. From among the more than 300 constituents sampled during the two decades, 24 constituents were prioritized for analysis for decadal change based on the following criteria:</p>' +
-				'<div class="criteriaItems"><p>(1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public supply wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009),</p>' +
+				'<div class="criteriaItems"><p>(1) they exceeded a human-health benchmark in at least 1 percent of the wells used as a source of drinking-water public-supply wells (Toccalino and Hopple, 2010) or domestic-supply wells (Desimone, 2009),</p>' +
 				'<p>(2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water,</p>' +
 				'<p>(3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or</p>' +
 				'<p>(4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006).</p></div>' +
-				'<p>Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have sufficient data for analysis; thus, they are not included in the mapping tool.</p>' +
-				'<p>Benchmarks used to prioritize the constituents were: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), USGS Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), and nonregulatory SMCLs (U.S. Environmental Protection Agency, 2012). Of these benchmarks, only MCLs are legally enforceable (regulatory) drinking-water standards; all but SMCLs are human-health benchmarks. For more information about these benchmarks, click here . For a listing of the 24 constituents selected for analysis and the reason they were selected, click here .</p>' +
-				'</div>' +
+				'<p>Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis but do not have sufficient data for analysis; thus, they are not included in the mapping tool.</p>' +
+				'<p>Benchmarks used to prioritize the constituents were the following: EPA maximum contaminant levels (MCLs) (U.S. Environmental Protection Agency, 2012), USGS Health-Based Screening Levels (HBSLs) (Toccalino and others, 2014b), and nonregulatory SMCLs (U.S. Environmental ' +
+				'Protection Agency, 2012). Of these benchmarks, only MCLs are legally enforceable (regulatory) drinking-water standards; all but SMCLs are human-health benchmarks. For more ' +
+				'information about these benchmarks, <a target="_blank" href="javascript:dataDocClick(\'FAQ\',14)">click here</a>. For a listing of the 24 constituents selected for analysis and the reason they were selected, ' +
+				'<a target="_blank" href="./files/Constituent_table.pdf">click here</a>.</p>' +
+			'</div>' +
 				'</div>';
 
 			var percentOfScreenHeight = 0.8;
+
 			var percentOfScreenWidth = 0.8;
 
 			var top = (dojo.byId('map').style.height.replace(/\D/g,''))*((1.0-percentOfScreenHeight)/2) + "px";
@@ -1790,24 +1802,24 @@ function showHelpText(option) {
 				'<p>In preparation for statistical analysis, environmental water-quality data for selected sites are retrieved from the ' +
 				'USGS National Water Information System database. A maximum common reporting level (CRLMAX) is chosen for the data analysis, ' +
 				'usually the lowest reporting level that still retains the maximum amount of data for analysis. The CRLMAX and the value ' +
-				'used for recoding nondetections are reported for each constituent in the “readme” tab of the data files and details are ' +
-				'provided ‘details on data preparation’ link. Analysis is completed for networks with at least 10 pairs of samples. Once a ' +
+				'used for recoding nondetections are reported for each constituent in the “readme” tab of the data files, and details are ' +
+				'provided at the ‘details on data preparation’ link. Analysis is completed for networks with at least 10 pairs of samples. Once a ' +
 				'CRLMAX is selected for a given constituent, all nondetections with a reporting level greater than the CRLMAX are deleted ' +
 				'from the dataset. All nondetections and reported values less than the CRLMAX are recoded to a unique value selected to ' +
 				'specifically represent values below the CRLMAX. The value used for recoding is typically slightly less than the CLRMAX, ' +
 				'but its exact value does not affect the statistical analysis, which calculates results using the ranking of values relative ' +
 				'to each other rather than using the actual values themselves. The selection of a CRLMAX and the recoding are done to make ' +
 				'correct comparisons among nondetections and between nondetections and low-level detections; for example, if a CRLMAX of ' +
-				'0.2 is selected, reported results of < 0.1 and < 0.2 are recoded as 0.19 before statistical analysis so that the statistical ' +
+				'0.2 is selected, reported results of <0.1 and <0.2 are recoded as 0.19 before statistical analysis so that the statistical ' +
 				'program does not interpret these two nondetections as different values and also to distinguish both from a reported value ' +
-				'of 0.2. Reported results of 0.17 (a detection) and < 0.2 (a nondetection) are also recoded as 0.19 before statistical ' +
+				'of 0.2. Reported results of 0.17 (a detection) and <0.2 (a nondetection) are also recoded as 0.19 before statistical ' +
 				'analysis because it is not possible to determine if the two values differ. The CRLMAX and the value used for recoding ' +
 				'nondetections are reported for each constituent in the “readme” tab of the data files. Data for the pesticide compounds ' +
 				'atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine (a degradate of atrazine) are prepared using a ' +
 				'different method, as described in Toccalino and others (2014a). Differences in data preparation for pesticide compounds ' +
 				'and degradates include that concentrations were adjusted for recovery and that nondetections were replaced with a single ' +
 				'value less than the lowest detection (rather than a value less than the CRLMAX). For methyl <i>tert</i>-butyl ether, the CRLMAX ' +
-				'was determined for each pair rather than for the entire data set.</p>' +
+				'was determined for each pair rather than for the entire dataset.</p>' +
 				'</div>' +
 				'</div>';
 
@@ -1918,10 +1930,10 @@ function showHelpText(option) {
 					'<div id="helpTextContent">' +
 						'<h2>Study scope</h2>' +
 						'<a href="#faq1">1. What is the purpose of this study?</a><br/>' +
-						'<a href="#faq2">2. Who conducted this study?</a><br/>' +
+						'<a href="#faq2">2. Who completed this study?</a><br/>' +
 						'<a href="#faq3">3. Why evaluate changes in water quality?</a><br/>' +
 						'<a href="#faq4">4. Does this map represent all changes in groundwater resources across the country?</a><br/>' +
-						'<a href="#faq5">5. What percent of the population of the United States relies upon groundwater for their drinking water?</a><br/>' +
+						'<a href="#faq5">5. What percentage of the population of the United States relies upon groundwater for their drinking water?</a><br/>' +
 						'<a href="#faq6">6. How many wells were sampled for this study, and what time period is represented?</a><br/>' +
 						'<a href="#faq7">7. How did you determine which constituents to display on the map?</a><br/>' +
 						'<h2>Features of the web site</h2>' +
@@ -1935,7 +1947,7 @@ function showHelpText(option) {
 						'<h2>Study results</h2>' +
 						'<a href="#faq14">14. Which benchmarks were used to provide context for the results?</a><br/>' +
 						'<a href="#faq15">15. Do the findings indicate whether water from the wells is safe to drink?</a><br/>' +
-						'<a href="#faq16">16. What does it mean when relatively large decadal increases in concentrations were identified on these maps with upwardly facing red arrows, and why do the concentration ranges for large and small arrows vary by constituent?</a><br/>' +
+						'<a href="#faq16">16. What does it mean when large decadal increases in concentrations were identified on these maps with upwardly facing red arrows, and why do the concentration ranges for large and small arrows vary by constituent?</a><br/>' +
 						'<a href="#faq17">17. Where can I learn more about contaminants in public-supply wells and domestic wells?</a><br/>' +
 						'<a href="#faq18">18. What are the causes of these changes in groundwater quality?</a><br/>' +
 						'<a href="#faq19">19. What human factors are contributing to changes in groundwater quality?</a><br/>' +
@@ -1954,47 +1966,47 @@ function showHelpText(option) {
 
 						'<h2 class="faqHeader">Study scope</h2>' +
 						'<div id="faq1" class="faqQuestion">1. What is the purpose of this study?</div>' +
-						'<div class="faqAnswer">The purpose of this study is to determine if the quality of the Nation’s groundwater has become better, worse, or stayed the same during 1988-2012. Evaluating changes in groundwater quality at the decadal scale is one component of a larger effort to understand the quality of the Nation’s water resources, and how those conditions are changing over time.</div>' +
-						'<div id="faq2" class="faqQuestion">2.	Who conducted this study?</div>' +
+						'<div class="faqAnswer">The purpose of this study is to determine if the quality of the Nation’s groundwater has become better, worse, or stayed the same during 1988-2012. Evaluating changes in groundwater quality at the decadal scale is one component of a larger effort to understand the quality of the Nation’s water resources and how those quality conditions are changing with time.</div>' +
+						'<div id="faq2" class="faqQuestion">2.	Who completed this study?</div>' +
 						'<div class="faqAnswer">The U.S. Geological Survey’s National Water-Quality Assessment (NAWQA) Project conducted this study. Sampling teams in USGS Water Science Centers across the country collected the samples and project staff analyzed the data.</div>' +
 						'<div id="faq3" class="faqQuestion">3. Why evaluate changes in water quality?</div>' +
-						'<div class="faqAnswer">Groundwater is the source of drinking water about half of the population of the United States, and has many other important uses, such as for irrigation. It is important to document how the quality of this vital resource is changing in order to understand how management practices and ongoing environmental stresses may be affecting groundwater quality. Degradation of this resource can happen over a long time period, and recovery from historic contamination can also take a long time.</div>' +
+						'<div class="faqAnswer">Groundwater is the source of drinking water for about one-half of the population of the United States and has many other important uses, such as for irrigation. It is important to document how the quality of this vital resource is changing in order to understand how management practices and ongoing environmental stresses may be affecting groundwater quality. Degradation of this resource can happen during a long time period, and recovery from historic contamination can also take a long time.</div>' +
 						'<div id="faq4" class="faqQuestion">4. Does this map represent all changes in groundwater resources across the country?</div>' +
-						'<div class="faqAnswer">The samples used to create this map come from 27 principal aquifers that account for more than 90 percent of the groundwater used for public water supply in the United States. However, the wells that were sampled are from selected geographic parts of each aquifer and, in some cases, also represent a specific land-use type. In addition, most of the samples are from monitoring wells and domestic-supply wells, which represent the shallower parts of the aquifer. As such these results apply to the depth zone and setting where the samples were collected, but also provide insight on possible future changes in water quality in the deeper zones of these aquifers that is used for public supply.</div>' +
-						'<div id="faq5" class="faqQuestion">5. What percent of the population of the United States relies upon groundwater for their drinking water?</div>' +
-						'<div class="faqAnswer">Groundwater is the source of drinking-water supply for 140 million people—nearly one-half of the Nation’s (Maupin and others, 2014).</div>' +
+						'<div class="faqAnswer">The samples used to create this map come from 27 principal aquifers that account for more than 90 percent of the groundwater used for public water supply in the United States; however, the wells that were sampled are from selected geographic parts of each aquifer and, in some cases, also represent a specific land-use type. In addition, most of the samples are from monitoring wells and domestic-supply wells, which represent the shallower parts of the aquifer. As such, these results apply to the depth zone and setting where the samples were collected but also provide insight on possible future changes in water quality in the deeper zones of these aquifers that is used for public supply.</div>' +
+						'<div id="faq5" class="faqQuestion">5. What percentage of the population of the United States relies upon groundwater for their drinking water?</div>' +
+						'<div class="faqAnswer">Groundwater is the source of drinking-water supply for 140 million people—nearly one-half of the Nation’s population (Maupin and others, 2014).</div>' +
 						'<div id="faq6" class="faqQuestion">6. How many wells were sampled for this study, and what time period is represented?</div>' +
-						'<div class="faqAnswer">The dataset consists of 1,511 wells in 67 groups of wells called networks in various principal aquifers across the country from the U.S. Geological Survey (USGS) National Water-Quality Assessment (NAWQA) project. A network typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land use study) (Lapham and others, 1995). Each network has been sampled once during the period of 1988–2001 and again during 2002–12.</div>' +
+						'<div class="faqAnswer">The dataset consists of 1,511 wells in 67 groups of wells called networks in various principal aquifers across the country from the U.S. Geological Survey National Water-Quality Assessment project. A network typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land-use study) (Lapham and others, 1995). Each network has been sampled once during 1988–2001 and again during 2002–12.</div>' +
 						'<div id="faq7" class="faqQuestion">7. How did you determine which constituents to display on the map?</div>' +
-						'<div class="faqAnswer">More than 300 constituents were sampled at most of the wells during the two decades. Constituents were prioritized for analysis of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public supply wells (Toccalino and Hopple, 2010) or domestic supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis, but do not have sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in the mapping tool. <a target="_blank" href="./files/Benchmarks and Criteria.docx">More on constituent selection</a></div>' +
+						'<div class="faqAnswer">More than 300 constituents were sampled at most of the wells during the two decades. Constituents were prioritized for analysis of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking-water public-supply wells (Toccalino and Hopple, 2010) or domestic-supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis but do not have sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in the mapping tool. <a target="_blank" href="javascript:dataDocClick(\'Stats\');">More on constituent selection</a></div>' +
 
 						'<h2 class="faqHeader">Features of the web site</h2>' +
 						'<div id="faq8" class="faqQuestion">8. Where can I find help navigating this web page?</div>' +
-						'<div class="faqAnswer">An explanation of the arrows and icons on the map and what they mean can be found <a target="_blank" href="./files/Map_icons1.pdf">here</a>. A description of how to activate map layers can be found <a target="_blank" href="./files/Map_layers.pdf">here</a>. A description of the search, zoom, and print capabilities can be found <a target="_blank" href="./files/Map_searchzoom.pdf" >here</a>.</div>' +
+						'<div class="faqAnswer">An explanation of the arrows and icons on the map and what they mean is <a target="_blank" href="./files/Map_icons1.pdf">here</a>. A description of how to activate map layers can be found <a target="_blank" href="./files/Map_layers.pdf">here</a>. A description of the search, zoom, and print capabilities can be found <a target="_blank" href="./files/Map_searchzoom.pdf" >here</a>.</div>' +
 						'<div id="faq9" class="faqQuestion">9. Are the data available for download?</div>' +
 						'<div class="faqAnswer">The data used to make these maps are available for download here: (link to data)</div>' +
 
 						'<h2 class="faqHeader">Study design and methods</h2>' +
 						'<div id="faq10" class="faqQuestion">10. What are groundwater networks and what do they represent?</div>' +
-						'<div class="faqAnswer">Networks are groups of wells with similar characteristics.  Some are designed to give a broad overview of groundwater quality in an aquifer used as a source of drinking-water supply and others are designed to examine the factors that affect the quality of shallow groundwater underlying key types of land use. Networks were chosen for decadal-scale water-quality sampling based on geographic distribution across the Nation and to represent the most important aquifers and specific land use types. A network typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land use study) (Lapham and others, 1995). The same wells from each of the selected networks are sampled on a decadal-scale interval (Rosen and Lapham, 2008).</div>' +
+						'<div class="faqAnswer">Networks are groups of wells with similar characteristics.  Some are designed to give a broad overview of groundwater quality in an aquifer used as a source of drinking-water supply and others are designed to examine the factors that affect the quality of shallow groundwater underlying key types of land use. Networks were chosen for decadal-scale water-quality sampling based on geographic distribution across the Nation and to represent the most important aquifers and specific land-use types. A network typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land-use study) (Lapham and others, 1995). The same wells from each of the selected networks are sampled on a decadal-scale interval (Rosen and Lapham, 2008).</div>' +
 						'<div id="faq11" class="faqQuestion">11. Why are you sampling only once every decade?</div>' +
-						'<div class="faqAnswer">Sampling one time per decade allows the project to collect repeated samples in all of the well networks across the nation. If we sampled more frequently, we would have to sample fewer wells. Because changes in groundwater quality typically happen relatively slowly, sampling once per decade can be sufficient to capture these slow changes. Other ongoing USGS studies evaluate changes in groundwater quality at time intervals greater than and less than a decadal scale.</div>' +
-						'<div id="faq12" class="faqQuestion">12. How do you determine whether changes in concentrations over time are statistically significant?</div>' +
-						'<div class="faqAnswer">Significant changes for each constituent are determined by a statistical test called the Wilcoxon-Pratt signed rank test (Pratt, 1959) as described in Lindsey and Rupert (2012) using the R-statistical software. The method calculates changes in concentrations at individual wells and then uses the pattern of those changes to determine whether or not there has been a statistically significant change for a well network as a whole. For these tests, a 90-percent confidence level, or a p-value of less than 0.10, is used to signify a statistically significant change. <a target="_blank" href="./files/Statistical Analysis.docx" >More on statistics</a>.</div>' +
-						'<div id="faq13" class="faqQuestion">13. How do you calculate statistics when reporting levels changed over time?</div>' +
-						'<div class="faqAnswer">Because reporting levels vary over time, a maximum common reporting level (CRLMAX) is chosen for each constituent prior to the statistical analysis. Data for the pesticide compounds atrazine, prometon, metolachlor, simazine, dieldrin and deethylatrazine are prepared using the method described in Toccalino and others (2014a). <a target="_blank" href="./files/Data Preparation.docx" >More on data preparation</a>.</div>' +
+						'<div class="faqAnswer">Sampling one time per decade allows the project to collect repeated samples in all of the well networks across the Nation. If we sampled more frequently, we would have to sample fewer wells. Because changes in groundwater quality typically happen relatively slowly, sampling once per decade can be sufficient to capture these slow changes. Other ongoing USGS studies evaluate changes in groundwater quality at time intervals greater than and less than a decadal scale.</div>' +
+						'<div id="faq12" class="faqQuestion">12. How do you determine whether or not changes in concentrations with time are statistically significant?</div>' +
+						'<div class="faqAnswer">Significant changes for each constituent are determined by a statistical test called the Wilcoxon-Pratt signed rank test (Pratt, 1959) as described in Lindsey and Rupert (2012) using the R-statistical software. The method calculates changes in concentrations at individual wells and then uses the pattern of those changes to determine whether or not there has been a statistically significant change for a well network as a whole. For these tests, a 90-percent confidence level, or a p-value of less than 0.10, is used to signify a statistically significant change. <a target="_blank" href="javascript:dataDocClick(\'Stats\');" >More on statistics</a>.</div>' +
+						'<div id="faq13" class="faqQuestion">13. How do you calculate statistics when reporting levels changed with time?</div>' +
+						'<div class="faqAnswer">Because reporting levels vary over time, a maximum common reporting level (CRLMAX) is chosen for each constituent prior to the statistical analysis. Data for the pesticide compounds atrazine, prometon, metolachlor, simazine, dieldrin, and deethylatrazine are prepared using the method described in Toccalino and others (2014a). <a target="_blank" href="javascript:dataDocClick(\'DataPrep\');" >More on data preparation</a>.</div>' +
 
 						'<h2 class="faqHeader">Study results</h2>' +
 						'<div id="faq14" class="faqQuestion">14. Which benchmarks were used to provide context for the results?</div>' +
-						'<div class="faqAnswer">Two human-health benchmarks and one other water-quality benchmark were used in this study. The human-health benchmarks were Maximum Contaminant Levels (MCLs ) developed by EPA’s Office of Water for compounds that are regulated in drinking water under the Safe Drinking Water Act and non-enforceable Health-Based Screening Levels (HBSLs ) developed by the USGS for unregulated compounds without MCLs. These benchmarks are concentrations below which contaminants are not anticipated to cause adverse human-health effects from a lifetime of exposure. Secondary Maximum Contaminant Levels (SMCLs ) are non-enforceable guidelines regarding cosmetic effects such as tooth or skin discoloration or aesthetic effects such as taste, odor, or color of drinking water.</div>' +
-						'<div id="faq15" class="faqQuestion">15. Do the findings indicate whether water from the wells is safe to drink?</div>' +
-						'<div class="faqAnswer">No. The NAWQA Project did not assess the safety of drinking water. The quality of finished drinking water is regulated by the Environmental Protection Agency under the Safe Drinking Water Act. All of the samples included in this study, however, were collected prior to any treatment or blending that potentially could alter contaminant concentrations.  As a result, the sampled groundwater represents the quality of the source water and not necessarily the quality of finished water ingested by the people served by these domestic and public wells. In addition, the sampling included some monitoring wells and other types of wells which are not used as a source of drinking water.</div>' +
-						'<div id="faq16" class="faqQuestion">16. What does it mean when relatively large decadal increases in concentrations were identified on these maps with upwardly facing red arrows, and why do the concentration ranges for large and small arrows vary by constituent?</div>' +
-						'<div class="faqAnswer">When there was a statistically significant change in the concentration of a constituent over time, the magnitude of the change was classified as being “relatively large” or “relatively small” as compared to a benchmark to provide context for the results. “Relatively large” changes in concentrations over time mean that the magnitude of the change was more than 1 percent or 5 percent of the benchmark concentration, depending on the type of constituent, meaning that concentrations in the overall group of wells are approaching a benchmark more quickly than areas having “relatively small” changes. It does not mean that concentrations exceed a benchmark. Each assessment is for a group of 10-30 individual wells in a similar setting. Individual wells within a network may or may not have concentrations that exceed a benchmark. Within each group some concentrations are likely to be decreasing and others increasing, regardless of the direction of change for the overall group. Files that include concentrations for individual wells are available for download.</div>' +
+						'<div class="faqAnswer">Two human-health benchmarks and one other water-quality benchmark were used in this study. The human-health benchmarks were Maximum Contaminant Levels (MCLs) developed by EPA’s Office of Water for compounds that are regulated in drinking water under the Safe Drinking Water Act and nonenforceable Health-Based Screening Levels (HBSLs ) developed by the USGS for unregulated compounds without MCLs. These benchmarks are concentrations below which contaminants are not anticipated to cause adverse human-health effects from a lifetime of exposure. Secondary Maximum Contaminant Levels (SMCLs ) are nonenforceable guidelines regarding cosmetic effects such as tooth or skin discoloration or aesthetic effects such as taste, odor, or color of drinking water.</div>' +
+						'<div id="faq15" class="faqQuestion">15. Do the findings indicate if water from the wells is safe to drink?</div>' +
+						'<div class="faqAnswer">No. The NAWQA Project did not assess the safety of drinking water. The quality of finished drinking water is regulated by the EPA under the Safe Drinking Water Act. All of the samples included in this study, however, were collected prior to any treatment or blending that potentially could alter contaminant concentrations.  As a result, the sampled groundwater represents the quality of the source water and not necessarily the quality of finished water ingested by the people served by these domestic and public wells. In addition, the sampling included some monitoring wells and other types of wells, which are not used as a source of drinking water.</div>' +
+						'<div id="faq16" class="faqQuestion">16. What does it mean when large decadal increases in concentrations were identified on these maps with upwardly facing red arrows, and why do the concentration ranges for large and small arrows vary by constituent?</div>' +
+						'<div class="faqAnswer">When there was a statistically significant change in the concentration of a constituent with time, the magnitude of the change was classified as being “large” or “small” as compared to a benchmark to provide context for the results. “large” changes in concentrations over time mean that the magnitude of the change was more than 1 percent or 5 percent of the benchmark concentration, depending on the type of constituent, meaning that concentrations in the overall group of wells are approaching a benchmark more quickly than areas having “small” changes. It does not mean that concentrations exceed a benchmark. Each assessment is for a group of 10-30 individual wells in a similar setting. Individual wells within a network may or may not have concentrations that exceed a benchmark. Within each group some concentrations are likely to be decreasing and others increasing, regardless of the direction of change for the overall group. Files that include concentrations for individual wells are available for download.</div>' +
 						'<div id="faq17" class="faqQuestion">17. Where can I learn more about contaminants in public-supply wells and domestic wells?</div>' +
-						'<div class="faqAnswer">For more information on contaminants in domestic wells see <a target="_blank" href="http://pubs.usgs.gov/sir/2008/5227/">(Desimone, 2009)</a> and <a target="_blank" href="http://water.usgs.gov/nawqa/pubs/prin_aq/">(Desimone and others, 2015)</a> and for more information on public-supply wells see <a target="_blank" href="http://pubs.usgs.gov/circ/1346/">(Toccalino and Hopple, 2010)</a> and <a target="_blank" href="http://pubs.usgs.gov/circ/1385/">(Eberts and others, 2013)</a>.</div>' +
+						'<div class="faqAnswer">For more information on contaminants in domestic wells see <a target="_blank" href="http://pubs.usgs.gov/sir/2008/5227/">Desimone (2009)</a> and <a target="_blank" href="http://water.usgs.gov/nawqa/pubs/prin_aq/">Desimone and others (2015)</a> and for more information on public-supply wells see <a target="_blank" href="http://pubs.usgs.gov/circ/1346/">Toccalino and Hopple (2010)</a> and <a target="_blank" href="http://pubs.usgs.gov/circ/1385/">Eberts and others (2013)</a>.</div>' +
 						'<div id="faq18" class="faqQuestion">18. What are the causes of these changes in groundwater quality?</div>' +
-						'<div class="faqAnswer">The exact causes of changes in groundwater quality are not evaluated for every constituent and every network. Some nationwide changes, such as the banning of a chemical or introduction of a new chemical, can be documented on a large scale. Changes at the level of an individual network, however, require a focused evaluation of hydrologic conditions, groundwater age, and history of use of the contaminant. Some of these studies can be found <a target="_blank" href="http://water.usgs.gov/nawqa/studies/gwtrends/publications.php">here</a>.</div>' +
+						'<div class="faqAnswer">The exact causes of changes in groundwater quality are not evaluated for every constituent and every network. Some nationwide changes, such as the banning of a chemical or introduction of a new chemical, can be documented on a large scale. Changes at the level of an individual network, however, require a focused evaluation of hydrologic conditions, groundwater age, and history of use of the contaminant. Some of these studies are <a target="_blank" href="http://water.usgs.gov/nawqa/studies/gwtrends/publications.php">here</a>.</div>' +
 						'<div id="faq19" class="faqQuestion">19. What human factors are contributing to changes in groundwater quality?</div>' +
 						'<div class="faqAnswer">See more information on <a target="_blank" href="http://pubs.usgs.gov/circ/1385/">factors affecting vulnerability to contamination</a>.</div>' +
 						'<div id="faq20" class="faqQuestion">20. What natural features influence water quality?</div>' +
@@ -2004,16 +2016,16 @@ function showHelpText(option) {
 						'<div id="faq21" class="faqQuestion">21. Will other constituents be added to this tool?</div>' +
 						'<div class="faqAnswer">The 24 constituents displayed were selected as the most important for statistical analysis as described in the ‘Criteria for analyzing constituents’ table. Constituents that meet those criteria in future sampling events will be added to the map.</div>' +
 						'<div id="faq22" class="faqQuestion">22. The data show results through 2012. Are data still being collected and will those results be displayed?</div>' +
-						'<div class="faqAnswer">A third decade of data collection is underway, and these results will be compared to results from the previous two decades. Data collected after 2012 will be analyzed and the results will be added to this map on an annual basis following quality checks on the data. About 80 networks are scheduled to have decadal sampling by 2022.</div>' +
+						'<div class="faqAnswer">A third decade of data collection is underway, and these results will be compared to results from the previous two decades. Data collected after 2012 will be analyzed and the results will be added to this map on an annual basis after quality checks on the data. About 80 networks are scheduled to have decadal sampling by 2022.</div>' +
 						'<div id="faq23" class="faqQuestion">23. Are some areas likely to see faster changes in groundwater quality than others?  Why?</div>' +
 						'<div class="faqAnswer">Wells in areas where groundwater arrives at a well shortly after entering the aquifer will likely see concentrations change more rapidly than wells in areas where groundwater travels more slowly. Factors such as well depth and the type of aquifer material control these rates.  See more information on <a target="_blank" href="http://pubs.usgs.gov/circ/1385/">factors affecting vulnerability to contamination</a>.</div>' +
 						'<div id="faq24" class="faqQuestion">24. What can we do to improve groundwater quality?  How long will it take?</div>' +
-						'<div class="faqAnswer">The U.S. Environmental Protection Agency has resources on Source Water Protection. <a target="_blank" href="http://www.epa.gov/sourcewaterprotection">Source-water protection</a> strategies that rely on changes in human activities and practices at the land surface to achieve water-quality objectives can take many decades to affect the quality of water in some deeper wells.</div>' +
+						'<div class="faqAnswer">The EPA has resources on source water protection. <a target="_blank" href="http://www.epa.gov/sourcewaterprotection">source water protection</a> strategies that rely on changes in human activities and practices at the land surface to achieve water-quality objectives can take many decades to affect the quality of water in some deeper wells.</div>' +
 
 						'<h2 class="faqHeader">For more information on groundwater quality</h2>' +
 						'<div id="faq25" class="faqQuestion">25. Where is more information available about water-quality testing guidelines for domestic wells?</div>' +
 						'<div class="faqAnswer">(From Desimone and others, 2009)<br/>' +
-							'There are many sources of information about water-quality testing of domestic wells. Many state environmental or public-health agencies provide information and recommendations for homeowners about testing and water-quality of domestic wells. The USEPA also provides such information, and provides links to many state agency web sites on private wells. The U.S. Centers for Disease Control and Prevention provides information on water-quality testing and the health effects of selected contaminants in private wells. The U.S.Department of Agriculture, in cooperation with USEPA, provides information and resources for domestic-well owners through its Farm*A*Syst/Home*A*Syst and Cooperative State Research, Education, and Extension (CREES) Program. Local health departments, in many cases, are a source of information about private wells. Recommendations for water-quality testing and other information about domestic wells also are provided by several non-governmental organizations. Sources of information available on the internet from some of these agencies and organizations are listed below:' +
+							'There are many sources of information about water-quality testing of domestic wells. Many state environmental or public-health agencies provide information and recommendations for homeowners about testing and water-quality of domestic wells. The EPA also provides such information, and provides links to many state agency Web sites on private wells. The U.S. Centers for Disease Control and Prevention provides information on water-quality testing and the health effects of selected contaminants in private wells. The U.S. Department of Agriculture, in cooperation with EPA, provides information and resources for domestic-well owners through its Farm*A*Syst/Home*A*Syst and Cooperative State Research, Education, and Extension (CREES) Program. Local health departments, in many cases, are a source of information about private wells. Recommendations for water-quality testing and other information about domestic wells also are provided by several nongovernmental organizations. Sources of information available on the internet from some of these agencies and organizations are listed below:' +
 							'<br/><br/>U.S. Environmental Protection Agency, Private Drinking Water Wells<br/>' +
 							'<a target="_blank" href="http://www.epa.gov/safewater/privatewells/index2.html">http://www.epa.gov/safewater/privatewells/index2.html</a> and<br/>' +
 							'<a target="_blank" href="http://www.epa.gov/safewater/privatewells/whereyoulive_state.html">http://www.epa.gov/safewater/privatewells/whereyoulive_state.html</a>.<br/>' +
@@ -2036,15 +2048,15 @@ function showHelpText(option) {
 							'<a target="_blank" href="http://www.watersystemscouncil.org">http://www.watersystemscouncil.org</a>' +
 						'</div>' +
 						'<div id="faq26" class="faqQuestion">26. Where can I learn more information about other NAWQA water-quality assessments?</div>' +
-						'<div class="faqAnswer">Access <a target="_blank" href="http://water.usgs.gov/nawqa">http://water.usgs.gov/nawqa</a> for information about the USGS NAWQA Program and other assessments in the Program about the water-resources of the Nation.</div>' +
+						'<div class="faqAnswer">Access <a target="_blank" href="http://water.usgs.gov/nawqa">http://water.usgs.gov/nawqa</a> for information about the USGS NAWQA Project and other assessments in the Project about the water resources of the Nation.</div>' +
 
 						'<h2 class="faqHeader">Citations and Contacts</h2>' +
 						'<div id="faq27" class="faqQuestion">27. How should these web pages be cited?</div>' +
-						'<div class="faqAnswer">Lindsey, B. D., Johnson, T.D., and Belitz, K., 2016, Decadal changes in groundwater quality, U.S. Geological Survey Web page, available online at: http://nawqatrends.wim.usgs.gov/decadal/</div>' +
+						'<div class="faqAnswer">Lindsey, B.D., Johnson, T.D., and Belitz, Kenneth, 2016, Decadal changes in groundwater quality: U.S. Geological Survey Web page, http://nawqatrends.wim.usgs.gov/decadal/</div>' +
 						'<div id="faq28" class="faqQuestion">28. Who can I contact for more information on this study of decadal changes in the quality of water?</div>' +
 						'<div class="faqAnswer">Bruce Lindsey, USGS Hydrologist<br/>' +
 							'Email: <a target="_blank" href="mailto:blindsey@usgs.gov">blindsey@usgs.gov</a><br/>' +
-							'Phone (717) 730-6964</div>' +
+							'Phone: (717) 730-6964</div>' +
 
 					'</div>' +
 				'</div>';
@@ -2118,7 +2130,7 @@ function showHelpText(option) {
 		            return false;
 		        }
 		    }
-		}).find("*").andSelf().scroll(function() {               
+		}).find("*").andSelf().scroll(function() {
 		    // bind to the scroll event on current elements, and all children.
 		    //  we have to bind to all of them, because scroll doesn't propagate.
 
@@ -2133,6 +2145,12 @@ function showHelpText(option) {
         	}
 	    });
 
+		if (option == 'FAQ' && isNaN(faqNumber) == false) {
+			var faqTarget = document.getElementById('faq'+faqNumber);
+			var topPos = faqTarget.offsetTop;
+
+			document.getElementById('helpTextContent').scrollTop = topPos-50;
+		}
 		
 	}
 }
@@ -2197,14 +2215,21 @@ function constituentUpdate(event) {
 
 	var select = event.target;
 
-	var astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.value).toString() + "<br/>" + 
-				(select[select.selectedIndex].attributes.gendesclargechg.value).toString() + "</p>" +
-				"<p>For " + (select[select.selectedIndex].attributes.displayname.value).toString() + ", " +
-				(select[select.selectedIndex].attributes.description_smallchange.value).toString() + ", " + 
-				(select[select.selectedIndex].attributes.description_largechange.value).toString() + "</p>";
+	var astText = "";
+
+	if (select[select.selectedIndex].attributes.hasOwnProperty("GenDescLargeChg") == true) {
+		astText = "<p>" + (select[select.selectedIndex].attributes.GenDescSmallChg.value).toString() + "</p><p>" +
+			(select[select.selectedIndex].attributes.GenDescLargeChg.value).toString() + "</p>" +
+			"<p>" + (select[select.selectedIndex].attributes.GenDescBenchmark.value).toString() + "</p>";
+	} else {
+		astText = "<p>" + (select[select.selectedIndex].attributes.GenDescSmallChg.value).toString() + "</p><p>" +
+			"<p>" + (select[select.selectedIndex].attributes.GenDescBenchmark.value).toString() + "</p>";
+	}
+
+	var benchmarkText = (select[select.selectedIndex].attributes.GenDescBenchmark.value).toString();
 
 	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
-		astText = "<p>" + (select[select.selectedIndex].attributes.gendescsmallchg.value).toString() + "</p>";
+		astText = "<p>" + (select[select.selectedIndex].attributes.GenDescSmallChg.value).toString() + "</p>";
 	}
 
 	if (select.id == "organicConstituentSelect") {
@@ -2234,7 +2259,7 @@ function constituentUpdate(event) {
 	renderer.attributeField = attField;
 	renderer2.attributeField = attField;
 	
-	if (astText.match("No benchmark available") != null && astText.match("No benchmark available").length > 0) {
+	if (benchmarkText.match("No benchmark available") != null && benchmarkText.match("No benchmark available").length > 0) {
 		featureLayer.setRenderer(renderer2);
 	} else {
 		featureLayer.setRenderer(renderer);
