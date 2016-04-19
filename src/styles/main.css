@@ -312,7 +312,7 @@ html, body {
     -moz-border-bottom-right-radius: 5px;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
-    left: 635px;
+    left: 585px;
     top: 65px;
     padding: 6px;
     z-index: 3;
@@ -341,6 +341,7 @@ html, body {
     -moz-border-bottom-left-radius: 5px;
     -moz-border-bottom-right-radius: 5px;
     border: solid 1px black;
+    border-top-width: 0px;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
     left: 460px;
@@ -356,20 +357,20 @@ html, body {
 }
 
 #geocodeBar {
-    position: absolute;
+    /*position: absolute;*/
 
     /* Fallback for web browsers that doesn't support RGBa */
-    background: rgb(126, 126, 132);
+    /*background: rgb(126, 126, 132);*/
     /* RGBa with 0.55 opacity */
-    background: rgba(126, 126, 132, 1.0);
+    /*background: rgba(126, 126, 132, 1.0);*/
     /* For IE 5.5 - 7*/
     /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7E7E8400, endColorstr=#7E7E8400);*/
     /* For IE 8*/
     /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7E7E8400, endColorstr=#7E7E8400)";*/
     z-index: 1;
-    border: 1px solid #59595C;
+    /*border: 1px solid #59595C;
     border-radius: 0px 0px 5px 5px;
-    -moz-border-radius: 5px;
+    -moz-border-radius: 5px;*/
     padding: 5px;
     display: inline;
     float: right;
@@ -1218,7 +1219,7 @@ td div {
     -moz-border-bottom-right-radius: 5px;
     font-family: BryantRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif ;
     position: absolute;
-    right: 500px;
+    right: 290px;
     top: 65px;
     z-index: 3;
 }

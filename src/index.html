@@ -130,7 +130,7 @@
           </div>
 
           <div id="printStatus">
-              <span><i class="fa fa-refresh fa-spin fa-fw margin-bottom"></i><label> Print in progress</label></span>
+              <span><i class="fa fa-refresh fa-spin fa-fw margin-bottom"></i><label> Printing...</label></span>
           </div>
 
           <div id="constituentSelectDiv" class="headerTab">
@@ -177,7 +177,12 @@
               </div>              
               <!--<div id="titleSeparator">:</div>
               <div id="subTitle" style="display:block">Groundwater</div>-->
-              <div id="betaTitle">BETA VERSION</div>
+              <!--<div id="betaTitle">BETA VERSION</div>-->
+              <!-- geocoder -->
+              <div id="geocodeBar">
+                <input id="geocode" type="text" name="search" onKeyPress="enterKeyLocate(event)" placeholder="Find address or place" />
+                <input id="searchIcon" type="image" src="images/searchIcon.png" alt="Submit" onClick="locate()" />
+              </div>
             </div>
           </div>
           
@@ -188,12 +193,6 @@
           <!-- Div for holding the lat/long indicator bar at the bottom of the screen. 
           Adding the lat/long bar programmatically after the map has loaded.  -->
           <div id="latLngScaleBar"></div>
-          
-          <!-- geocoder -->
-          <div id="geocodeBar"> 
-             <input id="geocode" type="text" name="search" onKeyPress="enterKeyLocate(event)" placeholder="Find address or place" />
-             <input id="searchIcon" type="image" src="images/searchIcon.png" alt="Submit" onClick="locate()" />                
-          </div>
 
           <div id="loadingScreen" data-dojo-type="wim.LoadingScreen" data-dojo-props="region:'center', attachedMapID: 'map'" ></div>
         
@@ -211,7 +210,6 @@
               <br/>-->
               <div id="legendDiv">
               </div>
-              <br/>
               <label id="constitExp"></label>
             </div>
           </div>
