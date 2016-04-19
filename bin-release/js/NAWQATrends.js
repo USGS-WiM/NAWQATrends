@@ -378,11 +378,6 @@ function init() {
 		label: "Large decrease"
 	});
 	renderer.addValue({
-		value: "null", 
-		symbol: blankSymbol,
-		label: " "
-	});
-	renderer.addValue({
 		value: "-999", 
 		symbol: noDataSymbol,
 		label: "Trend data not available"
@@ -410,11 +405,6 @@ function init() {
 		value: "-1", 
 		symbol: greenSmallSymbol,
 		label: "Decrease"
-	});
-	renderer2.addValue({
-		value: "null", 
-		symbol: blankSymbol,
-		label: " "
 	});
 	renderer2.addValue({
 		value: "-999", 
