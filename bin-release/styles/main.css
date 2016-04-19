@@ -302,8 +302,8 @@ html, body {
 }
 
 #constituentSelectDiv {
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 20px;
     color: White;
     background-color: black;
     border-bottom-left-radius: 5px;

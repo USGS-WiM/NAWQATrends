@@ -2200,8 +2200,8 @@ function constituentUpdate(event) {
 
 	z = z + 1;
 
-	dojo.setStyle(constStatus.id, "color", "yellow");
-	constStatus.innerHTML = "...Updating...";
+	/*dojo.setStyle(constStatus.id, "color", "yellow");
+	constStatus.innerHTML = "...Updating...";*/
 
 	var select = event.target;
 
@@ -2232,8 +2232,8 @@ function constituentUpdate(event) {
     
 	var layerUpdateEnd = dojo.connect(featureLayer, "onUpdateEnd", function (evt) {
 			dojo.disconnect(featureLayer, layerUpdateEnd);
-			constStatus.innerHTML = "Updated";
-			dojo.setStyle(constStatus.id, "color", "green");
+			/*constStatus.innerHTML = "Updated";
+			dojo.setStyle(constStatus.id, "color", "green");*/
 		});
 
 	var defaultSymbol = null;
