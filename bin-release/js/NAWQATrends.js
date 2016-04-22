@@ -2063,7 +2063,7 @@ function showHelpText(option, faqNumber) {
 		} else if (option == 'learnMore') {
 			helpTextDiv.innerHTML = '<div id="helpTextInner" class="learnMore">' +
 				'<div id="helpTextHeaderClose">close</div>' +
-				'<div id="helpTextHeader" class="usgsLinksHeader">Learn more</div>' +
+				'<div id="helpTextHeader" class="usgsLinksHeader"></div>' +
 				'<div id="helpTextContent">' +
 				'<div id="usgscolorband">' +
 				'<div id="usgsbanner">' +
@@ -2087,7 +2087,7 @@ function showHelpText(option, faqNumber) {
 				'<div class="sixtysix">' +
 				'<div class="fifty">' +
 				'<p>' +
-				'Groundwater quality data were collected in 5,000 wells between 1988 and 2001 by the National Water-Quality Assessment Project. About 1,500 of these wells were sampled again between 2002 and 2012 to evaluate decadal changes in groundwater quality. Monitoring wells, domestic-supply wells, and some public-supply wells were included in this study. All water was collected prior to treatment.' +
+				'Groundwater quality data were collected in 5,000 wells between 1988 and 2001 by the National Water-Quality Assessment Project. About 1,500 of these wells were sampled again between 2002 and 2012 to evaluate decadal changes in groundwater quality. Monitoring wells, domestic-supply wells, and some public-supply wells were included in this study. All water was collected before treatment.' +
 				'</p>' +
 				'<p>' +
 				'Groundwater samples used to evaluate decadal change were collected from networks of wells with similar characteristics. Some networks, consisting of domestic or public-supply wells, were used to assess changes in the quality of groundwater used for drinking-water supply. Other networks, consisting of monitoring wells, assessed changes in the quality of shallow groundwater underlying key land-use types such as agricultural or urban lands. Networks were chosen based on geographic distribution across the Nation and to represent the most important water-supply aquifers and specific land-use types.' +
@@ -2158,7 +2158,7 @@ function showHelpText(option, faqNumber) {
 				'Decadal changes in concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater were evaluated in 67 networks across the Nation and displayed on an interactive web mapping tool.' +
 				'</p>' +
 				'<p>' +
-				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration. For example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 mg/L.' +
+				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration; for example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 mg/L.' +
 				'</p>' +
 				'</div>' +
 
