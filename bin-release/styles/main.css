@@ -558,7 +558,6 @@ table.layerTable td:nth-child(3) {
 #helpText {
     font-family: BryantRegular;
     font-size: 16px;
-    max-width: 1000px;
     margin-top: 0px;
     position: absolute;
     padding-top: 10px;
