@@ -1,0 +1,433 @@
+body,
+html{
+    margin: 0 auto;
+    padding: 0;
+}
+
+nav{
+    display: block;
+    box-sizing: border-box;
+    padding: 15px 5%;
+    color: #FFF;
+    background-color: #0071BC;
+}
+
+nav h1{
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 0 auto;
+    padding: 0;
+    font-size: 18pt;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+
+
+.naqwa-body{
+    box-sizing: border-box;
+    padding: 25px 2.5%;
+}
+
+
+.thirtythree{
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 25px;
+    width: 33.33%;
+    vertical-align: top;
+}
+
+.fifty{
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 25px;
+    width: 50%;
+    vertical-align: top;
+}
+.sixtysix{
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0;
+    width: 66.66%;
+    vertical-align: top;
+}
+.full{
+    display: block;
+    box-sizing: border-box;
+    padding: 0 25px 25px 25px;
+}
+
+
+p.learnMore{
+    display: block;
+    font-size: 10pt;
+    line-height: 1.6em;
+    padding: 0 0 15px 0;
+    margin:  0 auto;
+}
+
+
+ul{
+    display: inline-block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+    vertical-align: top;
+    list-style-type: none;
+}
+
+ul li{
+    font-style: italic;
+    box-sizing: border-box;
+    padding: 2px 0;
+    font-size: 10pt;
+}
+
+ul li b{
+    font-style: normal;
+    text-decoration: underline;
+}
+
+
+h2{
+    font-size: 14pt;
+    line-height: 1.4em;
+    margin: 0 auto;
+    padding: 0;
+}
+
+h3{
+    font-size: 16pt;
+    line-height: 1.4em;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    padding: 0;
+}
+
+.naqwa-body img{
+    width: 100%;
+    height: auto;
+    margin: 15px 0;
+}
+
+
+.smallfifty{
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 15px;
+}
+.smallfifty i{
+    display: block;
+    text-align: center;
+    font-style: normal;
+    font-size: 12pt;
+    margin: 15px 0 0 0;
+}
+.smallfifty img{
+    margin: 5px 0;
+}
+.smallfifty small{
+    line-height: 1.6em;
+    font-size: 9pt;
+}
+
+
+
+@media only screen and (max-width: 1060px) {
+    .thirtythree{
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+        display: block;
+    }
+    .sixtysix{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .thirtythree{
+        max-width: 100%;
+    }
+    .sixtysix{
+        width: 100%;
+    }
+    .fifty{
+        display: block;
+        width: 100%;
+    }
+    nav h1{
+        text-align: center;
+        font-size: 12pt;
+    }
+    #usgsccsabox{
+        display: none;
+    }
+    #usgsidentifier{
+        display: block;
+        margin: 0 auto;
+        float: none;
+    }
+    .smallfifty{
+        display: block;
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+/* ===OFFICIAL USGS STYLE SHEET===
+This CSS has been approved by all applicable parties and is subject to change...with prior notice. This CSS is meant to provide a consistent look and feel across all USGS Web pages and can be used in conjunction with the custom.css file and any additional style sheets of your own.
+
+DO NOT MODIFY THIS FILE IN ANY WAY.
+
+You can customize some areas of the header ONLY by making the changes in the custom.css file. Refer to the custom.css file for specific instructions.
+===END DISCLAIMER NOTICE===*/
+
+/* ===STANDARD HEADER===*/
+
+#usgscolorband {
+	font: 14px Verdana, Arial, Helvetica, sans-serif;
+	/*width: 100%;*/
+	height: 5.14em;
+	/*background: #006633 url(http://www.usgs.gov/images/headers/hazards.jpg) 178px 0px no-repeat;*/
+	min-height: 72px;
+}
+#usgsbanner {
+	width: 100%;
+	height: 72px;
+}
+#usgsidentifier {
+	/*background-color: black;*/
+	width: 178px;
+	height: 5.14em;
+	float: left;
+}
+#usgsidentifier img {
+	border: none;
+}
+#usgscoop {
+	padding-left: 18px;
+	position: relative;
+	float: left;
+	height: 5.14em;
+	background-color: black;
+	min-height: 72px;
+}
+#usgscoop img {
+	margin-right: 3px;
+	border: none;
+}
+#usgstitle {
+	background-color: #006633;
+	clear: both;
+	width: 100%;
+	/*border-bottom: 1px solid #ffffff;
+	border-top: 1px solid #ffffff;*/
+	font: 14px Verdana, Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	height: 29px;
+}
+#usgstitle p {
+	font: bold 1.2em Verdana, Arial, Helvetica, sans-serif;
+	padding: 5px;
+	margin: 0px;
+	float: left;
+}
+#usgstitle label {
+	font-size: small;
+	font-weight: bold;
+}
+#usgstitle form {
+	float: right;
+	padding: 5px;
+	margin: 0px;
+}
+#usgstitle form input {
+	margin: 0px;
+}
+#usgstitle #sa {
+	font-size: small !important;
+	font-size: x-small;
+}
+/* ===STANDARD CUSTOMER SERVICE AREA===*/
+#usgsccsabox {
+	float: right;
+	background-color: #000000;
+	min-height: 72px;
+}
+#usgsccsa {
+	font:  1em/.5em 'Lato', Verdana, Arial, Helvetica, sans-serif;
+	height: 5.14em;
+	font-weight: 700 !important;
+	width: 10.5em;
+}
+#usgsccsa a:link, #usgsccsa a:visited {
+	font:  1em/1.3em 'Lato', Verdana, Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: #fff;
+	margin-left: 4px;
+	text-decoration: none;
+}
+#usgsccsa a:hover {
+	color: #ffffff;
+	text-decoration: underline;
+	margin-left: 4px;
+}
+#usgsccsa a:active {
+	font: bold 1em/1.3em Verdana, Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	margin-left: 4px;
+	text-decoration: none;
+}
+
+/* ===STANDARD CONTENT===*/
+/*bodys {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
+	color: #000000;
+	background-color: #ffffff;
+}
+th, td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
+}*/
+/* ===STANDARD FOOTER===*/
+#usgsfooter {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
+	clear: both;
+	margin: 0;
+}
+#usgsfooterbar {
+	background-color: #666666;
+	padding: 4px;
+	margin: 0;
+}
+#usgsfooterbar a:link, #usgsfooterbar a:visited {
+	margin-right: 40px;
+	color: #ffffff;
+	text-decoration: none;
+}
+#usgsfooterbar a:hover {
+	margin-right: 40px;
+	color: #ffffff;
+	text-decoration: underline;
+}
+#usgsfooterbar a:active {
+	margin-right: 40px;
+	color: #ffffff;
+	text-decoration: none;
+}
+#usgsfootertext {
+	padding: 4px;
+	margin: 0;
+}
+#usgsfootertext img {
+	border: none;
+	float: right;
+	margin-right: 5px;
+}
+/*===PRINT STYLES FOR TEMPLATE===*/
+@media print {
+		 #usgsccsabox, #usgsfooterbar, #usgsfootertext img {
+		 		 display:none;
+		 }
+		 #usgstitle { margin-bottom:15px; }
+		 #usgsfooter { padding-top:15px; }
+		 #usgsheader, #usgsbanner, #usgstitle p, #usgsfootertext {
+		 		 padding:0;
+		 		 margin:0;
+		 		 color:#000000;
+		 		 background:#ffffff;
+		 }
+}
+/*===END PRINT STYLES FOR TEMPLATE===*/
+
+
+
+/* ================INSTRUCTIONS=================*/
+/* By changing the classes below, you can add your own custom styles for various areas of the header. In order for your changes to work though, you MUST include a reference in your HTML pages to both the common CSS file and custom CSS file in that order.
+
+Instructions are provided below for customizing these classes.
+
+/* ================BANNER=======================*/
+/* TO DISPLAY A CUSTOM BANNER IMAGE:
+If you want to display a custom banner, change the "background: url" to point to a local banner, or external, image location.
+
+TO DISPLAY A CUSTOM BANNER COLOR (NO IMAGE):
+If you would rather display a color instead of a banner image, change the "background: url" portion to point to "" and set the background color (#006633) to whatever color you wish to display.
+NOTE: You can use either hexadecimal color codes (i.e. - #006633, #063) or HTML color names (i.e. - "black"). */
+#usgscolorband {
+	margin-top: 0px;
+	background-color: #000;
+	padding-left:40px; padding-right:40px;
+	height:80px;
+	/*opacity:0.92;*/
+	padding-bottom:0;
+	line-height:68px;
+	padding-top: 10px;
+	background-image:url('../img/cartographer.png');
+	background-size: auto 180%;
+	/*background-color: rgba(34,43,49,0.35);*/
+	background-blend-mode: lighten;
+}
+#usgscolorband img{
+	margin-top: 0px;
+}
+
+
+/* ================SITE TITLE===================*/
+/* TO DISPLAY A CUSTOM SITE TITLE BAR:
+The #usgstitle class is specific to the colored site title bar that lies beneath the USGS identifier. To change the color of this bar, set the "background-color" attribute below to the color you wish to display and change the "color" attribute to set the text color.
+NOTE: You can use either hexadecimal color codes (i.e. - #000000) or HTML color names (i.e. - "black"). */
+#usgstitle {
+    background-color: #1D2329;
+    color: #ffffff;
+    font-size:10pt;
+    border:none;
+    font-family: 'Source Sans Pro', sans-serif;
+    height:65px;
+    text-align: center;
+}
+#usgstitle p{
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 700;
+	font-size:32pt;
+	line-height: 82px;
+	text-align: center;
+}
+
+#usgsccsabox{
+	background-color: transparent;
+	font-weight: 300;
+}
+
+
+/* =============STANDARD CONTENT===============*/
+/* TO CHANGE THE TEXT SIZE OF THE CONTENT:
+By default, USGS has set the font size to "small" in order to provide a consistent size for content across all pages. If you would prefer not to have a pre-defined font size for your pages, change the "font-size" attributes below to "font-size: 100%;". */
+/*body {
+	font-size: small;
+}
+
+th, td {
+	font-size: small;
+}
+h1 {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}*/
