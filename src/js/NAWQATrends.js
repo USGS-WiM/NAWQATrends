@@ -2166,8 +2166,8 @@ function showHelpText(option, faqNumber) {
 				'</div>' +
 				'</div>';
 
-			var percentOfScreenHeight = 0.8;
-			var percentOfScreenWidth = 0.8;
+			var percentOfScreenHeight = 0.95;
+			var percentOfScreenWidth = 0.95;
 
 			var top = (dojo.byId('map').style.height.replace(/\D/g, '')) * ((1.0 - percentOfScreenHeight) / 2) + "px";
 			var left = (dojo.byId('map').style.width.replace(/\D/g, '')) * ((1.0 - percentOfScreenWidth) / 2) + "px";
@@ -2175,8 +2175,8 @@ function showHelpText(option, faqNumber) {
 			helpTextDiv.style.top = top; //evt.clientY-5 + 'px';
 			helpTextDiv.style.left = left; //(Number(left.split("px")[0]) + 180) + "px"; //evt.clientX-5 + 'px';
 
-			helpTextDiv.style.height = "80%"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
-			helpTextDiv.style.width = "80%"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
+			helpTextDiv.style.height = "95%"; //(dojo.byId('map').style.height.replace(/\D/g,'')*percentOfScreenHeight) + "px";
+			helpTextDiv.style.width = "95%"; //(dojo.byId('map').style.width.replace(/\D/g,'')*percentOfScreenWidth) + "px";
 		}
 
 		/*var percentOfScreenHeight = 0.8;
