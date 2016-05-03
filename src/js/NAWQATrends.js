@@ -86,7 +86,7 @@ var sucode4FeatureLinkZoom;
      
 function init() {
 	//sets up the onClick listeners for the USGS logo and help text
-	dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
+	//dojo.connect(dojo.byId("usgsLogo"), "onclick", showUSGSLinks);
 	//dojo.connect(dojo.byId("moreInfoButton"), "onclick", showHelpText);
 	dojo.connect(dojo.byId('moreInfoButton'), 'onmouseover', dataDocOptions);
 	//dojo.connect(dojo.byId("arrowSizeRelative"), "onclick", showConstituentExp);
