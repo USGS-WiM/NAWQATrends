@@ -1948,8 +1948,8 @@ function showHelpText(option, faqNumber) {
 				'<h2>For more information on groundwater quality</h2>' +
 				'<a href="#faq25">25. Where is more information available about water-quality testing guidelines for domestic wells?</a><br/>' +
 				'<a href="#faq26">26. Where can I learn more information about other NAWQA water-quality assessments?</a><br/>' +
-				'<h2>Citations and Contacts</h2>' +
-				'<a href="#faq27">27. How should these web pages be cited?</a><br/>' +
+				'<h2>Citation and Contacts</h2>' +
+				'<a href="#faq27">27. How should these Web pages be cited?</a><br/>' +
 				'<a href="#faq28">28. Who can I contact for more information on this study of decadal changes in the quality of water?</a><br/>' +
 
 				'<h2 class="faqHeader">Study scope</h2>' +
@@ -1966,7 +1966,7 @@ function showHelpText(option, faqNumber) {
 				'<div id="faq6" class="faqQuestion">6. How many wells were sampled for this study, and what time period is represented?</div>' +
 				'<div class="faqAnswer">The dataset consists of 1,511 wells in 67 groups of wells called networks in various principal aquifers across the country from the U.S. Geological Survey National Water-Quality Assessment project. A network typically is a group of 20–30 wells representing an aquifer (major aquifer study), or a specific depth and (or) land use (land-use study) (Lapham and others, 1995). Each network has been sampled once during 1988–2001 and again during 2002–12.</div>' +
 				'<div id="faq7" class="faqQuestion">7. How did you determine which constituents to display on the map?</div>' +
-				'<div class="faqAnswer">More than 300 constituents were sampled at most of the wells during the two decades. Constituents were prioritized for analysis of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking water from public-supply wells (Toccalino and Hopple, 2010) or domestic-supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis but do not have sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in the mapping tool. <a target="_blank" href="javascript:dataDocClick(\'Stats\');">More on constituent selection</a></div>' +
+				'<div class="faqAnswer">More than 300 constituents were sampled at most of the wells during the two decades. Constituents were prioritized for analysis of decadal change if they met the following criteria: (1) they exceeded a human health benchmark in at least 1 percent of the wells used as a source of drinking water from public-supply wells (Toccalino and Hopple, 2010) or domestic-supply wells (Desimone, 2009), (2) they exceeded a U.S. Environmental Protection Agency (EPA) secondary maximum contaminant level (SMCL) in at least 1 percent of the wells used as a source of drinking water, (3) they were among the five most frequently detected volatile organic compounds (VOCs) in the Nation (Zogorski and others, 2006), or (4) they were among the five most frequently detected pesticides in the Nation (Gilliom and others, 2006). Other constituents were added to this list based on regional importance. Radium, radon, and gross alpha (α) activity met the criteria for analysis but do not have sufficient data for analysis; thus, they are not included in the mapping tool. In all, 24 constituents were selected for analysis of decadal change and inclusion in the mapping tool. <a target="_blank" href="javascript:dataDocClick(\'Criteria\');">More on constituent selection</a></div>' +
 
 				'<h2 class="faqHeader">Features of the web site</h2>' +
 				'<div id="faq8" class="faqQuestion">8. Where can I find help navigating this web page?</div>' +
@@ -2038,8 +2038,8 @@ function showHelpText(option, faqNumber) {
 				'<div id="faq26" class="faqQuestion">26. Where can I learn more information about other NAWQA water-quality assessments?</div>' +
 				'<div class="faqAnswer">Access <a target="_blank" href="http://water.usgs.gov/nawqa">http://water.usgs.gov/nawqa</a> for information about the USGS NAWQA Project and other assessments in the Project about the water resources of the Nation.</div>' +
 
-				'<h2 class="faqHeader">Citations and Contacts</h2>' +
-				'<div id="faq27" class="faqQuestion">27. How should these web pages be cited?</div>' +
+				'<h2 class="faqHeader">Citation and Contacts</h2>' +
+				'<div id="faq27" class="faqQuestion">27. How should these Web pages be cited?</div>' +
 				'<div class="faqAnswer">Lindsey, B.D., Johnson, T.D., and Belitz, Kenneth, 2016, Decadal changes in groundwater quality: U.S. Geological Survey Web page, http://nawqatrends.wim.usgs.gov/decadal/</div>' +
 				'<div id="faq28" class="faqQuestion">28. Who can I contact for more information on this study of decadal changes in the quality of water?</div>' +
 				'<div class="faqAnswer">Bruce Lindsey, USGS Hydrologist<br/>' +
@@ -2158,7 +2158,7 @@ function showHelpText(option, faqNumber) {
 				'Decadal changes in concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater were evaluated in 67 networks across the Nation and displayed on an interactive web mapping tool.' +
 				'</p>' +
 				'<p>' +
-				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration; for example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 mg/L.' +
+				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration (such as a Maximum Contaminant Level); for example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 milligrams per liter' +
 				'</p>' +
 				'</div>' +
 
@@ -2508,7 +2508,7 @@ function printMap() {
 	var year = d.getFullYear();
 
 	template.layoutOptions = {
-		"titleText": "Decadal Change in " + currConst + " from 1988-2001 to 2002-2012",
+		"titleText": "Decadal Change for " + currConst + " in Groundwater from 1988-2001 to 2002-2012",
 		"legendLayers": [legendLayer]
 	};
 	printParams.template = template;
