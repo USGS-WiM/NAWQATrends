@@ -2158,7 +2158,7 @@ function showHelpText(option, faqNumber) {
 				'Decadal changes in concentrations of pesticides, nutrients, metals, and organic contaminants in groundwater were evaluated in 67 networks across the Nation and displayed on an interactive web mapping tool.' +
 				'</p>' +
 				'<p>' +
-				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration (such as a Maximum Contaminant Level); for example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 milligrams per liter' +
+				'Decadal changes in median concentrations for a network are classified as large, small, or no change in comparison to a benchmark concentration (such as a Maximum Contaminant Level); for example, a large change in chloride concentrations indicates that the median of all differences in concentrations in a network is greater than 5 percent of the chloride benchmark. For chloride, this would mean the change in concentration exceeded 12.5 milligrams per liter.' +
 				'</p>' +
 				'</div>' +
 
