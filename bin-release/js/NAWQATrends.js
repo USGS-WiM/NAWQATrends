@@ -99,8 +99,8 @@ function init() {
     var xmlRegEx = /\/xml/i;
 
     esri.addProxyRule({
-    	urlPrefix: "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
-    	proxyUrl: "http://nawqatrends.wim.usgs.gov/resource-proxy/proxy.ashx"
+    	urlPrefix: "http://commons.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
+    	proxyUrl: "http://commons.wim.usgs.gov/resource-proxy/proxy.ashx"
     });
 
     // ajaxTransport exists in jQuery 1.5+
@@ -182,7 +182,7 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/4/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/4/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
@@ -415,7 +415,7 @@ function init() {
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Magnitude of change" : {
-				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
+				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
@@ -457,7 +457,7 @@ function init() {
 					"hasMoreInfo": false
 				}
 			}, "Network Boundaries" : {
-				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/NetworkBoundaries/MapServer",
+				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NetworkBoundaries/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -484,7 +484,7 @@ function init() {
 					"esriLegendLabel": false
 				}
 			}, */"Trend sites" : {
-				"url": "http://commons.wim.usgs.gov/arcgis/rest/services/NAWQA/trendSites/MapServer",
+				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/trendSites/MapServer",
 				"arcOptions": {
 					"opacity": 1.0,
 					"visible": false,
@@ -514,7 +514,7 @@ function init() {
 					"otherLayer": "glacialAquifer"
 				}
 			}, "Glacial Aquifer" : {
-				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
+				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
 				"visibleLayers": [2],
 				"arcOptions": {
 					"opacity": 0.4,
@@ -1168,7 +1168,7 @@ function init() {
 				    identifyParams2.width  = map.width;
 				    identifyParams2.height = map.height;
 				    
-				    var identifyTask2 = new esri.tasks.IdentifyTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+				    var identifyTask2 = new esri.tasks.IdentifyTask("http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
 
 				    if (map.getLayer("principalAquifers").visible) {
 				    	var deferredResult2 = identifyTask2.execute(identifyParams);
@@ -2040,7 +2040,7 @@ function showHelpText(option, faqNumber) {
 
 				'<h2 class="faqHeader">Citation and Contacts</h2>' +
 				'<div id="faq27" class="faqQuestion">27. How should these Web pages be cited?</div>' +
-				'<div class="faqAnswer">Lindsey, B.D., Johnson, T.D., and Belitz, Kenneth, 2016, Decadal changes in groundwater quality: U.S. Geological Survey Web page, http://nawqatrends.wim.usgs.gov/decadal/</div>' +
+				'<div class="faqAnswer">Lindsey, B.D., Johnson, T.D., and Belitz, Kenneth, 2016, Decadal changes in groundwater quality: U.S. Geological Survey Web page, http://nawqatrends.wim.usgs.gov/Decadal/</div>' +
 				'<div id="faq28" class="faqQuestion">28. Who can I contact for more information on this study of decadal changes in the quality of water?</div>' +
 				'<div class="faqAnswer">Bruce Lindsey, USGS Hydrologist<br/>' +
 				'Email: <a target="_blank" href="mailto:blindsey@usgs.gov">blindsey@usgs.gov</a><br/>' +
@@ -2513,7 +2513,7 @@ function printMap() {
 	};
 	printParams.template = template;
 
-	var printMap = new esri.tasks.PrintTask("http://nawqatrends.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+	var printMap = new esri.tasks.PrintTask("http://gis.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
 	printMap.execute(printParams, printDone, printError);
 
 	map.getLayer("moLayer").setVisibility(true);
