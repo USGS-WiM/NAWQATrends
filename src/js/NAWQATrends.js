@@ -311,7 +311,7 @@ function init() {
 	});
 
 	$(window).resize(function () {
-        maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 152;
+        maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 227;
         //$('#legend').css('height', maxLegendHeight);
         $('#legend').css('max-height', maxLegendHeight);
 
@@ -815,7 +815,7 @@ function init() {
 			});
 			$("#legendDiv").show();
 
-			maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 152;
+			maxLegendHeight =  $('#map').height() - $('#availableLayers').height() - 227;
     		$('#legend').css('max-height', maxLegendHeight);
 
     	
