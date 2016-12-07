@@ -99,8 +99,8 @@ function init() {
     var xmlRegEx = /\/xml/i;
 
     esri.addProxyRule({
-    	urlPrefix: "http://commons.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
-    	proxyUrl: "http://commons.wim.usgs.gov/resource-proxy/proxy.ashx"
+    	urlPrefix: "https://commons.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools",
+    	proxyUrl: "https://commons.wim.usgs.gov/resource-proxy/proxy.ashx"
     });
 
     // ajaxTransport exists in jQuery 1.5+
@@ -182,7 +182,7 @@ function init() {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/4/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
+        url: 'https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/4/query?where=OBJECTID+%3E+0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=ConstituentType,DisplayName&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=json',
         headers: {'Accept': '*/*'},
         success: function (data) {
         	constObj = data; 
@@ -335,14 +335,14 @@ function init() {
 	renderer = new esri.renderer.UniqueValueRenderer(defaultSymbol, "network_centroids.P00940_Chloride");
 	renderer2 = new esri.renderer.UniqueValueRenderer(defaultSymbol);
 
-	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/orange_large.png", 45, 45);
-	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/green_large.png", 45, 45);
-	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 45, 25);
-	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 75, 40);
-	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/orange_small.png", 45, 25);
-	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/green_small.png", 45, 25);
-	blankSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/blank.png", 45, 25);
-	noDataSymbol = new esri.symbol.PictureMarkerSymbol("http://nawqatrends.wim.usgs.gov/nawqaimages/no_data.png", 45, 25);
+	orangeBigSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/orange_large.png", 45, 45);
+	greenBigSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/green_large.png", 45, 45);
+	noChangeSymbolSmall = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 45, 25);
+	noChangeSymbolLarge = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/no_change.png", 75, 40);
+	orangeSmallSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/orange_small.png", 45, 25);
+	greenSmallSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/green_small.png", 45, 25);
+	blankSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/blank.png", 45, 25);
+	noDataSymbol = new esri.symbol.PictureMarkerSymbol("https://nawqatrends.wim.usgs.gov/nawqaimages/no_data.png", 45, 25);
 
 	renderer.addValue({
 		value: "2", 
@@ -415,7 +415,7 @@ function init() {
 	//This object contains all layer and their ArcGIS and Wim specific mapper properties (can do feature, wms and dynamic map layers)
 	allLayers = {
 			"Magnitude of change" : {
-				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
+				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer/0",
 				"arcOptions": {
 					"opacity": 1,
 					"visible": true,
@@ -443,7 +443,7 @@ function init() {
 					"includeInLayerList": true
 				}
 			}, "Land use 2001" : {
-				"url": "http://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_01/MapServer",
+				"url": "https://raster.nationalmap.gov/arcgis/rest/services/LandCover/conus_01/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -457,7 +457,7 @@ function init() {
 					"hasMoreInfo": false
 				}
 			}, "Network Boundaries" : {
-				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NetworkBoundaries/MapServer",
+				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NetworkBoundaries/MapServer",
 				"visibleLayers": [0],
 				"arcOptions": {
 					"opacity": 0.75,
@@ -472,7 +472,7 @@ function init() {
 					"moreInfoText": "A network is a set of 20 to 30 wells selected to represent water-quality conditions in a given geographical area, aquifer, and in some cases, a specific land use. A network resampled at approximately 10-year intervals is a decadal trend network"
 				}
 			}, /*"Principal Aquifers" : {
-				"url": "http://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
+				"url": "https://nawqatrends.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer",
 				"visibleLayers": [1],
 				"arcOptions": {
 					"opacity": 0.7,
@@ -484,7 +484,7 @@ function init() {
 					"esriLegendLabel": false
 				}
 			}, */"Trend sites" : {
-				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/trendSites/MapServer",
+				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/trendSites/MapServer",
 				"arcOptions": {
 					"opacity": 1.0,
 					"visible": false,
@@ -498,7 +498,7 @@ function init() {
 					"moreInfoText": "place holder text"
 				}
 			}, "Principal Aquifers" : {
-				"url": "http://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
+				"url": "https://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
 					"visible": false,
@@ -514,7 +514,7 @@ function init() {
 					"otherLayer": "glacialAquifer"
 				}
 			}, "Glacial Aquifer" : {
-				"url": "http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
+				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
 				"visibleLayers": [2],
 				"arcOptions": {
 					"opacity": 0.4,
@@ -1168,7 +1168,7 @@ function init() {
 				    identifyParams2.width  = map.width;
 				    identifyParams2.height = map.height;
 				    
-				    var identifyTask2 = new esri.tasks.IdentifyTask("http://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
+				    var identifyTask2 = new esri.tasks.IdentifyTask("https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
 
 				    if (map.getLayer("principalAquifers").visible) {
 				    	var deferredResult2 = identifyTask2.execute(identifyParams);
@@ -1238,7 +1238,7 @@ function init() {
 	
 	  
 	//Geocoder reference to geocoding services
-    locator = new esri.tasks.Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+    locator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
 	//calls the function that does the goeocoding logic (found in geocoder.js, an associated JS module)*
     dojo.connect(locator, "onAddressToLocationsComplete", showResults);
 	
@@ -1254,7 +1254,7 @@ function mapReady(map){
 
 	//map.infoWindow.setFixedAnchor(esri.dijit.InfoWindow.ANCHOR_LOWERRIGHT);
 
-	//code for adding draggability to infoWindow. http://www.gavinr.com/2015/04/13/arcgis-javascript-draggable-infowindow/
+	//code for adding draggability to infoWindow. https://www.gavinr.com/2015/04/13/arcgis-javascript-draggable-infowindow/
     require([
 	    'esri/arcgis/utils',
 	    'dojo/dnd/Moveable',
@@ -2513,7 +2513,7 @@ function printMap() {
 	};
 	printParams.template = template;
 
-	var printMap = new esri.tasks.PrintTask("http://gis.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+	var printMap = new esri.tasks.PrintTask("https://gis.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
 	printMap.execute(printParams, printDone, printError);
 
 	map.getLayer("moLayer").setVisibility(true);
