@@ -9,7 +9,7 @@
 
 
 	   //Add Geocoder
-	  locator = new esri.tasks.Locator("http://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Address_NA_10/GeocodeServer");		
+	  locator = new esri.tasks.Locator("https://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Address_NA_10/GeocodeServer");
       dojo.connect(locator, "onAddressToLocationsComplete", showResults);
 		
 	  function enterKeyLocate (e) {

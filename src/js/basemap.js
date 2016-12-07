@@ -12,7 +12,7 @@
 
 function createBaseMapGallery() {
 
-		var streetBasemapLayer = new esri.dijit.BasemapLayer({  url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" })
+		var streetBasemapLayer = new esri.dijit.BasemapLayer({  url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" })
         var streetBasemap = new esri.dijit.Basemap({
 		  layers:  [streetBasemapLayer],
 		  id: "0",
