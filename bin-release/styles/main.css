@@ -10,20 +10,20 @@ html, body {
 
 @font-face {
     font-family: BryantRegular;
-    src: url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2/Bryant-Regular.otf'),
-    url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebRegular.eot') format('embedded-opentype'),
-    url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_WOFF/BryantWebRegular.woff')
-    /* url('http://localhost/apps/fonts/Bryant2Combo/Bryant2/Bryant-Regular.otf'),
-    url('http://localhost/apps/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebRegular.eot') IE9 */
+    src: url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2/Bryant-Regular.otf'),
+    url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebRegular.eot') format('embedded-opentype'),
+    url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_WOFF/BryantWebRegular.woff')
+    /* url('https://localhost/apps/fonts/Bryant2Combo/Bryant2/Bryant-Regular.otf'),
+    url('https://localhost/apps/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebRegular.eot') IE9 */
 }
 
 @font-face {
     font-family: BryantBold;
-    src: url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2/Bryant-Bold.otf'),
-    url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebBold.eot') format('embedded-opentype'),
-    url('http://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_WOFF/BryantWebBold.woff')
-    /*url('http://localhost/apps/fonts/Bryant2Combo/Bryant2/Bryant-Bold.otf'),
-   url('http://localhost/apps/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebBold.eot') IE9 */
+    src: url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2/Bryant-Bold.otf'),
+    url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebBold.eot') format('embedded-opentype'),
+    url('https://nawqatrends.wim.usgs.gov/fonts/Bryant2Combo/Bryant2Web_WOFF/BryantWebBold.woff')
+    /*url('https://localhost/apps/fonts/Bryant2Combo/Bryant2/Bryant-Bold.otf'),
+   url('https://localhost/apps/fonts/Bryant2Combo/Bryant2Web_EOT/BryantWebBold.eot') IE9 */
 }
 
 #map {
