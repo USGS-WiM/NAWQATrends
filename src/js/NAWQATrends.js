@@ -498,7 +498,7 @@ function init() {
 					"moreInfoText": "place holder text"
 				}
 			}, "Principal Aquifers" : {
-				"url": "https://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
+				"url": "https://nwismapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
 					"visible": false,
@@ -514,7 +514,7 @@ function init() {
 					"otherLayer": "glacialAquifer"
 				}
 			}, "Glacial Aquifer" : {
-				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest/MapServer",
+				"url": "https://gis.wim.usgs.gov/arcgis/rest/services/NAWQA/tablesTest_test/MapServer",
 				"visibleLayers": [2],
 				"arcOptions": {
 					"opacity": 0.4,
