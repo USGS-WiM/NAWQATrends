@@ -498,7 +498,7 @@ function init() {
 					"moreInfoText": "place holder text"
 				}
 			}, "Principal Aquifers" : {
-				"url": "https://nwis-mapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
+				"url": "https://nwismapper.s3.amazonaws.com/pr_aq/${level}/${row}/${col}.png",
 				"arcOptions": {
 					"id": "principalAquifers",
 					"visible": false,
